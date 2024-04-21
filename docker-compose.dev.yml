@@ -1,37 +1,36 @@
 version: '3.9'
 
 services:
-  relaxinghippoquestsdatabase:
-    container_name: relaxinghippoquestsdatabase
-    hostname: relaxinghippoquestsdatabase
+  aindecouvertedatabase:
+    container_name: aindecouvertedatabase
+    hostname: aindecouvertedatabase
     image: postgres:latest
     restart: 'no'
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password123
-      POSTGRES_DB: relaxinghippoquests
+      POSTGRES_DB: aindecouverte
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U admin -d relaxinghippoquests']
+      test: ['CMD-SHELL', 'pg_isready -U admin -d aindecouverte']
       interval: 10s
       timeout: 5s
       retries: 5
     ports:
-      - 5434:5432
+      - 5435:5432
     expose:
       - 5432
     volumes:
-      - relaxinghippoquestsdatabase:/var/lib/postgresql/data
+      - aindecouvertedatabase:/var/lib/postgresql/data
 
-  relaxinghippoquestsserver:
+  aindecouverteserver:
     depends_on:
-      relaxinghippoquestsdatabase:
+      aindecouvertedatabase:
         condition: service_healthy
     build: './server'
     ports:
       - 4000:4000
     volumes:
       - ./server/src:/app/src
-      - ./uploads:/app/public/uploads
 
 volumes:
-  relaxinghippoquestsdatabase:
+  aindecouvertedatabase:

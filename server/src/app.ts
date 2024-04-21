@@ -6,9 +6,6 @@ import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import path from 'path';
 import authRouter from './auth/routes/auth.routes';
-import stormgateWorldCronJob from './cron/stormgateWorld';
-import playerRouter from './player/routes/player.routes';
-import postRouter from './post/routes/post.routes';
 import userRouter from './user/routes/user.routes';
 import AppError from './utils/appError';
 import { validateEnv } from './utils/validateEnv';
@@ -26,14 +23,13 @@ validateEnv();
 const prisma = new PrismaClient();
 const app = express();
 
-const { combine, timestamp, json } = winston.format;
 export const logger = winston.createLogger({
   level: 'http',
-  format: combine(
-    timestamp({
+  format: winston.format.combine(
+      winston.format.timestamp({
       format: 'YYYY-MM-DD hh:mm:ss.SSS A',
     }),
-    json()
+      winston.format.json()
   ),
   transports:
     process.env.NODE_ENV === 'production'
@@ -93,8 +89,6 @@ async function bootstrap() {
   // ROUTES
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
-  app.use('/api/players', playerRouter);
-  app.use('/api/posts', postRouter);
 
   // Testing
   app.get('/api/', (_, res: Response) => {
@@ -130,7 +124,6 @@ async function bootstrap() {
   const port = process.env.PORT;
   app.listen(port, () => {
     logger.info(`Server on port: ${port}`);
-    stormgateWorldCronJob.start();
   });
 }
 

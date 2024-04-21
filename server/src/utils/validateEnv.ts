@@ -24,7 +24,6 @@ const envSchema = z.object({
   EMAIL_HOST: z.string(),
   EMAIL_PORT: z.string(),
 
-  STORMGATE_WORLD_API_ENDPOINT: z.string(),
   LOGTAIL_SOURCE_TOKEN: z.string(),
 });
 
@@ -51,7 +50,6 @@ export function validateEnv() {
     EMAIL_HOST: process.env.EMAIL_HOST,
     EMAIL_PORT: process.env.EMAIL_PORT,
 
-    STORMGATE_WORLD_API_ENDPOINT: process.env.STORMGATE_WORLD_API_ENDPOINT,
     LOGTAIL_SOURCE_TOKEN: process.env.LOGTAIL_SOURCE_TOKEN,
   });
 
