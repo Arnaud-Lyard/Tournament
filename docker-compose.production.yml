@@ -1,5 +1,5 @@
 services:
-  relaxinghippoquestsdatabase:
+  aindecouvertedatabase:
     image: postgres:latest
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -13,17 +13,17 @@ services:
     ports:
       - 5435:5432
     volumes:
-      - relaxinghippoquestsdatabase:/var/lib/postgresql/data
+      - aindecouvertedatabase:/var/lib/postgresql/data
 
-  relaxinghippoquestsserver:
+  aindecouverteserver:
     depends_on:
-      relaxinghippoquestsdatabase:
+      aindecouvertedatabase:
         condition: service_healthy
     environment:
-      - DATABASE_URL=${DATABASE_URL:-postgres://postgresql://dbuser:dbpassword@relaxinghippoquestsdatabase/dbname?schema=public}
+      - DATABASE_URL=${DATABASE_URL:-postgres://postgresql://dbuser:dbpassword@aindecouvertedatabase/dbname?schema=public}
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${PORT:-4000}
-      - POSTGRES_HOST=${POSTGRES_HOST:-relaxinghippoquestsdatabase}
+      - POSTGRES_HOST=${POSTGRES_HOST:-aindecouvertedatabase}
       - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -38,7 +38,6 @@ services:
       - FULL_CLIENT_URL=${FULL_CLIENT_URL:-url}
       - CLIENT_URL=${CLIENT_URL:-url}
       - SERVER_URL=${SERVER_URL:-url}
-      - STORMGATE_WORLD_API_ENDPOINT=${STORMGATE_WORLD_API_ENDPOINT:-url}
       - LOGTAIL_SOURCE_TOKEN=${LOGTAIL_SOURCE_TOKEN:-token}
     image: arnaudlyard/relaxing-hippoquests-server
     healthcheck:
@@ -49,15 +48,15 @@ services:
     volumes:
       - ./uploads:/app/public/uploads
 
-  relaxinghippoquestsclient:
+  aindecouverteclient:
     image: arnaudlyard/relaxing-hippoquests-client
 
   nginx:
     image: nginx:1.21.3
     depends_on:
-      relaxinghippoquestsclient:
+      aindecouverteclient:
         condition: service_started
-      relaxinghippoquestsserver:
+      aindecouverteserver:
         condition: service_healthy
     restart: always
     ports:
@@ -67,4 +66,4 @@ services:
       - ./logs:/var/log/nginx
 
 volumes:
-  relaxinghippoquestsdatabase:
+  aindecouvertedatabase:

@@ -1,0 +1,7 @@
+{
+  name: "AinDecouverte",
+  dockerComposeFile: "../docker-compose.dev.yml",
+  service: "aindecouverteserver",
+  workspaceFolder: "/aindecouverte",
+  forwardPorts: ["4000", "5435", "5432"]
+}
