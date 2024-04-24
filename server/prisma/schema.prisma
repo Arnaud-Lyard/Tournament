@@ -11,12 +11,7 @@ model User {
   id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   pseudo           String        @db.VarChar(255)
   email            String        @unique
-  avatar           String?       @db.VarChar(255)
   verified         Boolean?      @default(false)
-  esl              String?       @db.VarChar(255)
-  twitter          String?       @db.VarChar(255)
-  grade            GradeEnumType @default(user)
-  stormgateWorldId String?       @unique @map("stormgate_world_id") @db.VarChar(255)
 
   password String
   role     RoleEnumType? @default(user)
@@ -29,62 +24,12 @@ model User {
   passwordResetToken String?   @map("password_reset_token")
   passwordResetAt    DateTime? @map("password_reset_at")
 
-  player Player[]
-  Post   Post[]
-
   @@unique([email, verificationCode, passwordResetToken])
   @@index([email, verificationCode, passwordResetToken])
   @@map(name: "user")
 }
 
-model Player {
-  id       String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nickname String?           @db.VarChar(255)
-  rank     Int?              @db.Integer
-  race     String?           @db.VarChar(255)
-  league   String?           @db.VarChar(255)
-  tier     Int?              @db.Integer
-  winrate  Float?            @map("win_rate") @db.DoublePrecision
-  mmr      Float?            @db.DoublePrecision
-  points   Int?              @db.Integer
-  wins     Int?              @db.Integer
-  losses   Int?              @db.Integer
-  ties     Int?              @db.Integer
-  matches  Int?              @db.Integer
-  progress ProgressEnumType? @default(equal)
-  user     User              @relation(fields: [userId], references: [id])
-  userId   String            @map("user_id") @db.Uuid
-
-  @@map(name: "player")
-}
-
-model Post {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title     String   @db.VarChar(255)
-  category  String   @db.VarChar(255)
-  image     String   @db.VarChar(255)
-  content   String   @db.Text
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @map("user_id") @db.Uuid
-
-  @@map(name: "post")
-}
-
 enum RoleEnumType {
   user
   admin
-}
-
-enum GradeEnumType {
-  user
-  player
-  manager
-}
-
-enum ProgressEnumType {
-  up
-  equal
-  down
 }
