@@ -84,31 +84,13 @@ export class UserRepository {
     });
   }
 
-  static async saveUserImage({
-    userId,
-    imageUrl,
-  }: {
-    userId: string;
-    imageUrl: string;
-  }): Promise<User> {
-    return await prisma.user.update({
-      where: { id: userId },
-      data: { avatar: imageUrl },
-    });
-  }
-
   static async findByUserId(userId: string): Promise<IUserSafe | null> {
     const user = await prisma.user.findFirst({
       where: { id: userId },
       select: {
         id: true,
-        stormgateWorldId: true,
         pseudo: true,
         email: true,
-        grade: true,
-        avatar: true,
-        esl: true,
-        twitter: true,
         role: true,
         createdAt: true,
         updatedAt: true,
@@ -117,29 +99,11 @@ export class UserRepository {
     return user;
   }
 
-  static async getTeamUsers(): Promise<IUserPublic[]> {
-    return await prisma.user.findMany({
-      where: {
-        OR: [{ grade: 'player' }, { grade: 'manager' }],
-      },
-      select: {
-        id: true,
-        pseudo: true,
-        grade: true,
-        avatar: true,
-        esl: true,
-        twitter: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-  }
-
   static async updateUser(userUpdate: IUserUpdateDto) {
-    const { id, twitter, esl, pseudo, avatar, stormgate } = userUpdate;
+    const { id, pseudo } = userUpdate;
     const user = await prisma.user.update({
       where: { id },
-      data: { twitter, esl, pseudo, avatar, stormgateWorldId: stormgate },
+      data: { pseudo },
     });
     return user;
   }
@@ -152,44 +116,8 @@ export class UserRepository {
       select: {
         role: true,
         pseudo: true,
-        avatar: true,
       },
     });
     return userinfos;
-  }
-
-  static async findPlayerByUserId(userId: string) {
-    return await prisma.user.findFirst({
-      include: { player: true },
-      where: { id: userId },
-    });
-  }
-
-  static async getAllUsersActive() {
-    return await prisma.user.findMany({
-      where: {
-        stormgateWorldId: {
-          not: null,
-        },
-      },
-      select: {
-        id: true,
-        stormgateWorldId: true,
-        pseudo: true,
-        grade: true,
-        avatar: true,
-        esl: true,
-        twitter: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
-  }
-
-  static async findUserByStormgateId(stormgateWorldId: string) {
-    return await prisma.user.findFirst({
-      include: { player: true },
-      where: { stormgateWorldId },
-    });
   }
 }

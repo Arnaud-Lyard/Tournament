@@ -1,47 +1,44 @@
-import express from "express";
+import express from 'express';
+import { authenticateUser } from '../../middleware/authenticateUser';
+import { validate } from '../../middleware/validate';
 import {
   forgotPasswordHandler,
-  loginAdminHandler,
   loginUserHandler,
   logoutUserHandler,
   registerUserHandler,
   resetPasswordHandler,
   verifyEmailHandler,
-} from "../controller/auth.controller";
-import { authenticateUser } from "../../middleware/authenticateUser";
-import { validate } from "../../middleware/validate";
+} from '../controller/auth.controller';
 import {
   forgotPasswordSchema,
   loginUserSchema,
   registerUserSchema,
   resetPasswordSchema,
   verifyEmailSchema,
-} from "../schema/auth.schema";
+} from '../schema/auth.schema';
 
 const router = express.Router();
 
-router.post("/register", validate(registerUserSchema), registerUserHandler);
+router.post('/register', validate(registerUserSchema), registerUserHandler);
 
-router.post("/login", validate(loginUserSchema), loginUserHandler);
-
-router.post("/adminlogin", validate(loginUserSchema), loginAdminHandler);
+router.post('/login', validate(loginUserSchema), loginUserHandler);
 
 router.get(
-  "/verifyemail/:verificationCode",
+  '/verifyemail/:verificationCode',
   validate(verifyEmailSchema),
   verifyEmailHandler
 );
 
-router.get("/logout", authenticateUser, logoutUserHandler);
+router.get('/logout', authenticateUser, logoutUserHandler);
 
 router.post(
-  "/forgotpassword",
+  '/forgotpassword',
   validate(forgotPasswordSchema),
   forgotPasswordHandler
 );
 
 router.patch(
-  "/resetpassword/:resetToken",
+  '/resetpassword/:resetToken',
   validate(resetPasswordSchema),
   resetPasswordHandler
 );

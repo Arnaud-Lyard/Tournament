@@ -1,25 +1,16 @@
 FROM node:18.13-alpine
 
-RUN apk --no-cache add curl \
-    unzip \
-    procps \
-    libxext \
-    libxrender \
-    libxtst \
-    libxi \
-    freetype \
-    procps \
-    gcompat \
-    && apk add --no-cache make g++ python3 git
-
+RUN apk --no-cache add curl
+RUN apk add make g++ python3 git
 RUN npm i -g node-pre-gyp
 
 RUN mkdir /app
 WORKDIR /app
 
 COPY package.json ./
-COPY /package-lock.json ./
-RUN npm i
+COPY /pnpm-lock.yaml ./
+RUN npm i -g pnpm
+RUN pnpm i
 
 COPY src src
 COPY tsconfig.json tsconfig.json
