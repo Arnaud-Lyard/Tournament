@@ -9,8 +9,4 @@ export interface IUserUpdateDto {
   id: string;
   pseudo: string;
   email: string;
-  avatar?: string | null;
-  esl?: string | null;
-  twitter?: string | null;
-  stormgate?: string | null;
 }
