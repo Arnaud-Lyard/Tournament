@@ -1,17 +1,17 @@
 version: '3.9'
 
 services:
-  aindecouvertedatabase:
-    container_name: aindecouvertedatabase
-    hostname: aindecouvertedatabase
+  seekplayersdatabase:
+    container_name: seekplayersdatabase
+    hostname: seekplayersdatabase
     image: postgres:latest
     restart: 'no'
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password123
-      POSTGRES_DB: aindecouverte
+      POSTGRES_DB: seekplayers
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U admin -d aindecouverte']
+      test: ['CMD-SHELL', 'pg_isready -U admin -d seekplayers']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,11 +20,11 @@ services:
     expose:
       - 5432
     volumes:
-      - aindecouvertedatabase:/var/lib/postgresql/data
+      - seekplayersdatabase:/var/lib/postgresql/data
 
-  aindecouverteserver:
+  seekplayersserver:
     depends_on:
-      aindecouvertedatabase:
+      seekplayersdatabase:
         condition: service_healthy
     build: './server'
     ports:
@@ -32,5 +32,12 @@ services:
     volumes:
       - ./server/src:/app/src
 
+  seekplayers-upload-service:
+    build: file-upload-service
+    ports:
+      - 8000:8000
+    volumes:
+      - ./file-upload-service/files:/app/files
+
 volumes:
-  aindecouvertedatabase:
+  seekplayersdatabase:
