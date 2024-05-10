@@ -1,7 +1,7 @@
 {
-  name: "AinDecouverte",
-  dockerComposeFile: "../docker-compose.dev.yml",
-  service: "aindecouverteserver",
-  workspaceFolder: "/aindecouverte",
-  forwardPorts: ["4000", "5435", "5432"]
+  "name": "seekPlayers",
+  "dockerComposeFile": "../docker-compose.dev.yml",
+  "service": "seekplayersserver",
+  "workspaceFolder": "/seekplayers",
+  "forwardPorts": ["4000", "5435", "5432"]
 }
