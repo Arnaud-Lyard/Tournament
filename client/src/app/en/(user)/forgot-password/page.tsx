@@ -2,14 +2,15 @@
 import Image from 'next/image';
 import React, { useState, FormEvent } from 'react';
 import { HttpService } from '@/services';
-import { IResponse } from '@/types/api';
+import { IError, IErrorDtoInfos, IResponse } from '@/types/api';
 import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
 import Link from 'next/link';
+import { useErrorHandling } from '@/hooks/useErrorHandling';
 
 export default function Login() {
   const http = new HttpService();
-  const [errors, setErrors] = useState(['']);
-  const [message, setMessage] = useState('');
+  const { errors, message, checkErrors, resetMessages, setMessage } =
+    useErrorHandling();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,26 +25,10 @@ export default function Login() {
         setMessage(response.message);
       }
     } catch (e: any) {
-      checkErrors(e);
+      checkErrors(e.response.data);
     }
-    setTimeout(() => {
-      setErrors([]);
-      setMessage('');
-    }, 5000);
+    resetMessages();
   };
-  function checkErrors(e: any) {
-    if (e.response.data.errors?.length) {
-      setErrors(
-        e.response.data.errors.map((err: any) => {
-          return err.message;
-        })
-      );
-    } else if (e.response.data.message) {
-      setErrors([e.response.data.message]);
-    } else {
-      setErrors(['An error occurred, please try again']);
-    }
-  }
 
   return (
     <>

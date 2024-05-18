@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { HttpService } from '@/services';
 import { IResponse } from '@/types/api';
 import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 const user = {
   name: 'Tom Cook',
@@ -31,37 +32,40 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function RootLayout({
+export default function UserLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const [navigation, setNavigation] = useState([
-    { name: 'Dashboard', title: 'Dashboard title', href: '#', current: true },
+    { name: 'home', title: 'Home', href: '/home', current: true },
     { name: 'Team', title: 'Team title', href: '#', current: false },
     { name: 'Projects', title: 'Project title', href: '#', current: false },
     { name: 'Calendar', title: 'Calendar title', href: '#', current: false },
     { name: 'Reports', title: 'Reports title', href: '#', current: false },
   ]);
 
-  function handleNavChange(name: string) {
+  function handleNavChange(path: string) {
+    const lastPartPath = path.substring(path.lastIndexOf('/') + 1);
     setNavigation(
       navigation.map((nav) =>
-        nav.name === name
+        nav.name === lastPartPath
           ? { ...nav, current: true }
           : { ...nav, current: false }
       )
     );
   }
 
-  function displayActiveNav() {
-    return navigation.find((nav) => nav.current)?.title;
-  }
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading, setIsloading] = useState(true);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    handleNavChange(pathname);
+  }, [pathname, searchParams]);
 
   async function handleUserLoggedIn() {
+    console.log(isLoggedIn);
     const http = new HttpService();
     try {
       const response = await http.service().get<IResponse>(`/users/me`);
@@ -78,7 +82,7 @@ export default function RootLayout({
   }
   useEffect(() => {
     handleUserLoggedIn();
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <html lang="en">
@@ -104,7 +108,7 @@ export default function RootLayout({
                             <div className="hidden md:block">
                               <div className="ml-10 flex items-baseline space-x-4">
                                 {navigation.map((item) => (
-                                  <a
+                                  <Link
                                     key={item.name}
                                     href={item.href}
                                     onClick={() => handleNavChange(item.name)}
@@ -118,8 +122,8 @@ export default function RootLayout({
                                       item.current ? 'page' : undefined
                                     }
                                   >
-                                    {item.name}
-                                  </a>
+                                    {item.title}
+                                  </Link>
                                 ))}
                               </div>
                             </div>
@@ -356,9 +360,9 @@ export default function RootLayout({
               </Disclosure>
               <header className="py-10">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                  <h1 className="text-3xl font-bold tracking-tight text-white">
-                    {displayActiveNav()}
-                  </h1>
+                  <div className="text-3xl font-bold tracking-tight text-white">
+                    Seek Players
+                  </div>
                 </div>
               </header>
             </div>
