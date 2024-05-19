@@ -6,11 +6,13 @@ import { IError, IErrorDtoInfos, IResponse } from '@/types/api';
 import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
 import Link from 'next/link';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
+import { useRouter } from 'next/navigation';
 
 export default function Register() {
   const http = new HttpService();
   const { errors, message, checkErrors, resetMessages, setMessage } =
     useErrorHandling();
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,6 +25,9 @@ export default function Register() {
         .push<IResponse, any>(`/auth/register`, formJSON);
       if (response.status === 'success') {
         setMessage(response.message);
+        setTimeout(() => {
+          router.push('/login');
+        }, 5000);
       }
     } catch (e: any) {
       checkErrors(e.response.data);

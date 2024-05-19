@@ -1,5 +1,5 @@
 services:
-  seekplayersdatabase:
+  tournament-database:
     image: postgres:latest
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -13,17 +13,17 @@ services:
     ports:
       - 5435:5432
     volumes:
-      - seekplayersdatabase:/var/lib/postgresql/data
+      - tournament-database:/var/lib/postgresql/data
 
-  seekplayersserver:
+  tournament-server:
     depends_on:
-      seekplayersdatabase:
+      tournament-database:
         condition: service_healthy
     environment:
-      - DATABASE_URL=${DATABASE_URL:-postgres://postgresql://dbuser:dbpassword@seekplayersdatabase/dbname?schema=public}
+      - DATABASE_URL=${DATABASE_URL:-postgres://postgresql://dbuser:dbpassword@tournament/dbname?schema=public}
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${PORT:-4000}
-      - POSTGRES_HOST=${POSTGRES_HOST:-seekplayersdatabase}
+      - POSTGRES_HOST=${POSTGRES_HOST:-tournament}
       - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -39,7 +39,7 @@ services:
       - CLIENT_URL=${CLIENT_URL:-url}
       - SERVER_URL=${SERVER_URL:-url}
       - LOGTAIL_SOURCE_TOKEN=${LOGTAIL_SOURCE_TOKEN:-token}
-    image: arnaudlyard/seekplayers-server
+    image: arnaudlyard/tournament-server
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:4000/api']
       interval: 5s
@@ -48,21 +48,21 @@ services:
     volumes:
       - ./uploads:/app/public/uploads
 
-  seekplayersclient:
-    image: arnaudlyard/seekplayers-client
+  tournament-client:
+    image: arnaudlyard/tournament-client
 
   upload-service:
     environment:
       - HOST=/
     build: file-upload-service
     volumes:
-      - seekplayersuploads:/app/files
+      - tournament-uploads:/app/files
 
   gateway:
     depends_on:
-      seekplayersclient:
+      tournament-client:
         condition: service_started
-      seekplayersserver:
+      tournament-server:
         condition: service_healthy
     restart: always
     build:
@@ -72,5 +72,5 @@ services:
       - ${GATEWAY_PORT-8000}:80
 
 volumes:
-  seekplayersdatabase:
-  seekplayersuploads:
+  tournament-database:
+  tournament-uploads:
