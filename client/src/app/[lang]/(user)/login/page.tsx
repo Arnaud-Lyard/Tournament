@@ -7,13 +7,14 @@ import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
+import { useDictionary } from '@/providers/dictionary-provider';
 
 export default function Login() {
   const http = new HttpService();
   const { errors, message, checkErrors, resetMessages, setMessage } =
     useErrorHandling();
-
   const router = useRouter();
+  const dictionary = useDictionary();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -49,7 +50,7 @@ export default function Login() {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Connection à votre compte
+            {dictionary.login.title}
           </h2>
         </div>
 
@@ -61,7 +62,7 @@ export default function Login() {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Adresse e-mail
+                  {dictionary.login.formLabelOne}
                 </label>
                 <div className="mt-2">
                   <input
@@ -80,7 +81,7 @@ export default function Login() {
                   htmlFor="password"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Mot de passe
+                  {dictionary.login.formLabelTwo}
                 </label>
                 <div className="mt-2">
                   <input
@@ -102,7 +103,7 @@ export default function Login() {
                     href="/forgot-password"
                     className="font-semibold text-cyan-600 hover:text-cyan-500"
                   >
-                    Mot de passe oublié ?
+                    {dictionary.login.forgotPassword}
                   </Link>
                 </div>
               </div>
@@ -119,19 +120,19 @@ export default function Login() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                 >
-                  Connexion
+                  {dictionary.login.button}
                 </button>
               </div>
             </form>
           </div>
 
           <p className="mt-10 text-center text-sm text-gray-500">
-            Pas encore membre ?{' '}
+            {dictionary.login.text}{' '}
             <Link
               href="/register"
               className="font-semibold leading-6 text-cyan-600 hover:text-cyan-500"
             >
-              S'inscrire
+              {dictionary.login.link}
             </Link>
           </p>
         </div>

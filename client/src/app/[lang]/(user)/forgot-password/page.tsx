@@ -6,11 +6,18 @@ import { IError, IErrorDtoInfos, IResponse } from '@/types/api';
 import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
 import Link from 'next/link';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
+import { getDictionary } from '../../dictionaries';
+import { useDictionary } from '../../../../providers/dictionary-provider';
 
-export default function Login() {
+export default function Login({
+  params: { lang },
+}: {
+  params: { lang: string };
+}) {
   const http = new HttpService();
   const { errors, message, checkErrors, resetMessages, setMessage } =
     useErrorHandling();
+  const dictionary = useDictionary();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,7 +49,7 @@ export default function Login() {
             alt="Your Company"
           />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Mot de passe oublié
+            {dictionary.forgotPassword.title}
           </h2>
         </div>
 
@@ -54,7 +61,7 @@ export default function Login() {
                   htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Adresse e-mail
+                  {dictionary.forgotPassword.formLabel}
                 </label>
                 <div className="mt-2">
                   <input
@@ -79,12 +86,11 @@ export default function Login() {
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-cyan-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
                 >
-                  Envoyer
+                  {dictionary.forgotPassword.button}
                 </button>
               </div>
             </form>
           </div>
-          <div className="mt-5"></div>
         </div>
       </div>
     </>
