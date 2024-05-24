@@ -1,8 +1,10 @@
 {
   "navigation": {
+    "button": "Ouvrir le menu utilisateur",
     "login": "Connexion",
     "logout": "Déconnexion",
-    "register": "Inscription"
+    "register": "Inscription",
+    "profile": "Mon profil"
   },
   "forgotPassword": {
     "title": "Mot de passe oublié",
@@ -37,5 +39,18 @@
   "verifyEmail": {
     "confirm": "Votre adresse e-mail a été vérifiée",
     "text": "Vous serez redirigé dans quelques secondes."
+  },
+  "profile": {
+    "titleOne": "Mon profil",
+    "titleOneDescription": "Ces informations seront affichées publiquement, faites attention à ce que vous partagez.",
+    "titleTwo": "Informations personnelles",
+    "titleTwoDescription": "Ces informations sont uniquement visibles par vous.",
+    "titleThree": "Notifications",
+    "titleThreeDescription": "Nous vous informerons toujours des changements importants, mais choisissez vos préférences de communication.",
+    "formLabelOne": "Nom d'utilisateur",
+    "formLabelTwo": "Avatar",
+    "formLabelThree": "Adresse e-mail",
+    "buttonSubmit": "Enregistrer",
+    "buttonCancel": "Annuler"
   }
 }

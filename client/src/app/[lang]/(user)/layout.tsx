@@ -23,16 +23,9 @@ const user = {
   email: 'tom@example.com',
 };
 
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-];
-
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
-
 export default function UserLayout({
   children,
 }: Readonly<{
@@ -191,7 +184,7 @@ export default function UserLayout({
                                       <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                         <span className="absolute -inset-1.5" />
                                         <span className="sr-only">
-                                          Open user menu
+                                          {dictionary.navigation.button}
                                         </span>
                                         <Image
                                           width={32}
@@ -212,39 +205,35 @@ export default function UserLayout({
                                       leaveTo="transform opacity-0 scale-95"
                                     >
                                       <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                        {userNavigation.map((item) =>
-                                          item.name === 'Sign out' ? (
-                                            <Menu.Item key={item.name}>
-                                              {({ active }) => (
-                                                <a
-                                                  onClick={() => {
-                                                    handleUserLogout();
-                                                  }}
-                                                  className={classNames(
-                                                    active ? 'bg-gray-100' : '',
-                                                    'block px-4 py-2 text-sm text-gray-700'
-                                                  )}
-                                                >
-                                                  {item.name}
-                                                </a>
+                                        <Menu.Item key="profile">
+                                          {({ active }) => (
+                                            <Link
+                                              href="/profile"
+                                              className={classNames(
+                                                active ? 'bg-gray-100' : '',
+                                                'block px-4 py-2 text-sm text-gray-700'
                                               )}
-                                            </Menu.Item>
-                                          ) : (
-                                            <Menu.Item key={item.name}>
-                                              {({ active }) => (
-                                                <a
-                                                  href={item.href}
-                                                  className={classNames(
-                                                    active ? 'bg-gray-100' : '',
-                                                    'block px-4 py-2 text-sm text-gray-700'
-                                                  )}
-                                                >
-                                                  {item.name}
-                                                </a>
+                                            >
+                                              {dictionary.navigation.profile}
+                                            </Link>
+                                          )}
+                                        </Menu.Item>
+                                        <Menu.Item key="logout">
+                                          {({ active }) => (
+                                            <Link
+                                              href="/home"
+                                              onClick={() => {
+                                                handleUserLogout();
+                                              }}
+                                              className={classNames(
+                                                active ? 'bg-gray-100' : '',
+                                                'block px-4 py-2 text-sm text-gray-700'
                                               )}
-                                            </Menu.Item>
-                                          )
-                                        )}
+                                            >
+                                              {dictionary.navigation.logout}
+                                            </Link>
+                                          )}
+                                        </Menu.Item>
                                       </Menu.Items>
                                     </Transition>
                                   </Menu>
@@ -258,7 +247,9 @@ export default function UserLayout({
                         {/* Mobile menu button */}
                         <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="absolute -inset-0.5" />
-                          <span className="sr-only">Open main menu</span>
+                          <span className="sr-only">
+                            {dictionary.navigation.button}
+                          </span>
                           {open ? (
                             <XMarkIcon
                               className="block h-6 w-6"
@@ -358,29 +349,24 @@ export default function UserLayout({
                               </button>
                             </div>
                             <div className="mt-3 space-y-1 px-2">
-                              {userNavigation.map((item) =>
-                                item.name === 'Sign out' ? (
-                                  <Disclosure.Button
-                                    key={item.name}
-                                    as="a"
-                                    onClick={() => {
-                                      handleUserLogout();
-                                    }}
-                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                                  >
-                                    {dictionary.navigation.logout}
-                                  </Disclosure.Button>
-                                ) : (
-                                  <Disclosure.Button
-                                    key={item.name}
-                                    as="a"
-                                    href={item.href}
-                                    className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                                  >
-                                    {dictionary.navigation.logout}
-                                  </Disclosure.Button>
-                                )
-                              )}
+                              <Disclosure.Button
+                                key="profile"
+                                as="a"
+                                href="/profile"
+                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                              >
+                                {dictionary.navigation.profile}
+                              </Disclosure.Button>
+                              <Disclosure.Button
+                                key="logout"
+                                as="a"
+                                onClick={() => {
+                                  handleUserLogout();
+                                }}
+                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                              >
+                                {dictionary.navigation.logout}
+                              </Disclosure.Button>
                             </div>
                           </>
                         )}

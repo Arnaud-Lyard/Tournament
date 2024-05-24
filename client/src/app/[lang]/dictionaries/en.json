@@ -1,8 +1,10 @@
 {
   "navigation": {
+    "button": "Open user menu",
     "login": "Login",
     "logout": "Logout",
-    "register": "Register"
+    "register": "Register",
+    "profile": "My profile"
   },
   "forgotPassword": {
     "title": "Forgot Password",
@@ -37,5 +39,18 @@
   "verifyEmail": {
     "confirm": "Your email address has been verified",
     "text": "You will be redirected in few seconds."
+  },
+  "profile": {
+    "titleOne": "My profile",
+    "titleOneDescription": "This information will be displayed publicly so be careful what you share.",
+    "titleTwo": "Personal Information",
+    "titleTwoDescription": "This information is only visible by you.",
+    "titleThree": "Notifications",
+    "titleThreeDescription": "We'll always let you know about important changes, but you pick what else you want to hear about.",
+    "formLabelOne": "Username",
+    "formLabelTwo": "Avatar",
+    "formLabelThree": "Email Adress",
+    "buttonSubmit": "Save",
+    "buttonCancel": "Cancel"
   }
 }
