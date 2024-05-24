@@ -8,13 +8,14 @@ datasource db {
 }
 
 model User {
-  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  pseudo           String        @db.VarChar(255)
-  email            String        @unique
-  verified         Boolean?      @default(false)
+  id       String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  pseudo   String   @db.VarChar(255)
+  email    String   @unique
+  verified Boolean? @default(false)
 
   password String
   role     RoleEnumType? @default(user)
+  langage  String        @db.VarChar(5)
 
   verificationCode String? @unique @map("verification_code") @db.Text
 

@@ -7,13 +7,18 @@ import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg
 import Link from 'next/link';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { useRouter } from 'next/navigation';
 
-export default function Register() {
+export default function Register({
+  params: { lang },
+}: {
+  params: { lang: string };
+}) {
   const http = new HttpService();
   const { errors, message, checkErrors, resetMessages, setMessage } =
     useErrorHandling();
   const dictionary = useDictionary();
-
+  const router = useRouter();
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
@@ -22,9 +27,12 @@ export default function Register() {
     try {
       const response = await http
         .service()
-        .push<IResponse, any>(`/auth/register`, formJSON);
+        .push<IResponse, any>(`/auth/register`, { ...formJSON, lang });
       if (response.status === 'success') {
         setMessage(response.message);
+        setTimeout(() => {
+          router.push('/login');
+        }, 10000);
       }
     } catch (e: any) {
       checkErrors(e.response.data);

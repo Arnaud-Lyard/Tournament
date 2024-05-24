@@ -9,6 +9,7 @@ CREATE TABLE "user" (
     "verified" BOOLEAN DEFAULT false,
     "password" TEXT NOT NULL,
     "role" "RoleEnumType" DEFAULT 'user',
+    "langage" VARCHAR(5) NOT NULL,
     "verification_code" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
