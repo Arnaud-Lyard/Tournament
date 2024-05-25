@@ -10,6 +10,7 @@ CREATE TABLE "user" (
     "password" TEXT NOT NULL,
     "role" "RoleEnumType" DEFAULT 'user',
     "langage" VARCHAR(5) NOT NULL,
+    "notification" BOOLEAN NOT NULL DEFAULT false,
     "verification_code" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,

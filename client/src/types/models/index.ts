@@ -1,9 +1,9 @@
 export interface IUser {
-  id: number;
+  id: string;
   pseudo: string;
   email: string;
-  role: IRoleEnumType;
-  phone: string;
+  role?: IRoleEnumType | null;
+  notification: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

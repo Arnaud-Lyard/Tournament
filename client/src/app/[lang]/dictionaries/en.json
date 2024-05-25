@@ -50,6 +50,12 @@
     "formLabelOne": "Username",
     "formLabelTwo": "Avatar",
     "formLabelThree": "Email Adress",
+    "formLabelFour": "Site notifications",
+    "formLabelFourDescription": "The notifications are only visible on the website.",
+    "formLabelFourOptions": {
+      "optionOne": "Receive notifications",
+      "optionTwo": "Don't receive notifications"
+    },
     "buttonSubmit": "Save",
     "buttonCancel": "Cancel"
   }

@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import prisma from '../../../prisma/client';
-import { IUserInformations, IUserPublic, IUserSafe } from '../../types/user';
+import { IUserInformations, IUser } from '../../types/user';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 
 export class UserRepository {
@@ -84,13 +84,14 @@ export class UserRepository {
     });
   }
 
-  static async findByUserId(userId: string): Promise<IUserSafe | null> {
+  static async findByUserId(userId: string): Promise<IUser | null> {
     const user = await prisma.user.findFirst({
       where: { id: userId },
       select: {
         id: true,
         pseudo: true,
         email: true,
+        notification: true,
         role: true,
         createdAt: true,
         updatedAt: true,

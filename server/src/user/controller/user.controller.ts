@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { IUserSafe } from '../../types/user';
+import { IUser } from '../../types/user';
 import AppError from '../../utils/appError';
 import { getUserInformations } from '../../utils/getUserInformations';
 import { getUserInformationsByToken } from '../../utils/getUserInformationsByToken';
@@ -12,7 +12,7 @@ export const getUserHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user = (await getUserInformations(req, next)) as IUserSafe;
+    const user = (await getUserInformations(req, next)) as IUser;
     res.status(200).json({
       status: 'success',
       data: {
@@ -59,7 +59,7 @@ export const updateUserHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user = (await getUserInformations(req, next)) as IUserSafe;
+    const user = (await getUserInformations(req, next)) as IUser;
 
     if (!req.body.email || !req.body.pseudo) {
       return next(
@@ -77,6 +77,23 @@ export const updateUserHandler = async (
 
     res.status(200).json({
       status: 'success',
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getProfileHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = (await getUserInformations(req, next)) as IUser;
+
+    res.status(200).json({
+      status: 'success',
+      data: { user },
     });
   } catch (err: any) {
     next(err);

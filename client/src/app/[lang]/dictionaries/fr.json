@@ -50,6 +50,12 @@
     "formLabelOne": "Nom d'utilisateur",
     "formLabelTwo": "Avatar",
     "formLabelThree": "Adresse e-mail",
+    "formLabelFour": "Notifications du site",
+    "formLabelFourDescription": "Les notifications sont seulement visible sur le site.",
+    "formLabelFourOptions": {
+      "optionOne": "Toutes les notifications",
+      "optionTwo": "Aucune notification"
+    },
     "buttonSubmit": "Enregistrer",
     "buttonCancel": "Annuler"
   }

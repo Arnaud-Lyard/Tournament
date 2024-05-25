@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { Router } from 'next/router';
 
 export default function Login() {
   const http = new HttpService();
@@ -27,10 +28,6 @@ export default function Login() {
         .push<IResponse, any>(`/auth/login`, formJSON);
       if (response.status === 'success') {
         router.push('/home');
-        setTimeout(() => {
-          setMessage('');
-          location.reload();
-        }, 200);
       }
     } catch (e: any) {
       checkErrors(e.response.data);
