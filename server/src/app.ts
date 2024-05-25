@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import path from 'path';
 import authRouter from './auth/routes/auth.routes';
 import userRouter from './user/routes/user.routes';
+import uploadRouter from './upload/routes/upload.routes';
 import AppError from './utils/appError';
 import { validateEnv } from './utils/validateEnv';
 import winston from 'winston';
@@ -26,10 +27,10 @@ const app = express();
 export const logger = winston.createLogger({
   level: 'http',
   format: winston.format.combine(
-      winston.format.timestamp({
+    winston.format.timestamp({
       format: 'YYYY-MM-DD hh:mm:ss.SSS A',
     }),
-      winston.format.json()
+    winston.format.json()
   ),
   transports:
     process.env.NODE_ENV === 'production'
@@ -89,6 +90,7 @@ async function bootstrap() {
   // ROUTES
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
+  app.use('/api/uploads', uploadRouter);
 
   // Testing
   app.get('/api/', (_, res: Response) => {

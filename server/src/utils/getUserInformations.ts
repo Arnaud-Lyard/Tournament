@@ -1,5 +1,5 @@
 import { NextFunction, Request } from 'express';
-import { IUserSafe } from '../types/user';
+import { IUser } from '../types/user';
 import { findUniqueUser } from '../user/service/user.service';
 import AppError from '../utils/appError';
 import { verifyJwt } from '../utils/jwt';
@@ -7,7 +7,7 @@ import { verifyJwt } from '../utils/jwt';
 export const getUserInformations = async (
   req: Request,
   next: NextFunction
-): Promise<IUserSafe | void> => {
+): Promise<IUser | void> => {
   try {
     let access_token;
 
