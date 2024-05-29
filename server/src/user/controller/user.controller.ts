@@ -61,17 +61,15 @@ export const updateUserHandler = async (
   try {
     const user = (await getUserInformations(req, next)) as IUser;
 
-    if (!req.body.email || !req.body.pseudo) {
-      return next(
-        new AppError(400, `L'adresse email et le pseudo sont requis`)
-      );
+    if (!req.body.email || !req.body.username) {
+      return next(new AppError(400, `Email adress and username are required.`));
     }
 
-    const { twitter, esl, pseudo, email, stormgate } = req.body;
+    const { twitter, esl, username, email, stormgate } = req.body;
 
     await updateUser({
       user,
-      pseudo,
+      username,
       email,
     });
 

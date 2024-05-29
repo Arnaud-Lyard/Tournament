@@ -101,16 +101,16 @@ export async function updateUserPassword({
 
 export async function updateUser({
   user,
-  pseudo,
+  username,
   email,
 }: {
   user: IUser;
-  pseudo: string;
+  username: string;
   email: string;
 }) {
   const userUpdate: IUserUpdateDto = {
     id: user.id,
-    pseudo,
+    username,
     email,
   };
   try {

@@ -1,5 +1,5 @@
 export interface UserDto {
-  pseudo: string;
+  username: string;
   email: string;
   password: string;
   verificationCode?: string | null;
@@ -8,6 +8,6 @@ export interface UserDto {
 
 export interface IUserUpdateDto {
   id: string;
-  pseudo: string;
+  username: string;
   email: string;
 }

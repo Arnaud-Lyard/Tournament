@@ -13,7 +13,7 @@
   },
   "register": {
     "title": "Créer un nouveau compte",
-    "formLabelOne": "Pseudo",
+    "formLabelOne": "Nom d'utilisateur",
     "formLabelTwo": "Adresse e-mail",
     "formLabelThree": "Mot de passe",
     "formLabelFour": "Confirmer le mot de passe",
