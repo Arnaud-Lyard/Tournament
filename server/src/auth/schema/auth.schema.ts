@@ -7,8 +7,8 @@ enum LangEnum {
 
 export const registerUserSchema = object({
   body: object({
-    pseudo: string({
-      required_error: 'Pseudo is required',
+    username: string({
+      required_error: 'Username is required',
     }),
     email: string({
       required_error: 'Email address is required',

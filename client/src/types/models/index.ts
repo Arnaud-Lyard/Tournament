@@ -1,6 +1,6 @@
 export interface IUser {
   id: string;
-  pseudo: string;
+  username: string;
   email: string;
   role?: IRoleEnumType | null;
   notification: boolean;

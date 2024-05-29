@@ -12,13 +12,13 @@ const smtp = {
 };
 
 export default class Email {
-  #pseudo: string;
+  #username: string;
   #to: string;
   #from: string;
   #langage: string;
 
   constructor(private user: Prisma.UserCreateInput, private url: string) {
-    this.#pseudo = user.pseudo.split(' ')[0];
+    this.#username = user.username.split(' ')[0];
     this.#to = user.email;
     this.#from = `Tournament <contact@tournament.com>`;
     this.#langage = user.langage;
@@ -40,7 +40,7 @@ export default class Email {
       const html = pug.renderFile(
         `${__dirname}/../views/${this.#langage}/${template}.pug`,
         {
-          pseudo: this.#pseudo,
+          username: this.#username,
           subject,
           url: this.url,
         }

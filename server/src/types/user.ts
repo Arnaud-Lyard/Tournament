@@ -2,7 +2,7 @@ import { RoleEnumType } from '@prisma/client';
 
 export interface IUser {
   id: string;
-  pseudo: string;
+  username: string;
   email: string;
   role?: RoleEnumType | null;
   notification: boolean | null;
@@ -12,5 +12,5 @@ export interface IUser {
 
 export interface IUserInformations {
   role: RoleEnumType | null;
-  pseudo: string;
+  username: string;
 }

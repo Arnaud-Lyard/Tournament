@@ -60,7 +60,7 @@ export const registerUserHandler = async (
       .digest('hex');
 
     const user = await createUser({
-      pseudo: req.body.pseudo,
+      username: req.body.username,
       email: req.body.email.toLowerCase(),
       password: hashedPassword,
       verificationCode,

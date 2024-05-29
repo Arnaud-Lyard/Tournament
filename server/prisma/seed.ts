@@ -12,7 +12,7 @@ async function main() {
     where: { id: '1a751e3a-8884-4f29-98d7-81d3f5cbc712' },
     update: {},
     create: {
-      pseudo: 'alice',
+      username: 'alice',
       email: 'alice@prisma.io',
       verified: true,
       password: 'alicepassword',
@@ -30,7 +30,7 @@ async function main() {
     where: { id: '486eb3da-ffb3-40f0-91a3-11f7b19a6a39' },
     update: {},
     create: {
-      pseudo: 'bob',
+      username: 'bob',
       email: 'bob@prisma.io',
       password: 'bobpassword',
       role: 'user',
@@ -47,7 +47,7 @@ async function main() {
     where: { id: 'e3386a0b-703a-49bd-a600-532ddd2221e1' },
     update: {},
     create: {
-      pseudo: 'john',
+      username: 'john',
       email: 'john@prisma.io',
       password: 'johnpassword',
       role: 'user',
@@ -64,7 +64,7 @@ async function main() {
     where: { id: '9035c9e7-9c88-4595-96a0-b2e5064a36f5' },
     update: {},
     create: {
-      pseudo: 'mat',
+      username: 'mat',
       email: 'mat@prisma.io',
       password: 'matpassword',
       role: 'user',
@@ -81,7 +81,7 @@ async function main() {
     where: { id: '1a751e3a-8884-4f29-98d7-81d3f5cbc713' },
     update: {},
     create: {
-      pseudo: 'user',
+      username: 'user',
       email: 'user@prisma.io',
       verified: true,
       password: 'userpassword',
@@ -99,7 +99,7 @@ async function main() {
     where: { id: 'b3aca0e8-0be4-4ad0-bc3f-c3ca72c1f5b3' },
     update: {},
     create: {
-      pseudo: 'admin',
+      username: 'admin',
       email: 'admin@prisma.io',
       verified: true,
       password: 'adminpassword',

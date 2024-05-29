@@ -89,7 +89,7 @@ export class UserRepository {
       where: { id: userId },
       select: {
         id: true,
-        pseudo: true,
+        username: true,
         email: true,
         notification: true,
         role: true,
@@ -101,10 +101,10 @@ export class UserRepository {
   }
 
   static async updateUser(userUpdate: IUserUpdateDto) {
-    const { id, pseudo } = userUpdate;
+    const { id, username } = userUpdate;
     const user = await prisma.user.update({
       where: { id },
-      data: { pseudo },
+      data: { username },
     });
     return user;
   }
@@ -116,7 +116,7 @@ export class UserRepository {
       where: { id: userId },
       select: {
         role: true,
-        pseudo: true,
+        username: true,
       },
     });
     return userinfos;
