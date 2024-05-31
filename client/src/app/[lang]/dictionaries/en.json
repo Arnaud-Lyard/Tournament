@@ -27,6 +27,7 @@
     "formLabelTwo": "Password",
     "forgotPassword": "Forgot password?",
     "button": "Login",
+    "buttonCancel": "Cancel",
     "text": "Don't have an account?",
     "link": "Register"
   },

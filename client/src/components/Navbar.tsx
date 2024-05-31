@@ -1,6 +1,13 @@
 'use client';
 import { Fragment, useEffect, useState } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import {
+  Disclosure,
+  DisclosureButton,
+  Menu,
+  MenuItem,
+  MenuItems,
+  Transition,
+} from '@headlessui/react';
 import {
   Bars3Icon,
   BellIcon,
@@ -129,7 +136,7 @@ export default function Navbar() {
                         {!isLoggedIn ? (
                           <>
                             {/* Login and logout buttons */}
-                            <Link href="/register">
+                            <Link href="/register" scroll={false}>
                               <button
                                 type="button"
                                 className="relative inline-flex items-center gap-x-1.5 rounded-md bg-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
@@ -141,7 +148,7 @@ export default function Navbar() {
                                 {dictionary.navigation.register}
                               </button>
                             </Link>
-                            <Link href="/login">
+                            <Link href="/login" scroll={false}>
                               <button
                                 type="button"
                                 className="relative inline-flex items-center gap-x-1.5 rounded-md bg-cyan-500 ml-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
@@ -196,8 +203,8 @@ export default function Navbar() {
                                 leaveFrom="transform opacity-100 scale-100"
                                 leaveTo="transform opacity-0 scale-95"
                               >
-                                <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                  <Menu.Item key="profile">
+                                <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                  <MenuItem key="profile">
                                     {({ active }) => (
                                       <Link
                                         href="/user/profile"
@@ -209,8 +216,8 @@ export default function Navbar() {
                                         {dictionary.navigation.profile}
                                       </Link>
                                     )}
-                                  </Menu.Item>
-                                  <Menu.Item key="logout">
+                                  </MenuItem>
+                                  <MenuItem key="logout">
                                     {({ active }) => (
                                       <Link
                                         href="/home"
@@ -225,8 +232,8 @@ export default function Navbar() {
                                         {dictionary.navigation.logout}
                                       </Link>
                                     )}
-                                  </Menu.Item>
-                                </Menu.Items>
+                                  </MenuItem>
+                                </MenuItems>
                               </Transition>
                             </Menu>
                           </>
@@ -284,20 +291,20 @@ export default function Navbar() {
                   {!isLoggedIn ? (
                     <>
                       <div className="mt-3 space-y-1 px-2">
-                        <Disclosure.Button
-                          as="a"
+                        <Link
                           href="/register"
+                          scroll={false}
                           className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                         >
                           {dictionary.navigation.register}
-                        </Disclosure.Button>
-                        <Disclosure.Button
-                          as="a"
+                        </Link>
+                        <Link
                           href="/login"
+                          scroll={false}
                           className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                         >
                           {dictionary.navigation.login}
-                        </Disclosure.Button>
+                        </Link>
                       </div>
                     </>
                   ) : (
