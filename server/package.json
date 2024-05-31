@@ -4,10 +4,10 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node-dev --respawn --transpile-only --exit-child --poll src/app.ts",
-    "db:migrate": "DATABASE_URL=postgresql://admin:password123@localhost:5435/seekplayers?schema=public npx prisma migrate dev && npm run prisma generate",
+    "db:migrate": "DATABASE_URL=postgresql://admin:password123@localhost:5435/tournament?schema=public npx prisma migrate dev && npx prisma generate",
     "db:push": "npx prisma db push",
-    "db:seed": "DATABASE_URL=postgresql://admin:password123@localhost:5435/seekplayers?schema=public npx prisma db seed",
-    "db:reset": "DATABASE_URL=postgresql://admin:password123@localhost:5435/seekplayers?schema=public npx prisma db seed npx prisma migrate reset",
+    "db:seed": "DATABASE_URL=postgresql://admin:password123@localhost:5435/tournament?schema=public npx prisma db seed",
+    "db:reset": "DATABASE_URL=postgresql://admin:password123@localhost:5435/tournament?schema=public npx prisma db seed npx prisma migrate reset",
     "build": "tsc && cp -R src/views dist/src/",
     "start:prod": "node dist/src/app.js",
     "test": "jest"

@@ -1,12 +1,13 @@
 export interface UserDto {
-  pseudo: string;
+  username: string;
   email: string;
   password: string;
   verificationCode?: string | null;
+  langage: 'en' | 'fr';
 }
 
 export interface IUserUpdateDto {
   id: string;
-  pseudo: string;
+  username: string;
   email: string;
 }

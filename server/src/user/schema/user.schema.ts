@@ -2,7 +2,7 @@ import { object, string, TypeOf, z } from 'zod';
 
 export const updateUserSchema = object({
   body: object({
-    pseudo: string({}),
+    username: string({}),
     email: string({}).email('Invalid email address'),
     twitter: string({}).optional(),
     esl: string({}).optional(),

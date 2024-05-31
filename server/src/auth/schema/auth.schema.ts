@@ -1,14 +1,14 @@
-import { object, string, TypeOf, z } from 'zod';
+import { nativeEnum, object, string, TypeOf, z } from 'zod';
 
-enum RoleEnumType {
-  ADMIN = 'admin',
-  USER = 'user',
+enum LangEnum {
+  EN = 'en',
+  FR = 'fr',
 }
 
 export const registerUserSchema = object({
   body: object({
-    pseudo: string({
-      required_error: 'Pseudo is required',
+    username: string({
+      required_error: 'Username is required',
     }),
     email: string({
       required_error: 'Email address is required',
@@ -21,6 +21,7 @@ export const registerUserSchema = object({
     passwordConfirm: string({
       required_error: 'Password confirmation is required',
     }),
+    lang: nativeEnum(LangEnum),
   }).refine((data) => data.password === data.passwordConfirm, {
     path: ['passwordConfirm'],
     message: 'Passwords do not match',

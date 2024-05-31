@@ -1,8 +1,17 @@
+import { IUser } from '../models';
+
 export interface IResponse {
   status: string;
   message: string;
   data: {
     isConnect: boolean;
+  };
+}
+
+export interface IProfileResponse {
+  status: string;
+  data: {
+    user: IUser;
   };
 }
 

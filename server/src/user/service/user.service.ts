@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
 import fs from 'fs-extra';
-import { IUserSafe } from '../../types/user';
+import { IUser } from '../../types/user';
 import AppError from '../../utils/appError';
 import { signJwt } from '../../utils/jwt';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
@@ -38,9 +38,7 @@ export const signTokens = async (user: Prisma.UserCreateInput) => {
   return { access_token };
 };
 
-export async function findUniqueUser(
-  userId: string
-): Promise<IUserSafe | null> {
+export async function findUniqueUser(userId: string): Promise<IUser | null> {
   return await UserRepository.findByUserId(userId);
 }
 
@@ -103,16 +101,16 @@ export async function updateUserPassword({
 
 export async function updateUser({
   user,
-  pseudo,
+  username,
   email,
 }: {
-  user: IUserSafe;
-  pseudo: string;
+  user: IUser;
+  username: string;
   email: string;
 }) {
   const userUpdate: IUserUpdateDto = {
     id: user.id,
-    pseudo,
+    username,
     email,
   };
   try {
