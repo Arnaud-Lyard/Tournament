@@ -8,9 +8,12 @@ jest.mock('../user/service/user.service');
 jest.mock('../utils/jwt');
 
 describe('authenticateUser middleware', () => {
+  const lang = 'en';
+
   const req = {
     headers: {},
     cookies: {},
+    language: lang,
   } as Request;
 
   const res = {} as Response;
@@ -23,7 +26,7 @@ describe('authenticateUser middleware', () => {
   it('should call next with error if no access token provided', async () => {
     await authenticateUser(req, res, next);
     expect(next).toHaveBeenCalledWith(
-      new AppError(401, 'You are not logged in')
+      new AppError(401, 'You are not logged in.')
     );
   });
 
@@ -31,7 +34,7 @@ describe('authenticateUser middleware', () => {
     req.headers.authorization = 'Bearer invalid_token';
     await authenticateUser(req, res, next);
     expect(next).toHaveBeenCalledWith(
-      new AppError(401, `Invalid token or user doesn't exist`)
+      new AppError(401, `Invalid token or user doesn't exist.`)
     );
   });
 
@@ -44,7 +47,7 @@ describe('authenticateUser middleware', () => {
 
     await authenticateUser(req, res, next);
     expect(next).toHaveBeenCalledWith(
-      new AppError(401, `Invalid token or session has expired`)
+      new AppError(401, `Invalid token or session has expired.`)
     );
   });
 

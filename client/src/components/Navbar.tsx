@@ -3,6 +3,7 @@ import { Fragment, useEffect, useState } from 'react';
 import {
   Disclosure,
   DisclosureButton,
+  DisclosurePanel,
   Menu,
   MenuItem,
   MenuItems,
@@ -135,20 +136,8 @@ export default function Navbar() {
                       <>
                         {!isLoggedIn ? (
                           <>
-                            {/* Login and logout buttons */}
-                            <Link href="/register" scroll={false}>
-                              <button
-                                type="button"
-                                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
-                              >
-                                <UserPlusIcon
-                                  className="-ml-0.5 h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                                {dictionary.navigation.register}
-                              </button>
-                            </Link>
-                            <Link href="/login" scroll={false}>
+                            {/* Authentication buttons */}
+                            <Link href="/authentication" scroll={false}>
                               <button
                                 type="button"
                                 className="relative inline-flex items-center gap-x-1.5 rounded-md bg-cyan-500 ml-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
@@ -157,7 +146,7 @@ export default function Navbar() {
                                   className="-ml-0.5 h-5 w-5"
                                   aria-hidden="true"
                                 />
-                                {dictionary.navigation.login}
+                                {dictionary.navigation.authentication}
                               </button>
                             </Link>
                           </>
@@ -260,10 +249,10 @@ export default function Navbar() {
             </div>
           </div>
 
-          <Disclosure.Panel className="border-b border-gray-700 md:hidden">
+          <DisclosurePanel className="border-b border-gray-700 md:hidden">
             <div className="space-y-1 px-2 py-3 sm:px-3">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <DisclosureButton
                   key={item.name}
                   as="a"
                   href={item.href}
@@ -277,7 +266,7 @@ export default function Navbar() {
                   aria-current={item.current ? 'page' : undefined}
                 >
                   {item.name}
-                </Disclosure.Button>
+                </DisclosureButton>
               ))}
             </div>
             <div className="border-t border-gray-700 pb-3 pt-4">
@@ -289,24 +278,15 @@ export default function Navbar() {
               ) : (
                 <>
                   {!isLoggedIn ? (
-                    <>
-                      <div className="mt-3 space-y-1 px-2">
-                        <Link
-                          href="/register"
-                          scroll={false}
-                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                        >
-                          {dictionary.navigation.register}
-                        </Link>
-                        <Link
-                          href="/login"
-                          scroll={false}
-                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                        >
-                          {dictionary.navigation.login}
-                        </Link>
-                      </div>
-                    </>
+                    <div className="mt-3 space-y-1 px-2">
+                      <Link
+                        href="/authentication"
+                        scroll={false}
+                        className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                      >
+                        {dictionary.navigation.authentication}
+                      </Link>
+                    </div>
                   ) : (
                     <>
                       <div className="flex items-center px-5">
@@ -337,15 +317,15 @@ export default function Navbar() {
                         </button>
                       </div>
                       <div className="mt-3 space-y-1 px-2">
-                        <Disclosure.Button
+                        <DisclosureButton
                           key="profile"
                           as="a"
                           href="/user/profile"
                           className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                         >
                           {dictionary.navigation.profile}
-                        </Disclosure.Button>
-                        <Disclosure.Button
+                        </DisclosureButton>
+                        <DisclosureButton
                           key="logout"
                           as="a"
                           onClick={() => {
@@ -354,14 +334,14 @@ export default function Navbar() {
                           className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                         >
                           {dictionary.navigation.logout}
-                        </Disclosure.Button>
+                        </DisclosureButton>
                       </div>
                     </>
                   )}
                 </>
               )}
             </div>
-          </Disclosure.Panel>
+          </DisclosurePanel>
         </>
       )}
     </Disclosure>

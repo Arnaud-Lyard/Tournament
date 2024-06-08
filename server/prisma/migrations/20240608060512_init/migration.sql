@@ -4,12 +4,11 @@ CREATE TYPE "RoleEnumType" AS ENUM ('user', 'admin');
 -- CreateTable
 CREATE TABLE "user" (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "pseudo" VARCHAR(255) NOT NULL,
+    "username" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
     "verified" BOOLEAN DEFAULT false,
     "password" TEXT NOT NULL,
     "role" "RoleEnumType" DEFAULT 'user',
-    "langage" VARCHAR(5) NOT NULL,
     "notification" BOOLEAN NOT NULL DEFAULT false,
     "verification_code" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

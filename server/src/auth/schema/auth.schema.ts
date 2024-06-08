@@ -1,9 +1,5 @@
-import { nativeEnum, object, string, TypeOf, z } from 'zod';
-
-enum LangEnum {
-  EN = 'en',
-  FR = 'fr',
-}
+import { object, string, TypeOf } from 'zod';
+import { Request } from 'express';
 
 export const registerUserSchema = object({
   body: object({
@@ -21,7 +17,6 @@ export const registerUserSchema = object({
     passwordConfirm: string({
       required_error: 'Password confirmation is required',
     }),
-    lang: nativeEnum(LangEnum),
   }).refine((data) => data.password === data.passwordConfirm, {
     path: ['passwordConfirm'],
     message: 'Passwords do not match',
