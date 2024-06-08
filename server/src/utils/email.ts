@@ -3,6 +3,7 @@ import pug from 'pug';
 import { convert } from 'html-to-text';
 import { Prisma } from '@prisma/client';
 import { logger } from '../app';
+import { Lang } from '../types/lang';
 
 const smtp = {
   host: process.env.EMAIL_HOST,
@@ -15,13 +16,11 @@ export default class Email {
   #username: string;
   #to: string;
   #from: string;
-  #langage: string;
 
   constructor(private user: Prisma.UserCreateInput, private url: string) {
     this.#username = user.username.split(' ')[0];
     this.#to = user.email;
     this.#from = `Tournament <contact@tournament.com>`;
-    this.#langage = user.langage;
   }
 
   private newTransport() {
@@ -34,11 +33,11 @@ export default class Email {
     });
   }
 
-  private async send(template: string, subject: string) {
+  private async send(template: string, langage: Lang, subject: string) {
     try {
       // Generate HTML template based on the template string
       const html = pug.renderFile(
-        `${__dirname}/../views/${this.#langage}/${template}.pug`,
+        `${__dirname}/../views/${langage}/${template}.pug`,
         {
           username: this.#username,
           subject,
@@ -63,19 +62,19 @@ export default class Email {
     }
   }
 
-  async sendVerificationCode() {
+  async sendVerificationCode(langage: Lang) {
     const subject =
-      this.#langage === 'fr'
+      langage === 'fr'
         ? `Votre code d'activation de compte`
         : `Your account activation code`;
-    await this.send('verificationCode', subject);
+    await this.send('verificationCode', langage, subject);
   }
 
-  async sendPasswordResetToken() {
+  async sendPasswordResetToken(langage: Lang) {
     const subject =
-      this.#langage === 'fr'
+      langage === 'fr'
         ? `Votre réinitialisation de mot de passe (valide pour seulement 10 minutes)`
         : `Your password reset token (valid for only 10 minutes)`;
-    await this.send('resetPassword', subject);
+    await this.send('resetPassword', langage, subject);
   }
 }
