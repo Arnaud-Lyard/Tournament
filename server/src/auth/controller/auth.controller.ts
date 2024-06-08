@@ -64,13 +64,14 @@ export const registerUserHandler = async (
       email: req.body.email.toLowerCase(),
       password: hashedPassword,
       verificationCode,
-      langage: req.body.lang,
     });
 
     const redirectUrl = `${process.env.CLIENT_URL}/verify-email/${verifyCode}`;
 
     try {
-      const mail = await new Email(user, redirectUrl).sendVerificationCode();
+      const mail = await new Email(user, redirectUrl).sendVerificationCode(
+        req.language
+      );
 
       await switchVerificationCode({ userId: user.id, verificationCode });
 
@@ -83,7 +84,10 @@ export const registerUserHandler = async (
       await switchVerificationCode({ userId: user.id, verificationCode: null });
       return res.status(500).json({
         status: 'error',
-        message: 'There was an error sending email, please try again',
+        message:
+          req.language === 'fr'
+            ? 'Erreur lors de l envoi de l email, veuillez réessayer.'
+            : 'There was an error sending email, please try again',
       });
     }
   } catch (err: any) {
@@ -98,11 +102,17 @@ export const loginUserHandler = async (
 ) => {
   try {
     const { email, password } = req.body;
-
     const user = await findByEmail(email.toLowerCase());
 
     if (!user) {
-      return next(new AppError(400, 'Invalid email or password'));
+      return next(
+        new AppError(
+          400,
+          req.language === 'fr'
+            ? 'Email ou mot de passe invalide.'
+            : 'Invalid email or password.'
+        )
+      );
     }
 
     // Check if user is verified
@@ -110,13 +120,22 @@ export const loginUserHandler = async (
       return next(
         new AppError(
           401,
-          'You are not verified, please verify your email to login'
+          req.language === 'fr'
+            ? "Votre compte n'est pas vérifié, veuillez vérifier vos e-mails pour vous connecter."
+            : 'You are not verified, please verify your email to login.'
         )
       );
     }
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return next(new AppError(400, 'Invalid email or password'));
+      return next(
+        new AppError(
+          400,
+          req.language === 'fr'
+            ? 'Email ou mot de passe invalide.'
+            : 'Invalid email or password.'
+        )
+      );
     }
 
     // Sign Tokens
@@ -170,7 +189,14 @@ export const verifyEmailHandler = async (
 
     const user = await findUserByVerificationCode(verificationCode);
     if (!user) {
-      return next(new AppError(401, 'Could not verify email'));
+      return next(
+        new AppError(
+          401,
+          req.language === 'fr'
+            ? 'Impossible de vérifier votre email.'
+            : 'Could not verify email.'
+        )
+      );
     }
     await verifyUser(user.id);
 
@@ -195,7 +221,9 @@ export const forgotPasswordHandler = async (
   try {
     const user = await findByEmail(req.body.email.toLowerCase());
     const message =
-      'We have sent an email with a link to reset your password. Please check your email';
+      req.language === 'fr'
+        ? 'Nous avons envoyé un email avec un lien pour réinitialiser votre mot de passe. Veuillez vérifier votre email.'
+        : 'We have sent an email with a link to reset your password. Please check your email.';
     if (!user) {
       return res.status(200).json({
         status: 'success',
@@ -206,7 +234,10 @@ export const forgotPasswordHandler = async (
     if (!user.verified) {
       return res.status(403).json({
         status: 'fail',
-        message: "You can't reset password until you verify your email",
+        message:
+          req.language === 'fr'
+            ? "Vous ne pouvez pas réinitialiser votre mot de passe tant que votre compte n'est pas vérifié."
+            : "You can't reset password until you verify your email.",
       });
     }
 
@@ -224,7 +255,7 @@ export const forgotPasswordHandler = async (
 
     try {
       const url = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
-      await new Email(user, url).sendPasswordResetToken();
+      await new Email(user, url).sendPasswordResetToken(req.language);
 
       res.status(200).json({
         status: 'success',
@@ -238,7 +269,10 @@ export const forgotPasswordHandler = async (
       });
       return res.status(500).json({
         status: 'error',
-        message: 'There was an error sending email',
+        message:
+          req.language === 'fr'
+            ? 'Erreur lors de l envoi de l email.'
+            : 'There was an error sending email.',
       });
     }
   } catch (err: any) {
@@ -259,7 +293,10 @@ export const resetPasswordHandler = async (
     if (req.body.password !== req.body.passwordConfirm) {
       return res.status(400).json({
         status: 'fail',
-        message: 'Password and confirm password does not match',
+        message:
+          req.language === 'fr'
+            ? 'Les mots de passe ne correspondent pas.'
+            : 'Password and confirm password does not match.',
       });
     }
     // Get the user from the collection
@@ -275,7 +312,10 @@ export const resetPasswordHandler = async (
     if (!user) {
       return res.status(403).json({
         status: 'fail',
-        message: 'The token has expired or is invalid',
+        message:
+          req.language === 'fr'
+            ? 'Le token est invalide ou a expiré.'
+            : 'The token has expired or is invalid.',
       });
     }
 

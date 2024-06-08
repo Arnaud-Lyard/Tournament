@@ -16,29 +16,43 @@ import {
   resetPasswordSchema,
   verifyEmailSchema,
 } from '../schema/auth.schema';
+import { readLanguage } from '../../middleware/readLanguage';
 
 const router = express.Router();
 
-router.post('/register', validate(registerUserSchema), registerUserHandler);
+router.post(
+  '/register',
+  readLanguage,
+  validate(registerUserSchema),
+  registerUserHandler
+);
 
-router.post('/login', validate(loginUserSchema), loginUserHandler);
+router.post(
+  '/login',
+  readLanguage,
+  validate(loginUserSchema),
+  loginUserHandler
+);
 
 router.get(
   '/verifyemail/:verificationCode',
+  readLanguage,
   validate(verifyEmailSchema),
   verifyEmailHandler
 );
 
-router.get('/logout', authenticateUser, logoutUserHandler);
+router.get('/logout', readLanguage, authenticateUser, logoutUserHandler);
 
 router.post(
   '/forgotpassword',
+  readLanguage,
   validate(forgotPasswordSchema),
   forgotPasswordHandler
 );
 
 router.patch(
   '/resetpassword/:resetToken',
+  readLanguage,
   validate(resetPasswordSchema),
   resetPasswordHandler
 );

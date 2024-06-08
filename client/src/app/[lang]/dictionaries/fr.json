@@ -1,6 +1,7 @@
 {
   "navigation": {
     "button": "Ouvrir le menu utilisateur",
+    "authentication": "Authentification",
     "login": "Connexion",
     "logout": "Déconnexion",
     "register": "Inscription",

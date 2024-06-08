@@ -2,6 +2,7 @@
   "navigation": {
     "button": "Open user menu",
     "login": "Login",
+    "authentication": "Authentication",
     "logout": "Logout",
     "register": "Register",
     "profile": "My profile"

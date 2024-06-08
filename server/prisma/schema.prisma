@@ -15,7 +15,6 @@ model User {
 
   password     String
   role         RoleEnumType? @default(user)
-  langage      String        @db.VarChar(5)
   notification Boolean       @default(false)
 
   verificationCode String? @unique @map("verification_code") @db.Text

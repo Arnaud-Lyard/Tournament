@@ -3,7 +3,6 @@ export interface UserDto {
   email: string;
   password: string;
   verificationCode?: string | null;
-  langage: 'en' | 'fr';
 }
 
 export interface IUserUpdateDto {
