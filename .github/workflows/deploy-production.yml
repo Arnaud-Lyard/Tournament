@@ -1,0 +1,43 @@
+name: vps-deploy
+
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch:
+
+env:
+  REGISTRY: dockerhub.io
+  SERVER_IMAGE_NAME: prochainweb-server:latest
+  CLIENT_IMAGE_NAME: prochainweb-client:latest
+
+jobs:
+  publish:
+    name: publish docker images
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        run: |
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+        run: |
+          docker build -t $REGISTRY/$SERVER_IMAGE_NAME -f Dockerfile.production .
+          docker push $REGISTRY/$SERVER_IMAGE_NAME
+        run: |
+          docker build -t $REGISTRY/$CLIENT_IMAGE_NAME -f Dockerfile.production .
+          docker push $REGISTRY/$CLIENT_IMAGE_NAME
+
+  deploy:
+    needs: publish
+    name: deploy image in remote vps
+    runs-on: ubuntu-latest
+
+    steps:
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{secrets.REMOTE_SSH_HOST}}
+          username: ${{secrets.REMOTE_SSH_USER}}
+          password: ${{ secrets.REMOTE_SSH_PASSWORD }}
+          port: 22
+          script: |
+            cd ${{ secrets.REMOTE_WORKING_DIRECTORY }}
+            docker-compose pull
+            docker-compose up -d

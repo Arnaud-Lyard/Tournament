@@ -78,7 +78,9 @@ export const registerUserHandler = async (
       res.status(201).json({
         status: 'success',
         message:
-          'An email with a verification code has been sent to your email',
+          req.language === 'fr'
+            ? 'Un email avec un code de vérification a été envoyé à votre email'
+            : 'An email with a verification code has been sent to your email',
       });
     } catch (error) {
       await switchVerificationCode({ userId: user.id, verificationCode: null });
@@ -202,7 +204,10 @@ export const verifyEmailHandler = async (
 
     res.status(200).json({
       status: 'success',
-      message: 'Email verified successfully',
+      message:
+        req.language === 'fr'
+          ? 'Email vérifié avec succès'
+          : 'Email verified successfully',
     });
   } catch (err: any) {
     next(err);
@@ -331,7 +336,10 @@ export const resetPasswordHandler = async (
     logout(res);
     res.status(200).json({
       status: 'success',
-      message: 'Password reset successfully',
+      message:
+        req.language === 'fr'
+          ? 'Réinitialisation du mot de passe réussie'
+          : 'Password reset successfully',
     });
   } catch (err: any) {
     next(err);
