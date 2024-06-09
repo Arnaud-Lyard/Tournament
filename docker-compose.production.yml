@@ -1,5 +1,6 @@
+version: '3.8'
 services:
-  tournament-database:
+  prochainweb-database:
     image: postgres:latest
     environment:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
@@ -13,56 +14,36 @@ services:
     ports:
       - 5435:5432
     volumes:
-      - tournament-database:/var/lib/postgresql/data
+      - prochainweb-database-data:/var/lib/postgresql/data
 
-  tournament-server:
+  prochainweb-server:
     depends_on:
-      tournament-database:
+      prochainweb-database:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=${DATABASE_URL:-postgres://postgresql://dbuser:dbpassword@tournament/dbname?schema=public}
-      - NODE_ENV=${NODE_ENV:-production}
-      - PORT=${PORT:-4000}
-      - POSTGRES_HOST=${POSTGRES_HOST:-tournament}
-      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-postgres}
-      - EMAIL_USER=${EMAIL_USER:-user@user.com}
-      - EMAIL_PASS=${EMAIL_PASS:-password}
-      - EMAIL_HOST=${EMAIL_HOST:-host}
-      - EMAIL_PORT=${EMAIL_PORT:-port}
-      - JWT_ACCESS_TOKEN_PRIVATE_KEY=${JWT_ACCESS_TOKEN_PRIVATE_KEY:-private}
-      - JWT_ACCESS_TOKEN_PUBLIC_KEY=${JWT_ACCESS_TOKEN_PUBLIC_KEY:-public}
-      - ACCESS_TOKEN_EXPIRES_IN=${ACCESS_TOKEN_EXPIRES_IN:-15}
-      - FULL_CLIENT_URL=${FULL_CLIENT_URL:-url}
-      - CLIENT_URL=${CLIENT_URL:-url}
-      - SERVER_URL=${SERVER_URL:-url}
-      - LOGTAIL_SOURCE_TOKEN=${LOGTAIL_SOURCE_TOKEN:-token}
-    image: arnaudlyard/tournament-server
+    env_file: server/.env.production
     healthcheck:
       test: ['CMD', 'curl', '-f', 'http://localhost:4000/api']
-      interval: 5s
+      interval: 120s
       timeout: 5s
-      retries: 10
-    volumes:
-      - ./uploads:/app/public/uploads
+      retries: 5
+    build:
+      context: server
+      dockerfile: Dockerfile.production
+    ports:
+      - 4000:4000
 
-  tournament-client:
-    image: arnaudlyard/tournament-client
-
-  upload-service:
-    environment:
-      - HOST=/
-    build: file-upload-service
-    volumes:
-      - tournament-uploads:/app/files
+  prochainweb-client:
+    build:
+      context: client
+      dockerfile: Dockerfile.production
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
 
   gateway:
     depends_on:
-      tournament-client:
+      prochainweb-client:
         condition: service_started
-      tournament-server:
+      prochainweb-server:
         condition: service_healthy
     restart: always
     build:
@@ -72,5 +53,4 @@ services:
       - ${GATEWAY_PORT-8000}:80
 
 volumes:
-  tournament-database:
-  tournament-uploads:
+  prochainweb-database-data:
