@@ -57,7 +57,7 @@ async function bootstrap() {
   // 2. Cors
   app.use(
     cors({
-      origin: [process.env.CLIENT_URL, process.env.FULL_CLIENT_URL],
+      origin: [process.env.CLIENT_URL],
       credentials: true,
     })
   );
@@ -93,7 +93,7 @@ async function bootstrap() {
   app.use('/api/uploads', uploadRouter);
 
   // Testing
-  app.get('/api/', (_, res: Response) => {
+  app.get('/api', (_, res: Response) => {
     res.status(200).json({
       status: 'success',
       message: 'Welcome to NodeJs with Prisma and PostgreSQL',

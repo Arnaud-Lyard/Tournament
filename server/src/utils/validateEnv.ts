@@ -16,7 +16,6 @@ const envSchema = z.object({
   ACCESS_TOKEN_EXPIRES_IN: z.string(),
 
   CLIENT_URL: z.string(),
-  FULL_CLIENT_URL: z.string(),
   SERVER_URL: z.string(),
 
   EMAIL_USER: z.string(),
@@ -42,7 +41,6 @@ export function validateEnv() {
     JWT_ACCESS_TOKEN_PUBLIC_KEY: process.env.JWT_ACCESS_TOKEN_PUBLIC_KEY,
     ACCESS_TOKEN_EXPIRES_IN: process.env.ACCESS_TOKEN_EXPIRES_IN,
     CLIENT_URL: process.env.CLIENT_URL,
-    FULL_CLIENT_URL: process.env.FULL_CLIENT_URL,
     SERVER_URL: process.env.SERVER_URL,
 
     EMAIL_USER: process.env.EMAIL_USER,
