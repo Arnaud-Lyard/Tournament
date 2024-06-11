@@ -23,13 +23,13 @@ jobs:
 
       - name: Build and push server image
         run: |
-          docker build -t $REGISTRY/$DOCKERHUB_USERNAME/$SERVER_IMAGE_NAME -f server/Dockerfile.production server/
+          docker build -t $REGISTRY/${{ secrets.DOCKERHUB_USERNAME }}/$SERVER_IMAGE_NAME -f server/Dockerfile.production server/
           docker push $REGISTRY/$SERVER_IMAGE_NAME
 
       - name: Build and push client image
         run: |
           cd client
-          docker build -t $REGISTRY/$DOCKERHUB_USERNAME/$CLIENT_IMAGE_NAME -f client/Dockerfile.production client/
+          docker build -t $REGISTRY/${{ secrets.DOCKERHUB_USERNAME }}/$CLIENT_IMAGE_NAME -f client/Dockerfile.production client/
           docker push $REGISTRY/$CLIENT_IMAGE_NAME
 
   deploy:
