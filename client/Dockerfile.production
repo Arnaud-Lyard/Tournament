@@ -14,7 +14,6 @@ COPY *.config.js ./
 COPY *.config.mjs ./
 COPY tailwind.config.ts ./tailwind.config.ts
 COPY postcss.config.mjs ./postcss.config.mjs
-COPY .env ./.env
 
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL ${NEXT_PUBLIC_API_URL}
