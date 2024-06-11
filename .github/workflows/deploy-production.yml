@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: dockerhub.io
   SERVER_IMAGE_NAME: prochainweb-server:latest
   CLIENT_IMAGE_NAME: prochainweb-client:latest
 
@@ -23,14 +22,13 @@ jobs:
 
       - name: Build and push server image
         run: |
-          docker build -t $REGISTRY/${{ secrets.DOCKERHUB_USERNAME }}/$SERVER_IMAGE_NAME -f server/Dockerfile.production server/
-          docker push $REGISTRY/${{ secrets.DOCKERHUB_USERNAME }}/$SERVER_IMAGE_NAME
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$SERVER_IMAGE_NAME -f server/Dockerfile.production server/
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$SERVER_IMAGE_NAME
 
       - name: Build and push client image
         run: |
-          cd client
-          docker build -t $REGISTRY/${{ secrets.DOCKERHUB_USERNAME }}/$CLIENT_IMAGE_NAME -f client/Dockerfile.production client/
-          docker push $REGISTRY/${{ secrets.DOCKERHUB_USERNAME }}/$CLIENT_IMAGE_NAME
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$CLIENT_IMAGE_NAME -f client/Dockerfile.production client/
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$CLIENT_IMAGE_NAME
 
   deploy:
     needs: publish
