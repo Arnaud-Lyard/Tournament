@@ -45,4 +45,4 @@ jobs:
           port: 22
           script: |
             cd ${{ secrets.REMOTE_WORKING_DIRECTORY }}
-            deploy-production.sh
+            ./deploy-production.sh
