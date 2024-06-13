@@ -10,7 +10,9 @@ const privateUrls = ['/admin', '/profile'];
 async function importKey() {
   const alg = 'RS256';
   const spki = process.env.JWT_PUBLIC_KEY!;
+  console.log('spki', spki);
   const publicKey = await jose.importSPKI(spki, alg);
+  console.log('publicKey', publicKey);
   return publicKey;
 }
 
@@ -33,6 +35,7 @@ async function authMiddleware(request: NextRequest) {
   if (token) {
     try {
       const key = await importKey();
+      console.log(key);
       const { payload } = await jose.jwtVerify(token, key);
       console.log('payload', payload);
       if (payload.sub) return NextResponse.next();
