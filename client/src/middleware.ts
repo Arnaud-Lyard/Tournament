@@ -26,6 +26,8 @@ function getLocale(request: NextRequest) {
 }
 
 async function authMiddleware(request: NextRequest) {
+  console.log('authMiddleware');
+  console.log('request', request);
   const token = request.cookies.get('access_token' as any)?.value;
   console.log('token', token);
   if (token) {
@@ -36,7 +38,7 @@ async function authMiddleware(request: NextRequest) {
       if (payload.sub) return NextResponse.next();
     } catch (e) {}
   }
-  return NextResponse.redirect(new URL('/login', request.url));
+  return NextResponse.redirect(new URL('/home', request.url));
 }
 
 async function i18nMiddleware(request: NextRequest) {
@@ -54,6 +56,7 @@ async function i18nMiddleware(request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
+  console.log('middleware');
   if (
     request.nextUrl.pathname.startsWith('/fr/user') ||
     request.nextUrl.pathname.startsWith('/en/user')
