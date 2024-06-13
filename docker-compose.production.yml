@@ -38,6 +38,7 @@ services:
       dockerfile: Dockerfile.production
       args:
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
 
   gateway:
     depends_on:
