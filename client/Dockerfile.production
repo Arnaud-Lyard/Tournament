@@ -17,6 +17,9 @@ COPY postcss.config.mjs ./postcss.config.mjs
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL ${NEXT_PUBLIC_API_URL}
 
+ARG JWT_PUBLIC_KEY
+ENV JWT_PUBLIC_KEY ${JWT_PUBLIC_KEY}
+
 RUN npm run build
 
 CMD npm start
