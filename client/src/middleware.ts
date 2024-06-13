@@ -27,11 +27,12 @@ function getLocale(request: NextRequest) {
 
 async function authMiddleware(request: NextRequest) {
   const token = request.cookies.get('access_token' as any)?.value;
-
+  console.log('token', token);
   if (token) {
     try {
       const key = await importKey();
       const { payload } = await jose.jwtVerify(token, key);
+      console.log('payload', payload);
       if (payload.sub) return NextResponse.next();
     } catch (e) {}
   }
