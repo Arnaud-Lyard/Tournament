@@ -5,6 +5,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
   Menu,
+  MenuButton,
   MenuItem,
   MenuItems,
   Transition,
@@ -20,7 +21,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { HttpService } from '@/services';
-import { IResponse } from '@/types/api';
+import { IProfileResponse, IResponse } from '@/types/api';
 import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
@@ -87,6 +88,25 @@ export default function Navbar() {
       await http.service().get<IResponse>(`/auth/logout`);
     } catch (e: any) {}
   }
+
+  async function handleProfile() {
+    try {
+      const response = await http
+        .service()
+        .get<IProfileResponse>(`/users/profile`);
+      setAvatar(response.data.user.avatar);
+    } catch (e: any) {}
+  }
+
+  useEffect(() => {
+    handleProfile();
+  }, []);
+
+  const [avatar, setAvatar] = useState<string | null>(null);
+  const defaultLogo = '/relaxing-hippoquests.jpeg';
+  const avatarUrl = avatar
+    ? `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${avatar}`
+    : defaultLogo;
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -169,7 +189,7 @@ export default function Navbar() {
                             {/* Profile dropdown */}
                             <Menu as="div" className="relative ml-3">
                               <div>
-                                <Menu.Button className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                   <span className="absolute -inset-1.5" />
                                   <span className="sr-only">
                                     {dictionary.navigation.button}
@@ -177,11 +197,11 @@ export default function Navbar() {
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={relaxingHippoquest}
+                                    src={avatarUrl}
                                     className="h-8 w-8 rounded-full"
                                     alt=""
                                   />
-                                </Menu.Button>
+                                </MenuButton>
                               </div>
                               <Transition
                                 as={Fragment}

@@ -1,12 +1,9 @@
-import { object, string, TypeOf, z } from 'zod';
+import { boolean, object, string, TypeOf, z } from 'zod';
 
 export const updateUserSchema = object({
   body: object({
     username: string({}),
-    email: string({}).email('Invalid email address'),
-    twitter: string({}).optional(),
-    esl: string({}).optional(),
-    stormgate: string({}).optional(),
+    notification: string({}),
   }),
 });
 

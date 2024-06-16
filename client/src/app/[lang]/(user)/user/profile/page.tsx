@@ -3,8 +3,8 @@ import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
 import { HttpService } from '@/services';
-import { IProfileResponse } from '@/types/api';
-import { useEffect } from 'react';
+import { IProfileResponse, IResponse } from '@/types/api';
+import { FormEvent, useEffect, useState } from 'react';
 export default function Profile({
   params: { lang },
 }: {
@@ -20,7 +20,9 @@ export default function Profile({
       const response = await http
         .service()
         .get<IProfileResponse>(`/users/profile`);
-      console.log(response);
+      setUsername(response.data.user.username);
+      setEmail(response.data.user.email);
+      setNotification(response.data.user.notification);
     } catch (e: any) {}
   }
 
@@ -28,8 +30,40 @@ export default function Profile({
     handleProfile();
   }, []);
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setAvatar(event.target.files[0]);
+    }
+  };
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [avatar, setAvatar] = useState<File | null>(null);
+  const [notification, setNotification] = useState<boolean>();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('notification', notification ? 'true' : 'false');
+    if (avatar) {
+      formData.append('file', avatar);
+    }
+    try {
+      const response = await http
+        .service()
+        .push<IResponse, any>(`users/update`, formData, undefined, true);
+      if (response.status === 'success') {
+        setMessage(response.message);
+      }
+    } catch (e: any) {
+      checkErrors(e.response.data);
+    }
+    resetMessages();
+  };
+
   return (
-    <form method="post" encType="multipart/form-data">
+    <form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
       <div className="space-y-12 sm:space-y-16">
         <div>
           <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -55,6 +89,7 @@ export default function Profile({
                   autoComplete="username"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:max-w-md sm:text-sm sm:leading-6"
                   required={true}
+                  defaultValue={username}
                 />
               </div>
             </div>
@@ -76,7 +111,12 @@ export default function Profile({
                     type="button"
                     className="rounded-md bg-white px-2.5 py-1.5 text-sm  text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                   >
-                    <input id="avatar" type="file" name="file"></input>
+                    <input
+                      id="avatar"
+                      type="file"
+                      name="file"
+                      onChange={handleFileChange}
+                    ></input>
                   </button>
                 </div>
               </div>
@@ -109,6 +149,7 @@ export default function Profile({
                     autoComplete="email"
                     className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                     disabled={true}
+                    value={email}
                   />
                 </div>
               </div>
@@ -142,13 +183,15 @@ export default function Profile({
                     <div className="mt-6 space-y-6">
                       <div className="flex items-center gap-x-3">
                         <input
-                          id="all-notification"
-                          name="notification"
+                          id="true"
+                          name="true"
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-cyan-600 focus:ring-cyan-600"
+                          checked={notification === true}
+                          onChange={() => setNotification(true)}
                         />
                         <label
-                          htmlFor="all-notification"
+                          htmlFor="true"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
                           {dictionary.profile.formLabelFourOptions.optionOne}
@@ -156,13 +199,15 @@ export default function Profile({
                       </div>
                       <div className="flex items-center gap-x-3">
                         <input
-                          id="no-notification"
-                          name="notification"
+                          id="false"
+                          name="false"
                           type="radio"
                           className="h-4 w-4 border-gray-300 text-cyan-600 focus:ring-cyan-600"
+                          checked={notification === false}
+                          onChange={() => setNotification(false)}
                         />
                         <label
-                          htmlFor="no-notification"
+                          htmlFor="false"
                           className="block text-sm font-medium leading-6 text-gray-900"
                         >
                           {dictionary.profile.formLabelFourOptions.optionTwo}

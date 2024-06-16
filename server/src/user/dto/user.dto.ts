@@ -8,5 +8,6 @@ export interface UserDto {
 export interface IUserUpdateDto {
   id: string;
   username: string;
-  email: string;
+  notification: boolean;
+  avatar: string;
 }

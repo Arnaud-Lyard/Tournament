@@ -61,16 +61,15 @@ export const updateUserHandler = async (
   try {
     const user = (await getUserInformations(req, next)) as IUser;
 
-    if (!req.body.email || !req.body.username) {
-      return next(new AppError(400, `Email adress and username are required.`));
-    }
+    const { username, notification } = req.body;
 
-    const { twitter, esl, username, email, stormgate } = req.body;
-
+    const fileName = req.file!.filename;
+    console.log('filename', fileName);
     await updateUser({
       user,
       username,
-      email,
+      notification: notification === 'true' ? true : false,
+      avatar: fileName,
     });
 
     res.status(200).json({
