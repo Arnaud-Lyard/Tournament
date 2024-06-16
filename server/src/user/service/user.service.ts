@@ -102,20 +102,24 @@ export async function updateUserPassword({
 export async function updateUser({
   user,
   username,
-  email,
+  notification,
+  avatar,
 }: {
   user: IUser;
   username: string;
-  email: string;
+  notification: boolean;
+  avatar: string;
 }) {
   const userUpdate: IUserUpdateDto = {
     id: user.id,
     username,
-    email,
+    notification,
+    avatar,
   };
   try {
     await UserRepository.updateUser(userUpdate);
   } catch (err: any) {
+    console.error(err);
     throw new AppError(400, 'Erreur lors de la mise à jour du profil.');
   }
 }

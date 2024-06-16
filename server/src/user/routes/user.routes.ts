@@ -6,6 +6,7 @@ import {
   getUserHandler,
   updateUserHandler,
 } from '../controller/user.controller';
+import { uploadFile } from '../../middleware/uploadFile';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.get('/', authenticateUser, getUserHandler);
 
 router.get('/me', getMeHandler);
 
-router.post('/update', authenticateUser, updateUserHandler);
+router.post('/update', authenticateUser, uploadFile, updateUserHandler);
 
 router.get('/profile', authenticateUser, getProfileHandler);
 
