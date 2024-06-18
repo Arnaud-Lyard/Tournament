@@ -6,6 +6,7 @@ export interface IUser {
   email: string;
   role?: RoleEnumType | null;
   notification: boolean | null;
+  avatar: string | null;
   createdAt: Date;
   updatedAt: Date;
 }

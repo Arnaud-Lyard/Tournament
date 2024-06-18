@@ -29,13 +29,8 @@ services:
       - 4000:4000
     volumes:
       - ./server/src:/app/src
-
-  prochainweb-upload-service:
-    build: file-upload-service
-    ports:
-      - 8000:8000
-    volumes:
-      - ./file-upload-service/files:/app/files
+      - prochainweb-images:/app/public/uploads
 
 volumes:
   prochainweb-database:
+  prochainweb-images:
