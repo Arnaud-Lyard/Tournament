@@ -29,6 +29,8 @@ services:
     build:
       context: server
       dockerfile: Dockerfile.production
+    volumes:
+      - /app/prochainweb/public/uploads:/app/public/uploads
     ports:
       - 4000:4000
 
