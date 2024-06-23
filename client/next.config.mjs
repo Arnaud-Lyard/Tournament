@@ -13,7 +13,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'prochainweb',
+        hostname: 'prochainweb.com',
         port:'',
         pathname: '/uploads/**',
       },
