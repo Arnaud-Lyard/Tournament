@@ -30,7 +30,7 @@ services:
       context: server
       dockerfile: Dockerfile.production
     volumes:
-      - /apps/prochainweb/public/uploads:/app/public/uploads
+      - /apps/prochainweb/public/uploads:/app/dist/public/uploads
     ports:
       - 4000:4000
 
