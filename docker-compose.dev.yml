@@ -29,8 +29,7 @@ services:
       - 4000:4000
     volumes:
       - ./server/src:/app/src
-      - prochainweb-images:/app/public/uploads
+      - ./server/public/uploads:/app/public/uploads
 
 volumes:
   prochainweb-database:
-  prochainweb-images:

@@ -14,4 +14,5 @@ export interface IUser {
 export interface IUserInformations {
   role: RoleEnumType | null;
   username: string;
+  avatar: string | null;
 }

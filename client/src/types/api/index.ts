@@ -5,6 +5,11 @@ export interface IResponse {
   message: string;
   data: {
     isConnect: boolean;
+    informations: {
+      role: string;
+      username: string;
+      avatar: string;
+    };
   };
 }
 

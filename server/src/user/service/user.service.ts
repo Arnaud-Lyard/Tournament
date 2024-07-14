@@ -5,7 +5,7 @@ import AppError from '../../utils/appError';
 import { signJwt } from '../../utils/jwt';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 import { UserRepository } from '../repository/user.repository';
-
+import { File } from '../../types/file';
 export const createUser = async (user: UserDto) => {
   return await UserRepository.createUser(user);
 };
@@ -108,16 +108,20 @@ export async function updateUser({
   user: IUser;
   username: string;
   notification: boolean;
-  avatar: string;
+  avatar: File | undefined;
 }) {
   const userUpdate: IUserUpdateDto = {
     id: user.id,
     username,
     notification,
-    avatar,
+    avatar: null,
   };
   try {
-    await UserRepository.updateUser(userUpdate);
+    if (!avatar) {
+      userUpdate.avatar = user.avatar;
+      await UserRepository.updateUser(userUpdate);
+    }
+    // TODO: Logic if user change avatar
   } catch (err: any) {
     console.error(err);
     throw new AppError(400, 'Erreur lors de la mise à jour du profil.');

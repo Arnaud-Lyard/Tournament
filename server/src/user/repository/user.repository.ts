@@ -118,6 +118,7 @@ export class UserRepository {
       select: {
         role: true,
         username: true,
+        avatar: true
       },
     });
     return userinfos;
