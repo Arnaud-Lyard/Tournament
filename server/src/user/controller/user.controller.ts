@@ -62,18 +62,19 @@ export const updateUserHandler = async (
     const user = (await getUserInformations(req, next)) as IUser;
 
     const { username, notification } = req.body;
-
-    const fileName = req.file!.filename;
-    console.log('filename', fileName);
+    console.log('username', username);
     await updateUser({
       user,
       username,
       notification: notification === 'true' ? true : false,
-      avatar: fileName,
+      avatar: req.file,
     });
 
+    const message =
+      req.language === 'fr' ? 'Profil mis à jour' : 'Profile updated';
     res.status(200).json({
       status: 'success',
+      message,
     });
   } catch (err: any) {
     next(err);
