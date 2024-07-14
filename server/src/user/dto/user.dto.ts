@@ -9,5 +9,5 @@ export interface IUserUpdateDto {
   id: string;
   username: string;
   notification: boolean;
-  avatar: string;
+  avatar: string | null;
 }

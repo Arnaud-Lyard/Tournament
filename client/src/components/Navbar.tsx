@@ -64,6 +64,10 @@ export default function Navbar() {
     handleNavChange(pathname);
     handleUserLoggedIn();
   }, [pathname, searchParams]);
+  const defaultLogo = 'user.png';
+  const [avatar, setAvatar] = useState<string>(
+    `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`
+  );
 
   async function handleUserLoggedIn() {
     try {
@@ -71,6 +75,9 @@ export default function Navbar() {
 
       if (response.data.isConnect === true) {
         setIsLoggedIn(true);
+        setAvatar(
+          `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.informations.avatar}`
+        );
       } else {
         setIsLoggedIn(false);
       }
@@ -85,28 +92,32 @@ export default function Navbar() {
 
   async function handleUserLogout() {
     try {
-      await http.service().get<IResponse>(`/auth/logout`);
+      const response = await http.service().get<IResponse>(`/auth/logout`);
+      if (response.status === 'success') {
+        location.reload();
+      }
     } catch (e: any) {}
   }
 
-  async function handleProfile() {
-    try {
-      const response = await http
-        .service()
-        .get<IProfileResponse>(`/users/profile`);
-      setAvatar(response.data.user.avatar);
-    } catch (e: any) {}
-  }
+  // async function handleProfile() {
+  //   try {
+  //     const response = await http
+  //       .service()
+  //       .get<IProfileResponse>(`/users/profile`);
 
-  useEffect(() => {
-    handleProfile();
-  }, []);
+  //     if (!response.data.user.avatar) {
+  //       setAvatar(`${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`);
+  //     } else {
+  //       setAvatar(
+  //         `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.user.avatar}`
+  //       );
+  //     }
+  //   } catch (e: any) {}
+  // }
 
-  const [avatar, setAvatar] = useState<string | null>(null);
-  const defaultLogo = '/relaxing-hippoquests.jpeg';
-  const avatarUrl = avatar
-    ? `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${avatar}`
-    : defaultLogo;
+  // useEffect(() => {
+  //   handleProfile();
+  // }, []);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -197,7 +208,7 @@ export default function Navbar() {
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={avatarUrl}
+                                    src={avatar}
                                     className="h-8 w-8 rounded-full"
                                     alt=""
                                   />
@@ -229,7 +240,7 @@ export default function Navbar() {
                                   <MenuItem key="logout">
                                     {({ active }) => (
                                       <Link
-                                        href="/home"
+                                        href=""
                                         onClick={() => {
                                           handleUserLogout();
                                         }}

@@ -41,9 +41,9 @@ export const uploadFile = (req: Request, res: Response, next: NextFunction) => {
       );
     }
 
-    if (!req.file) {
+    /* if (!req.file) {
       return next(new AppError(400, 'No file uploaded.'));
-    }
+    } */
 
     // req.body.file = req.file.filename; // Store the filename in req.body for later use
     next();
