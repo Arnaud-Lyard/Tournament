@@ -5,7 +5,8 @@
     "authentication": "Authentication",
     "logout": "Logout",
     "register": "Register",
-    "profile": "My profile"
+    "profile": "My profile",
+    "blog": "Blog"
   },
   "forgotPassword": {
     "title": "Forgot Password",
@@ -57,8 +58,26 @@
     "formLabelFourOptions": {
       "optionOne": "Receive notifications",
       "optionTwo": "Don't receive notifications"
-    },
-    "buttonSubmit": "Save",
-    "buttonCancel": "Cancel"
+    }
+  },
+  "adminblog": {
+    "creationDate": "Written on",
+    "author": "by",
+    "view": "View project",
+    "option": "Open options",
+    "action" : {
+      "one": "Publish",
+      "two": "Edit",
+      "three": "Disabled"
+    }
+  },
+  "adminCategory": {
+    "firstLabel": "Category name"
+  },
+  "buttons": {
+    "submit": "Save",
+    "cancel": "Cancel",
+    "addPost": "Add a post",
+    "addCategory": "Add a category"
   }
 }

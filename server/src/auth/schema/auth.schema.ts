@@ -5,7 +5,7 @@ export const registerUserSchema = object({
   body: object({
     username: string({
       required_error: 'Username is required',
-    }),
+    }).min(1, 'You must provide a username'),
     email: string({
       required_error: 'Email address is required',
     }).email('Invalid email address'),

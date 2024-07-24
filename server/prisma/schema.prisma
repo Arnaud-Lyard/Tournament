@@ -25,13 +25,72 @@ model User {
 
   passwordResetToken String?   @map("password_reset_token")
   passwordResetAt    DateTime? @map("password_reset_at")
+  Post               Post[]
+  Comment            Comment[]
 
   @@unique([email, verificationCode, passwordResetToken])
   @@index([email, verificationCode, passwordResetToken])
   @@map(name: "user")
 }
 
+model Post {
+  id         String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String              @db.VarChar(255)
+  content    String              @db.Text
+  status     PostStatusEnumType  @default(draft)
+  user       User                @relation(fields: [userId], references: [id])
+  userId     String              @map("user_id") @db.Uuid
+  createdAt  DateTime            @default(now()) @map("created_at")
+  updatedAt  DateTime            @updatedAt @map("updated_at")
+  categories CategoriesOnPosts[]
+  Comment    Comment[]
+
+  @@map(name: "post")
+}
+
+model Category {
+  id        String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String              @db.VarChar(255)
+  createdAt DateTime            @default(now()) @map("created_at")
+  updatedAt DateTime            @updatedAt @map("updated_at")
+  posts     CategoriesOnPosts[]
+
+  @@map(name: "category")
+}
+
+model CategoriesOnPosts {
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     String   @map("post_id") @db.Uuid
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String   @map("category_id") @db.Uuid
+
+  @@id([postId, categoryId])
+  @@map(name: "categories_on_posts")
+}
+
+model Comment {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content   String    @db.Text
+  user      User      @relation(fields: [userId], references: [id])
+  userId    String    @map("user_id") @db.Uuid
+  post      Post      @relation(fields: [postId], references: [id])
+  postId    String    @map("post_id") @db.Uuid
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  parentId  String?   @map("parent_id") @db.Uuid
+  replies   Comment[] @relation("CommentReplies")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map(name: "comment")
+}
+
 enum RoleEnumType {
   user
   admin
+}
+
+enum PostStatusEnumType {
+  draft
+  published
+  disabled
 }

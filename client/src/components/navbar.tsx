@@ -15,21 +15,15 @@ import {
   BellIcon,
   XMarkIcon,
   UserIcon,
-  UserPlusIcon,
   ArrowPathIcon,
 } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HttpService } from '@/services';
-import { IProfileResponse, IResponse } from '@/types/api';
+import { IResponse } from '@/types/api';
 import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
-
-const user = {
-  name: 'Tom Cook',
-  email: 'tom@example.com',
-};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -65,9 +59,10 @@ export default function Navbar() {
     handleUserLoggedIn();
   }, [pathname, searchParams]);
   const defaultLogo = 'user.png';
-  const [avatar, setAvatar] = useState<string>(
-    `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`
-  );
+  const [avatar, setAvatar] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [role, setRole] = useState<string>('');
 
   async function handleUserLoggedIn() {
     try {
@@ -75,9 +70,19 @@ export default function Navbar() {
 
       if (response.data.isConnect === true) {
         setIsLoggedIn(true);
-        setAvatar(
-          `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.informations.avatar}`
-        );
+        if(!response.data.informations.avatar) {
+          setAvatar(
+            `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`
+          );
+        } else {
+          setAvatar(
+              `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.informations.avatar}`
+          );
+        }
+
+        setName(response.data.informations.username);
+        setEmail(response.data.informations.email);
+        setRole(response.data.informations.role);
       } else {
         setIsLoggedIn(false);
       }
@@ -98,26 +103,6 @@ export default function Navbar() {
       }
     } catch (e: any) {}
   }
-
-  // async function handleProfile() {
-  //   try {
-  //     const response = await http
-  //       .service()
-  //       .get<IProfileResponse>(`/users/profile`);
-
-  //     if (!response.data.user.avatar) {
-  //       setAvatar(`${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`);
-  //     } else {
-  //       setAvatar(
-  //         `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.user.avatar}`
-  //       );
-  //     }
-  //   } catch (e: any) {}
-  // }
-
-  // useEffect(() => {
-  //   handleProfile();
-  // }, []);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -237,6 +222,19 @@ export default function Navbar() {
                                       </Link>
                                     )}
                                   </MenuItem>
+                                  { role === 'admin' ? <MenuItem key="blog">
+                                    {({ active }) => (
+                                        <Link
+                                            href="/admin/blog"
+                                            className={classNames(
+                                                active ? 'bg-gray-100' : '',
+                                                'block px-4 py-2 text-sm text-gray-700'
+                                            )}
+                                        >
+                                          {dictionary.navigation.blog}
+                                        </Link>
+                                    )}
+                                  </MenuItem> : null}
                                   <MenuItem key="logout">
                                     {({ active }) => (
                                       <Link
@@ -332,10 +330,7 @@ export default function Navbar() {
                         </div>
                         <div className="ml-3">
                           <div className="text-base font-medium leading-none text-white">
-                            {user.name}
-                          </div>
-                          <div className="text-sm font-medium leading-none text-gray-400">
-                            {user.email}
+                            {name}
                           </div>
                         </div>
                         <button
