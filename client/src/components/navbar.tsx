@@ -70,13 +70,11 @@ export default function Navbar() {
 
       if (response.data.isConnect === true) {
         setIsLoggedIn(true);
-        if(!response.data.informations.avatar) {
-          setAvatar(
-            `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`
-          );
+        if (!response.data.informations.avatar) {
+          setAvatar(`${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`);
         } else {
           setAvatar(
-              `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.informations.avatar}`
+            `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.informations.avatar}`
           );
         }
 
@@ -222,19 +220,21 @@ export default function Navbar() {
                                       </Link>
                                     )}
                                   </MenuItem>
-                                  { role === 'admin' ? <MenuItem key="blog">
-                                    {({ active }) => (
+                                  {role === 'admin' ? (
+                                    <MenuItem key="blog">
+                                      {({ active }) => (
                                         <Link
-                                            href="/admin/blog"
-                                            className={classNames(
-                                                active ? 'bg-gray-100' : '',
-                                                'block px-4 py-2 text-sm text-gray-700'
-                                            )}
+                                          href="/admin/post"
+                                          className={classNames(
+                                            active ? 'bg-gray-100' : '',
+                                            'block px-4 py-2 text-sm text-gray-700'
+                                          )}
                                         >
                                           {dictionary.navigation.blog}
                                         </Link>
-                                    )}
-                                  </MenuItem> : null}
+                                      )}
+                                    </MenuItem>
+                                  ) : null}
                                   <MenuItem key="logout">
                                     {({ active }) => (
                                       <Link

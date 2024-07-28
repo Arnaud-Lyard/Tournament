@@ -1,4 +1,4 @@
-import {IBlog, IUser} from '../models';
+import { ICategory, IPost, IUser } from '../models';
 
 export interface IResponse {
   status: string;
@@ -10,7 +10,6 @@ export interface IResponse {
       username: string;
       avatar: string;
       email: string;
-      username: string;
     };
   };
 }
@@ -38,13 +37,15 @@ export interface IErrorDtoInfos {
   path: string[];
 }
 
-export interface ICreateBlogResponse {
+export interface ICreatePostResponse {
   status: string;
   message: string;
 }
 
-export interface ICreateBlogPayload {
-  datas: string;
+export interface ICreatePostPayload {
+  post?: string;
+  categoryIds: string[];
+  title: string;
 }
 
 export interface ICreateCategoryResponse {
@@ -52,6 +53,13 @@ export interface ICreateCategoryResponse {
   message: string;
 }
 
-export interface ICreateCategoryPayload {
-  categoryName: string;
+export interface ICreateDatasPayload {
+  [k: string]: FormDataEntryValue;
+}
+
+export interface IGetCategoryResponse {
+  status: string;
+  data: {
+    categories: ICategory[];
+  };
 }

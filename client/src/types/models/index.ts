@@ -11,13 +11,21 @@ export interface IUser {
 
 export type IRoleEnumType = 'user' | 'admin';
 
-export interface IBlog {
+export interface IPost {
   id: string;
   title: string;
   content: string;
+  author: string;
   status: IStatusEnumType;
-  creationDate: Date;
-  updatedDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export type IStatusEnumType = 'published' | 'in progress' | 'disabled';
+export type IStatusEnumType = 'published' | 'draft' | 'disabled';
+
+export interface ICategory {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

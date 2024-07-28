@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import {useState} from "react";
 import { useDictionary } from '@/providers/dictionary-provider';
 
-export default function EditBlog() {
+export default function EditPost() {
   const CustomEditor = dynamic(() => import( '@/components/custom-editor' ), {ssr: false});
 
   const [blogDatas, setBlogDatas] = useState<string | undefined>();

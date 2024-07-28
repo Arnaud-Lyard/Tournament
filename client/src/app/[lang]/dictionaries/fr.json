@@ -65,7 +65,7 @@
     "author": "par",
     "view": "Voir l'article",
     "option": "Ouvrir les options",
-    "action" : {
+    "action": {
       "one": "Publier",
       "two": "Editer",
       "three": "Désactiver"
@@ -73,6 +73,11 @@
   },
   "adminCategory": {
     "firstLabel": "Nom de la catégorie"
+  },
+  "addPost": {
+    "title": "Ajouter un article",
+    "formLabelOne": "Titre : ",
+    "formLabelTwo": "Catégories : "
   },
   "buttons": {
     "submit": "Enregistrer",

@@ -65,7 +65,7 @@
     "author": "by",
     "view": "View project",
     "option": "Open options",
-    "action" : {
+    "action": {
       "one": "Publish",
       "two": "Edit",
       "three": "Disabled"
@@ -73,6 +73,11 @@
   },
   "adminCategory": {
     "firstLabel": "Category name"
+  },
+  "addPost": {
+    "title": "Add a post",
+    "formLabelOne": "Title:",
+    "formLabelTwo": "Categories:"
   },
   "buttons": {
     "submit": "Save",
