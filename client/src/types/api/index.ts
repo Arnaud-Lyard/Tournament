@@ -1,4 +1,4 @@
-import { ICategory, IPost, IUser } from '../models';
+import { ICategory, IPost, IPostCategoryUser, IUser } from '../models';
 
 export interface IResponse {
   status: string;
@@ -42,12 +42,6 @@ export interface ICreatePostResponse {
   message: string;
 }
 
-export interface ICreatePostPayload {
-  post?: string;
-  categoryIds: string[];
-  title: string;
-}
-
 export interface ICreateCategoryResponse {
   status: string;
   message: string;
@@ -61,5 +55,12 @@ export interface IGetCategoryResponse {
   status: string;
   data: {
     categories: ICategory[];
+  };
+}
+
+export interface IGetPostsResponse {
+  status: string;
+  datas: {
+    posts: IPostCategoryUser[];
   };
 }

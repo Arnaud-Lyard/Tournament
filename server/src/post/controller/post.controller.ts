@@ -2,12 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { getUserInformations } from '../../utils/getUserInformations';
 import { IUser } from '../../types/user';
 import { AddPostInput } from '../schema/post.schema';
-import { addBlog } from '../service/post.service';
+import { addPost, getAllPosts } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
 import { addCategory } from '../service/post.service';
 import { getAllCategories } from '../service/post.service';
 
-export const addBlogHandler = async (
+export const addPostHandler = async (
   req: Request<{}, {}, AddPostInput>,
   res: Response,
   next: NextFunction
@@ -15,11 +15,12 @@ export const addBlogHandler = async (
   try {
     const user = (await getUserInformations(req, next)) as IUser;
 
-    await addBlog({
+    await addPost({
       user,
-      content: req.body.post,
+      content: req.body.content,
       categoryIds: req.body.categoryIds,
       title: req.body.title,
+      image: req.file,
     });
 
     const message = req.language === 'fr' ? "Ajout de l'article" : 'Blog added';
@@ -53,7 +54,7 @@ export const addCategoryHandler = async (
   }
 };
 
-export const getCategoryHandler = async (
+export const getCategoriesHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -65,6 +66,25 @@ export const getCategoryHandler = async (
       status: 'success',
       data: {
         categories,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getPostsHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const posts = await getAllPosts();
+
+    res.status(200).json({
+      status: 'success',
+      datas: {
+        posts,
       },
     });
   } catch (err: any) {

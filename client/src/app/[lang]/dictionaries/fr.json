@@ -60,8 +60,8 @@
       "optionTwo": "Aucune notification"
     }
   },
-  "adminblog": {
-    "creationDate": "Rédigé le",
+  "adminpost": {
+    "creationDate": "Rédigé le ",
     "author": "par",
     "view": "Voir l'article",
     "option": "Ouvrir les options",

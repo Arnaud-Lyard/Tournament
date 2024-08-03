@@ -2,7 +2,7 @@ import { array, boolean, object, string, TypeOf, z } from 'zod';
 
 export const addPostSchema = object({
   body: object({
-    post: string({
+    content: string({
       required_error: 'Post can not be empty.',
     }).min(1, 'You must provide a article.'),
     categoryIds: string().array().nonempty('You must chose a category.'),

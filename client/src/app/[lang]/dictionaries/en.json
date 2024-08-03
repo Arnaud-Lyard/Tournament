@@ -60,8 +60,8 @@
       "optionTwo": "Don't receive notifications"
     }
   },
-  "adminblog": {
-    "creationDate": "Written on",
+  "adminpost": {
+    "creationDate": "Written on ",
     "author": "by",
     "view": "View project",
     "option": "Open options",

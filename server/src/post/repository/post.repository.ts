@@ -1,6 +1,7 @@
 import { IUser } from '../../types/user';
 import prisma from '../../../prisma/client';
 import { Category, Post } from '@prisma/client';
+import { File } from '../../types/file';
 
 export class PostRepository {
   static async create({
@@ -8,16 +9,19 @@ export class PostRepository {
     content,
     categoryIds,
     title,
+    image,
   }: {
     user: IUser;
     content: string;
     categoryIds: string[];
     title: string;
+    image: string;
   }): Promise<Post> {
     return await prisma.post.create({
       data: {
         title,
         content,
+        image,
         user: {
           connect: {
             id: user.id,
@@ -45,5 +49,22 @@ export class PostRepository {
 
   static async getAllCategories(): Promise<Category[]> {
     return await prisma.category.findMany();
+  }
+
+  static async getAllPosts(): Promise<Post[]> {
+    return await prisma.post.findMany({
+      include: {
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
   }
 }

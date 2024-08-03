@@ -17,8 +17,8 @@ export interface IPost {
   content: string;
   author: string;
   status: IStatusEnumType;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type IStatusEnumType = 'published' | 'draft' | 'disabled';
@@ -28,4 +28,11 @@ export interface ICategory {
   name: string;
   createdAt: Date;
   updatedAt: Date;
+}
+
+export interface IPostCategoryUser extends IPost {
+  categories: ICategory[];
+  user: {
+    username: IUser['username'];
+  };
 }
