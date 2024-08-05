@@ -76,7 +76,8 @@
   },
   "addPost": {
     "title": "Add a post",
-    "formLabelOne": "Title:",
+    "formLabelOne": "French title:",
+    "formLabelOneB": "English title:",
     "formLabelTwo": "Categories:"
   },
   "buttons": {

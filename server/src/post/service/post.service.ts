@@ -1,25 +1,32 @@
 import { IUser } from '../../types/user';
 import { PostRepository } from '../repository/post.repository';
 import { File } from '../../types/file';
+import { PostStatusEnumType } from '@prisma/client';
 
 export async function addPost({
   user,
-  content,
+  frenchContent,
+  englishContent,
+  frenchTitle,
+  englishTitle,
   categoryIds,
-  title,
   image,
 }: {
   user: IUser;
-  content: string;
+  frenchContent: string;
+  englishContent: string;
+  frenchTitle: string;
+  englishTitle: string;
   categoryIds: string[];
-  title: string;
   image: File | undefined;
 }) {
   return await PostRepository.create({
     user,
-    content,
+    frenchContent,
+    englishContent,
+    frenchTitle,
+    englishTitle,
     categoryIds,
-    title,
     image: image!.filename,
   });
 }
@@ -36,4 +43,21 @@ export async function getAllCategories() {
 
 export async function getAllPosts() {
   return await PostRepository.getAllPosts();
+}
+
+export async function checkIfPostExist(id: string) {
+  return await PostRepository.getPostById(id);
+}
+
+export async function changePostStatus({
+  id,
+  status,
+}: {
+  id: string;
+  status: PostStatusEnumType;
+}) {
+  return await PostRepository.changeStatusByPostId({
+    id,
+    status,
+  });
 }

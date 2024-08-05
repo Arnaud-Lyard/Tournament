@@ -46,7 +46,8 @@ export default function AddPost() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [query, setQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<ICategory[]>([]);
-  const [title, setTitle] = useState<string>('');
+  const [frenchTitle, setFrenchTitle] = useState<string>('');
+  const [englishTitle, setEnglishTitle] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [activeTab, setActiveTab] = useState(
     tabs.find((tab) => tab.current)!.name
@@ -96,7 +97,8 @@ export default function AddPost() {
     });
 
     const formData = new FormData();
-    formData.append('title', title);
+    formData.append('frenchTitle', frenchTitle);
+    formData.append('englishTitle', englishTitle);
     selectedCategoriesIds.forEach((categoryId) => {
       formData.append('categoryIds[]', categoryId);
     });
@@ -105,11 +107,11 @@ export default function AddPost() {
     }
 
     if (frenchPostDatas) {
-      formData.append('frenchcontent', frenchPostDatas);
+      formData.append('frenchContent', frenchPostDatas);
     }
 
     if (englishPostDatas) {
-      formData.append('englishcontent', englishPostDatas);
+      formData.append('englishContent', englishPostDatas);
     }
 
     try {
@@ -122,7 +124,8 @@ export default function AddPost() {
     } catch (e: any) {
       checkErrors(e.response.data);
     }
-    setTitle('');
+    setFrenchTitle('');
+    setEnglishTitle('');
     setSelectedCategories([]);
     resetMessages();
   };
@@ -139,19 +142,41 @@ export default function AddPost() {
         >
           <div className="mb-5">
             <label
-              htmlFor="title"
+              htmlFor="frenchtitle"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
               {dictionary.addPost.formLabelOne}
             </label>
             <div className="mt-2">
               <input
-                id="title"
-                name="title"
+                id="frenchtitle"
+                name="frenchtitle"
                 type="text"
-                value={title}
+                value={frenchTitle}
                 onChange={(e) => {
-                  setTitle(e.target.value);
+                  setFrenchTitle(e.target.value);
+                }}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="englishtitle"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              {dictionary.addPost.formLabelOneB}
+            </label>
+            <div className="mt-2">
+              <input
+                id="englishtitle"
+                name="englishtitle"
+                type="text"
+                value={englishTitle}
+                onChange={(e) => {
+                  setEnglishTitle(e.target.value);
                 }}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"

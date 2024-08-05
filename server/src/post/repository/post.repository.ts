@@ -2,25 +2,32 @@ import { IUser } from '../../types/user';
 import prisma from '../../../prisma/client';
 import { Category, Post } from '@prisma/client';
 import { File } from '../../types/file';
+import { PostStatusEnumType } from '@prisma/client';
 
 export class PostRepository {
   static async create({
     user,
-    content,
+    frenchContent,
+    englishContent,
+    frenchTitle,
+    englishTitle,
     categoryIds,
-    title,
     image,
   }: {
     user: IUser;
-    content: string;
+    frenchContent: string;
+    englishContent: string;
+    frenchTitle: string;
+    englishTitle: string;
     categoryIds: string[];
-    title: string;
     image: string;
   }): Promise<Post> {
     return await prisma.post.create({
       data: {
-        title,
-        content,
+        frenchTitle,
+        englishTitle,
+        frenchContent,
+        englishContent,
         image,
         user: {
           connect: {
@@ -64,6 +71,43 @@ export class PostRepository {
             username: true,
           },
         },
+      },
+    });
+  }
+
+  static async getPostById(id: string): Promise<Post | null> {
+    return await prisma.post.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+  }
+
+  static async changeStatusByPostId({
+    id,
+    status,
+  }: {
+    id: string;
+    status: PostStatusEnumType;
+  }): Promise<Post> {
+    return await prisma.post.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
       },
     });
   }

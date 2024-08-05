@@ -1,8 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import { getUserInformations } from '../../utils/getUserInformations';
 import { IUser } from '../../types/user';
-import { AddPostInput } from '../schema/post.schema';
-import { addPost, getAllPosts } from '../service/post.service';
+import { AddPostInput, PublishPostInput } from '../schema/post.schema';
+import {
+  addPost,
+  changePostStatus,
+  checkIfPostExist,
+  getAllPosts,
+} from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
 import { addCategory } from '../service/post.service';
 import { getAllCategories } from '../service/post.service';
@@ -17,9 +22,11 @@ export const addPostHandler = async (
 
     await addPost({
       user,
-      content: req.body.content,
+      frenchContent: req.body.frenchContent,
+      englishContent: req.body.englishContent,
       categoryIds: req.body.categoryIds,
-      title: req.body.title,
+      frenchTitle: req.body.frenchTitle,
+      englishTitle: req.body.englishTitle,
       image: req.file,
     });
 
@@ -86,6 +93,71 @@ export const getPostsHandler = async (
       datas: {
         posts,
       },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getPublishPostHandler = async (
+  req: Request<PublishPostInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postExist = await checkIfPostExist(req.params.id);
+
+    if (!postExist) {
+      const message =
+        req.language === 'fr' ? 'Article introuvable' : 'Post not found';
+      return res.status(404).json({
+        status: 'fail',
+        message,
+      });
+    }
+
+    await changePostStatus({
+      id: req.params.id,
+      status: 'published',
+    });
+
+    const message = req.language === 'fr' ? 'Article publié' : 'Post published';
+    res.status(200).json({
+      status: 'success',
+      message,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getDisablePostHandler = async (
+  req: Request<PublishPostInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postExist = await checkIfPostExist(req.params.id);
+
+    if (!postExist) {
+      const message =
+        req.language === 'fr' ? 'Article introuvable' : 'Post not found';
+      return res.status(404).json({
+        status: 'fail',
+        message,
+      });
+    }
+
+    await changePostStatus({
+      id: req.params.id,
+      status: 'disabled',
+    });
+
+    const message =
+      req.language === 'fr' ? 'Article désactivé' : 'Post disabled';
+    res.status(200).json({
+      status: 'success',
+      message,
     });
   } catch (err: any) {
     next(err);

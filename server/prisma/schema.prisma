@@ -23,10 +23,11 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  passwordResetToken String?   @map("password_reset_token")
-  passwordResetAt    DateTime? @map("password_reset_at")
+  passwordResetToken String?        @map("password_reset_token")
+  passwordResetAt    DateTime?      @map("password_reset_at")
   Post               Post[]
   Comment            Comment[]
+  PostsOnUsers       PostsOnUsers[]
 
   @@unique([email, verificationCode, passwordResetToken])
   @@index([email, verificationCode, passwordResetToken])
@@ -34,19 +35,33 @@ model User {
 }
 
 model Post {
-  id         String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title      String              @db.VarChar(255)
-  content    String              @db.Text
-  image      String              @db.VarChar(255)
-  status     PostStatusEnumType  @default(draft)
-  user       User                @relation(fields: [authorId], references: [id])
-  authorId   String              @map("author_id") @db.Uuid
-  createdAt  DateTime            @default(now()) @map("created_at")
-  updatedAt  DateTime            @updatedAt @map("updated_at")
-  categories CategoriesOnPosts[]
-  Comment    Comment[]
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  frenchTitle    String              @map("french_title") @db.VarChar(255)
+  englishTitle   String              @map("english_title") @db.VarChar(255)
+  frenchContent  String              @map("french_content") @db.Text
+  englishContent String              @map("english_content") @db.Text
+  image          String              @db.VarChar(255)
+  status         PostStatusEnumType  @default(draft)
+  user           User                @relation(fields: [authorId], references: [id])
+  authorId       String              @map("author_id") @db.Uuid
+  createdAt      DateTime            @default(now()) @map("created_at")
+  updatedAt      DateTime            @updatedAt @map("updated_at")
+  categories     CategoriesOnPosts[]
+  Comment        Comment[]
+  PostsOnUsers   PostsOnUsers[]
 
   @@map(name: "post")
+}
+
+model PostsOnUsers {
+  user   User    @relation(fields: [userId], references: [id])
+  userId String  @map("user_id") @db.Uuid
+  post   Post    @relation(fields: [postId], references: [id])
+  postId String  @map("post_id") @db.Uuid
+  isRead Boolean @default(false) @map("is_read")
+
+  @@id([userId, postId])
+  @@map(name: "posts_on_users")
 }
 
 model Category {

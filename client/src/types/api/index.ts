@@ -64,3 +64,21 @@ export interface IGetPostsResponse {
     posts: IPostCategoryUser[];
   };
 }
+
+export interface IPublishedPostResponse {
+  status: string;
+  message: string;
+}
+
+export interface IPublishedPostPayload {
+  postId: string;
+}
+
+export interface IDisabledPostResponse {
+  status: string;
+  message: string;
+}
+
+export interface IDisabledPostPayload {
+  postId: string;
+}

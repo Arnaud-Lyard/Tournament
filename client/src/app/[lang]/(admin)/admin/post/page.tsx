@@ -7,7 +7,13 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { IPost, IPostCategoryUser, IStatusEnumType } from '@/types/models';
 import { HttpService } from '@/services';
-import { IGetPostsResponse } from '@/types/api';
+import {
+  IDisabledPostPayload,
+  IDisabledPostResponse,
+  IGetPostsResponse,
+  IPublishedPostPayload,
+  IPublishedPostResponse,
+} from '@/types/api';
 import { useEffect, useState } from 'react';
 import moment from 'moment';
 
@@ -21,7 +27,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Post() {
+export default function Post({ params }: { params: { lang: string } }) {
   const dictionary = useDictionary();
   const router = useRouter();
   const http = new HttpService();
@@ -30,8 +36,6 @@ export default function Post() {
   async function handlePosts() {
     try {
       const response = await http.service().get<IGetPostsResponse>(`/posts`);
-      console.log(response);
-      moment.locale();
       setPosts(
         response.datas.posts.map((post) => ({
           ...post,
@@ -43,6 +47,30 @@ export default function Post() {
   useEffect(() => {
     handlePosts();
   }, []);
+
+  async function publishPost(id: string) {
+    try {
+      await http
+        .service()
+        .push<IPublishedPostResponse, IPublishedPostPayload>(
+          `/posts/publish/${id}`,
+          { postId: id }
+        );
+      await handlePosts();
+    } catch (e: any) {}
+  }
+
+  async function disablePost(id: string) {
+    try {
+      await http
+        .service()
+        .push<IDisabledPostResponse, IDisabledPostPayload>(
+          `/posts/disable/${id}`,
+          { postId: id }
+        );
+      await handlePosts();
+    } catch (e: any) {}
+  }
 
   return (
     <div>
@@ -70,7 +98,9 @@ export default function Post() {
               <div className="min-w-0">
                 <div className="flex items-start gap-x-3">
                   <p className="text-sm font-semibold leading-6 text-gray-900">
-                    {post.title}
+                    {params.lang === 'fr'
+                      ? post.frenchTitle
+                      : post.englishTitle}
                   </p>
                   <p
                     className={classNames(
@@ -100,7 +130,12 @@ export default function Post() {
                   className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
                 >
                   {dictionary.adminpost.view}
-                  <span className="sr-only">, {post.title}</span>
+                  <span className="sr-only">
+                    ,{' '}
+                    {params.lang === 'fr'
+                      ? post.frenchTitle
+                      : post.englishTitle}
+                  </span>
                 </Link>
                 <Menu as="div" className="relative flex-none">
                   <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
@@ -114,13 +149,18 @@ export default function Post() {
                   </MenuButton>
                   <MenuItems className="absolute right-0 z-10 mt-2 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in">
                     <MenuItem>
-                      <Link
-                        href={`/admin/publish-post/' ${post.id}`}
+                      <button
+                        onClick={() => publishPost(post.id)}
                         className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-gray-50"
                       >
                         {dictionary.adminpost.action.one}
-                        <span className="sr-only">, {post.title}</span>
-                      </Link>
+                        <span className="sr-only">
+                          ,{' '}
+                          {params.lang === 'fr'
+                            ? post.frenchTitle
+                            : post.englishTitle}
+                        </span>
+                      </button>
                     </MenuItem>
                     <MenuItem>
                       <Link
@@ -128,17 +168,27 @@ export default function Post() {
                         className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-gray-50"
                       >
                         {dictionary.adminpost.action.two}
-                        <span className="sr-only">, {post.title}</span>
+                        <span className="sr-only">
+                          ,{' '}
+                          {params.lang === 'fr'
+                            ? post.frenchTitle
+                            : post.englishTitle}
+                        </span>
                       </Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link
-                        href={`/admin/disabled-post/' ${post.id}`}
+                      <button
+                        onClick={() => disablePost(post.id)}
                         className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-gray-50"
                       >
                         {dictionary.adminpost.action.three}
-                        <span className="sr-only">, {post.title}</span>
-                      </Link>
+                        <span className="sr-only">
+                          ,{' '}
+                          {params.lang === 'fr'
+                            ? post.frenchTitle
+                            : post.englishTitle}
+                        </span>
+                      </button>
                     </MenuItem>
                   </MenuItems>
                 </Menu>

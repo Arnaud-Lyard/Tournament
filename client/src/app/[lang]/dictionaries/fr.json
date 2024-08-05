@@ -76,7 +76,8 @@
   },
   "addPost": {
     "title": "Ajouter un article",
-    "formLabelOne": "Titre : ",
+    "formLabelOne": "Titre français :",
+    "formLabelOneB": "Titre anglais : ",
     "formLabelTwo": "Catégories : "
   },
   "buttons": {

@@ -13,8 +13,10 @@ export type IRoleEnumType = 'user' | 'admin';
 
 export interface IPost {
   id: string;
-  title: string;
-  content: string;
+  frenchTitle: string;
+  englishTitle: string;
+  frenchContent: string;
+  englishContent: string;
   author: string;
   status: IStatusEnumType;
   createdAt: string;
