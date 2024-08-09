@@ -10,3 +10,31 @@ export interface IUser {
 }
 
 export type IRoleEnumType = 'user' | 'admin';
+
+export interface IPost {
+  id: string;
+  frenchTitle: string;
+  englishTitle: string;
+  frenchContent: string;
+  englishContent: string;
+  author: string;
+  status: IStatusEnumType;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type IStatusEnumType = 'published' | 'draft' | 'disabled';
+
+export interface ICategory {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IPostCategoryUser extends IPost {
+  categories: { category: ICategory }[];
+  user: {
+    username: IUser['username'];
+  };
+}

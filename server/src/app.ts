@@ -7,6 +7,7 @@ import morgan from 'morgan';
 import path from 'path';
 import authRouter from './auth/routes/auth.routes';
 import userRouter from './user/routes/user.routes';
+import postRouter from './post/routes/post.routes';
 import AppError from './utils/appError';
 import { validateEnv } from './utils/validateEnv';
 import winston from 'winston';
@@ -89,6 +90,7 @@ async function bootstrap() {
   // ROUTES
   app.use('/api/auth', authRouter);
   app.use('/api/users', userRouter);
+  app.use('/api/posts', postRouter);
 
   // Testing
   app.get('/api', (_, res: Response) => {

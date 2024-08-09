@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-react": "^8.0.0",
     "@formatjs/intl-localematcher": "^0.5.4",
     "@headlessui/react": "^2.0.4",
     "@heroicons/react": "^2.1.3",
     "axios": "^1.6.8",
+    "ckeditor5": "^42.0.1",
     "jose": "^5.2.4",
     "js-cookie": "^3.0.5",
+    "moment": "^2.30.1",
     "negotiator": "^0.6.3",
     "next": "14.2.3",
     "react": "^18",
