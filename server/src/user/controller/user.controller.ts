@@ -62,7 +62,7 @@ export const updateUserHandler = async (
     const user = (await getUserInformations(req, next)) as IUser;
 
     const { username, notification } = req.body;
-    console.log('username', username);
+
     await updateUser({
       user,
       username,

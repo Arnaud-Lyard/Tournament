@@ -2,10 +2,8 @@ import '../../globals.css';
 import Navbar from '@/components/navbar';
 
 export default function UserLayout({
-  auth,
   children,
 }: {
-  auth: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -25,7 +23,6 @@ export default function UserLayout({
         <main className="-mt-32">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             <div className="rounded-lg bg-gray-50 px-5 py-6 shadow sm:px-6">
-              <div>{auth}</div>
               <div>{children}</div>
             </div>
           </div>

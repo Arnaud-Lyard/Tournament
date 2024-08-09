@@ -237,13 +237,13 @@ export default function Profile({
           type="button"
           className="text-sm font-semibold leading-6 text-gray-900"
         >
-          {dictionary.profile.buttonCancel}
+          {dictionary.buttons.cancel}
         </button>
         <button
           type="submit"
           className="inline-flex justify-center rounded-md bg-cyan-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-600"
         >
-          {dictionary.profile.buttonSubmit}
+          {dictionary.buttons.submit}
         </button>
       </div>
     </form>

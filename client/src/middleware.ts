@@ -5,7 +5,6 @@ import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 
 const locales = ['en', 'fr'];
-const privateUrls = ['/admin', '/profile'];
 
 async function importKey() {
   const alg = 'RS256';
@@ -34,7 +33,7 @@ async function authMiddleware(request: NextRequest) {
       if (payload.sub) return NextResponse.next();
     } catch (e) {}
   }
-  return NextResponse.redirect(new URL('/home', request.url));
+  return NextResponse.redirect(new URL('/', request.url));
 }
 
 async function i18nMiddleware(request: NextRequest) {
@@ -54,7 +53,9 @@ async function i18nMiddleware(request: NextRequest) {
 export async function middleware(request: NextRequest) {
   if (
     request.nextUrl.pathname.startsWith('/fr/user') ||
-    request.nextUrl.pathname.startsWith('/en/user')
+    request.nextUrl.pathname.startsWith('/en/user') ||
+    request.nextUrl.pathname.startsWith('/fr/admin') ||
+    request.nextUrl.pathname.startsWith('/en/admin')
   ) {
     return await authMiddleware(request);
   }
