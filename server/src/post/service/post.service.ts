@@ -61,3 +61,7 @@ export async function changePostStatus({
     status,
   });
 }
+
+export async function getPost(id: string) {
+  return await PostRepository.getPostById(id);
+}

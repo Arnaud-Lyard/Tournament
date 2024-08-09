@@ -42,8 +42,18 @@ export const disablePostSchema = object({
   }),
 });
 
+export const getPostSchema = object({
+  params: object({
+    id: string({
+      required_error: 'Post id is required.',
+    }),
+  }),
+});
+
 export type AddPostInput = TypeOf<typeof addPostSchema>['body'];
 export type AddCategoryInput = TypeOf<typeof addCategorySchema>['body'];
 
 export type PublishPostInput = TypeOf<typeof publishPostSchema>['params'];
 export type DisablePostInput = TypeOf<typeof disablePostSchema>['params'];
+
+export type GetPostInput = TypeOf<typeof getPostSchema>['params'];

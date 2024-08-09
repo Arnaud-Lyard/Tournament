@@ -82,3 +82,10 @@ export interface IDisabledPostResponse {
 export interface IDisabledPostPayload {
   postId: string;
 }
+
+export interface IGetPostResponse {
+  status: string;
+  data: {
+    post: IPostCategoryUser;
+  };
+}

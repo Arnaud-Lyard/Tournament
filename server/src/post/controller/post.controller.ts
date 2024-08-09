@@ -1,12 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
 import { getUserInformations } from '../../utils/getUserInformations';
 import { IUser } from '../../types/user';
-import { AddPostInput, PublishPostInput } from '../schema/post.schema';
+import {
+  AddPostInput,
+  GetPostInput,
+  PublishPostInput,
+} from '../schema/post.schema';
 import {
   addPost,
   changePostStatus,
   checkIfPostExist,
   getAllPosts,
+  getPost,
 } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
 import { addCategory } from '../service/post.service';
@@ -158,6 +163,25 @@ export const getDisablePostHandler = async (
     res.status(200).json({
       status: 'success',
       message,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getPostHandler = async (
+  req: Request<GetPostInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const post = await getPost(req.params.id);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        post,
+      },
     });
   } catch (err: any) {
     next(err);

@@ -33,7 +33,7 @@ export interface ICategory {
 }
 
 export interface IPostCategoryUser extends IPost {
-  categories: ICategory[];
+  categories: { category: ICategory }[];
   user: {
     username: IUser['username'];
   };

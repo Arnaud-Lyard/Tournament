@@ -4,6 +4,7 @@ import { readLanguage } from '../../middleware/readLanguage';
 import {
   addPostHandler,
   getDisablePostHandler,
+  getPostHandler,
   getPublishPostHandler,
 } from '../controller/post.controller';
 import { addCategoryHandler } from '../controller/post.controller';
@@ -34,6 +35,8 @@ router.post(
 );
 
 router.get('/categories', readLanguage, authenticateUser, getCategoriesHandler);
+
+router.get('/:id', readLanguage, getPostHandler);
 
 router.post(
   '/publish/:id',

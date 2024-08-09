@@ -164,7 +164,7 @@ export default function Post({ params }: { params: { lang: string } }) {
                     </MenuItem>
                     <MenuItem>
                       <Link
-                        href={`/admin/edit-post/' ${post.id}`}
+                        href={`/admin/edit-post/${post.id}`}
                         className="block px-3 py-1 text-sm leading-6 text-gray-900 data-[focus]:bg-gray-50"
                       >
                         {dictionary.adminpost.action.two}
