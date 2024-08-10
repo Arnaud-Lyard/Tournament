@@ -88,12 +88,12 @@ async function bootstrap() {
   app.use(morganMiddleware);
 
   // ROUTES
-  app.use('/api/auth', authRouter);
-  app.use('/api/users', userRouter);
-  app.use('/api/posts', postRouter);
+  app.use('/auth', authRouter);
+  app.use('/users', userRouter);
+  app.use('/posts', postRouter);
 
   // Testing
-  app.get('/api', (_, res: Response) => {
+  app.get('/', (_, res: Response) => {
     res.status(200).json({
       status: 'success',
       message: 'Welcome to NodeJs with Prisma and PostgreSQL',
