@@ -10,7 +10,8 @@
     "db:reset": "DATABASE_URL=postgresql://admin:password123@localhost:5435/tournament?schema=public npx prisma db seed npx prisma migrate reset",
     "build": "tsc && cp -R src/views dist/src/",
     "start:prod": "node dist/src/app.js",
-    "test": "jest"
+    "test": "jest",
+    "postinstall": "prisma generate"
   },
   "prisma": {
     "seed": "ts-node-dev prisma/seed.ts"
