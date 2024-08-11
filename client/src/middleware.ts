@@ -67,6 +67,6 @@ export const config = {
   matcher: [
     '/((?!api|_next/static|_next/image/assets/images|favicon.ico).*)',
     '/((?!_next).*)',
-    '/api/uploads/:path*',
+    '/uploads/:path*',
   ],
 };
