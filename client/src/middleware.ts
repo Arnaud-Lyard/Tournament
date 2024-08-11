@@ -51,6 +51,9 @@ async function i18nMiddleware(request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith('/api')) {
+    return NextResponse.next();
+  }
   if (
     request.nextUrl.pathname.startsWith('/fr/user') ||
     request.nextUrl.pathname.startsWith('/en/user') ||
