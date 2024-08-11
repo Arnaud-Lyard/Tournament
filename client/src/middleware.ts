@@ -9,7 +9,9 @@ const locales = ['en', 'fr'];
 async function importKey() {
   const alg = 'RS256';
   const spki = process.env.JWT_PUBLIC_KEY!;
+  console.log('spki', spki);
   const publicKey = await jose.importSPKI(spki, alg);
+  console.log('publicKey', publicKey);
   return publicKey;
 }
 
