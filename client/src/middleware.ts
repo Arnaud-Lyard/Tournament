@@ -51,6 +51,7 @@ async function i18nMiddleware(request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
+  console.log(request.nextUrl.pathname);
   if (request.nextUrl.pathname.startsWith('/uploads')) {
     return NextResponse.next();
   }
