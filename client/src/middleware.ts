@@ -52,9 +52,6 @@ async function i18nMiddleware(request: NextRequest) {
 
 export async function middleware(request: NextRequest) {
   console.log(request.nextUrl.pathname);
-  if (request.nextUrl.pathname.startsWith('/uploads')) {
-    return NextResponse.next();
-  }
   if (
     request.nextUrl.pathname.startsWith('/fr/user') ||
     request.nextUrl.pathname.startsWith('/en/user') ||
@@ -70,5 +67,6 @@ export const config = {
   matcher: [
     '/((?!api|_next/static|_next/image/assets/images|favicon.ico).*)',
     '/((?!_next).*)',
+    '/api/uploads/:path*',
   ],
 };
