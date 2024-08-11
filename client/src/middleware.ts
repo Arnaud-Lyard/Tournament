@@ -51,7 +51,7 @@ async function i18nMiddleware(request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.startsWith('/api')) {
+  if (request.nextUrl.pathname.startsWith('/uploads')) {
     return NextResponse.next();
   }
   if (
