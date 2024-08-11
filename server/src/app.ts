@@ -102,7 +102,7 @@ async function bootstrap() {
 
   const publicDirectoryPath =
     process.env.NODE_ENV === 'production'
-      ? path.join(__dirname, '..', '..', 'public')
+      ? path.join(__dirname, '..', 'public')
       : path.join(__dirname, '..', 'public');
 
   app.use(express.static(publicDirectoryPath));
