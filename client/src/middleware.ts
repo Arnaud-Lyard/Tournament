@@ -9,9 +9,7 @@ const locales = ['en', 'fr'];
 async function importKey() {
   const alg = 'RS256';
   const spki = process.env.JWT_PUBLIC_KEY!;
-  console.log('spki', spki);
   const publicKey = await jose.importSPKI(spki, alg);
-  console.log('publicKey', publicKey);
   return publicKey;
 }
 
@@ -53,7 +51,6 @@ async function i18nMiddleware(request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
-  console.log(request.nextUrl.pathname);
   if (
     request.nextUrl.pathname.startsWith('/fr/user') ||
     request.nextUrl.pathname.startsWith('/en/user') ||
