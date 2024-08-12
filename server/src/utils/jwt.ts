@@ -2,7 +2,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 
 export const signJwt = (payload: Object, options: SignOptions) => {
   const privateKey = process.env.JWT_ACCESS_TOKEN_PRIVATE_KEY;
-
+  console.log(privateKey);
   return jwt.sign(payload, privateKey, {
     ...(options && options),
     algorithm: 'RS256',
