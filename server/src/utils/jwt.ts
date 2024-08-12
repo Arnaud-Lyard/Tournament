@@ -12,7 +12,9 @@ export const signJwt = (payload: Object, options: SignOptions) => {
 export const verifyJwt = <T>(token: string): T | null => {
   try {
     const publicKey = process.env.JWT_ACCESS_TOKEN_PUBLIC_KEY;
+    console.log('publickey', publicKey);
     const decoded = jwt.verify(token, publicKey) as T;
+    console.log('decoded', decoded);
 
     return decoded;
   } catch (error) {
