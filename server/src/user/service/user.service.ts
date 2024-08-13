@@ -1,11 +1,11 @@
 import { Prisma, PrismaClient, User } from '@prisma/client';
-import fs from 'fs-extra';
 import { IUser } from '../../types/user';
 import AppError from '../../utils/appError';
 import { signJwt } from '../../utils/jwt';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { File } from '../../types/file';
+import { removeExistingImages } from '../../utils/removeExistingImages';
 export const createUser = async (user: UserDto) => {
   return await UserRepository.createUser(user);
 };
@@ -117,11 +117,28 @@ export async function updateUser({
     avatar: null,
   };
   try {
-    if (!avatar) {
+    const userHasImage = await UserRepository.findByUserId(user.id);
+
+    if (!avatar && !userHasImage!.avatar) {
       userUpdate.avatar = user.avatar;
-      await UserRepository.updateUser(userUpdate);
     }
-    // TODO: Logic if user change avatar
+
+    if (!avatar && userHasImage!.avatar) {
+      userUpdate.avatar = userHasImage!.avatar;
+    }
+
+    if (avatar && !userHasImage!.avatar) {
+      userUpdate.avatar = avatar.filename;
+    }
+
+    if (avatar && userHasImage!.avatar) {
+      userUpdate.avatar = avatar.filename;
+      await removeExistingImages({
+        filename: userHasImage!.avatar,
+        environment: process.env.NODE_ENV,
+      });
+    }
+    await UserRepository.updateUser(userUpdate);
   } catch (err: any) {
     console.error(err);
     throw new AppError(400, 'Erreur lors de la mise à jour du profil.');
