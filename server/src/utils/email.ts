@@ -20,7 +20,7 @@ export default class Email {
   constructor(private user: Prisma.UserCreateInput, private url: string) {
     this.#username = user.username.split(' ')[0];
     this.#to = user.email;
-    this.#from = `Tournament <arnaud@prochainweb.com>`;
+    this.#from = `Prochainweb <arnaud@prochainweb.com>`;
   }
 
   private newTransport() {
