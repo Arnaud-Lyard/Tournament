@@ -20,7 +20,7 @@ export default class Email {
   constructor(private user: Prisma.UserCreateInput, private url: string) {
     this.#username = user.username.split(' ')[0];
     this.#to = user.email;
-    this.#from = `Tournament <contact@tournament.com>`;
+    this.#from = `Tournament <arnaud@prochainweb.com>`;
   }
 
   private newTransport() {
@@ -56,7 +56,7 @@ export default class Email {
 
       // Send email
       const info = await this.newTransport().sendMail(mailOptions);
-      // console.log(nodemailer.getTestMessageUrl(info));
+      console.log(nodemailer.getTestMessageUrl(info));
     } catch (error) {
       logger.error(`Error during send mail: ${error}`);
     }
