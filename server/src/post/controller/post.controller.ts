@@ -3,6 +3,7 @@ import { getUserInformations } from '../../utils/getUserInformations';
 import { IUser } from '../../types/user';
 import {
   AddPostInput,
+  EditPostInput,
   GetPostInput,
   PublishPostInput,
 } from '../schema/post.schema';
@@ -10,6 +11,7 @@ import {
   addPost,
   changePostStatus,
   checkIfPostExist,
+  editPost,
   getAllPosts,
   getPost,
 } from '../service/post.service';
@@ -182,6 +184,35 @@ export const getPostHandler = async (
       data: {
         post,
       },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const editPostHandler = async (
+  req: Request<EditPostInput['params'], {}, EditPostInput['body']>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = (await getUserInformations(req, next)) as IUser;
+
+    await editPost({
+      user,
+      id: req.params.id,
+      frenchContent: req.body.frenchContent,
+      englishContent: req.body.englishContent,
+      categoryIds: req.body.categoryIds,
+      frenchTitle: req.body.frenchTitle,
+      englishTitle: req.body.englishTitle,
+      image: req.file,
+    });
+
+    const message = req.language === 'fr' ? 'Article modifié' : 'Post edited';
+    res.status(200).json({
+      status: 'success',
+      message,
     });
   } catch (err: any) {
     next(err);

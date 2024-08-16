@@ -141,7 +141,12 @@ export default function EditPost({ params }: { params: { id: string } }) {
     try {
       const response = await http
         .service()
-        .push<ICreatePostResponse, any>(`posts`, formData, undefined, true);
+        .update<ICreatePostResponse, any>(
+          `posts/${params.id}`,
+          formData,
+          undefined,
+          true
+        );
       if (response.status === 'success') {
         setMessage(response.message);
       }
@@ -223,7 +228,6 @@ export default function EditPost({ params }: { params: { id: string } }) {
                   type="file"
                   name="file"
                   onChange={handleFileChange}
-                  required
                 ></input>
               </button>
             </div>
