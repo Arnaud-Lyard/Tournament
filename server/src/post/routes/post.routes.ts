@@ -1,24 +1,23 @@
 import express from 'express';
 import { authenticateUser } from '../../middleware/authenticateUser';
 import { readLanguage } from '../../middleware/readLanguage';
-import {
-  addPostHandler,
-  getDisablePostHandler,
-  getPostHandler,
-  getPublishPostHandler,
-} from '../controller/post.controller';
-import { addCategoryHandler } from '../controller/post.controller';
-import { getCategoriesHandler } from '../controller/post.controller';
+import { uploadFile } from '../../middleware/uploadFile';
 import { validate } from '../../middleware/validate';
 import {
-  addPostSchema,
+  addCategoryHandler,
+  addPostHandler,
+  editPostHandler,
+  getCategoriesHandler,
+  getDisablePostHandler,
+  getPostHandler,
+  getPostsHandler,
+  getPublishPostHandler,
+} from '../controller/post.controller';
+import {
   addCategorySchema,
-  publishPostSchema,
   disablePostSchema,
+  publishPostSchema,
 } from '../schema/post.schema';
-import { uploadFile } from '../../middleware/uploadFile';
-import { getPostsHandler } from '../controller/post.controller';
-import { get } from 'config';
 
 const router = express.Router();
 
@@ -54,4 +53,5 @@ router.post(
   getDisablePostHandler
 );
 
+router.put('/:id', readLanguage, authenticateUser, uploadFile, editPostHandler);
 export default router;
