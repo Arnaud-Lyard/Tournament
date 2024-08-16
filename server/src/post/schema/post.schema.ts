@@ -50,6 +50,29 @@ export const getPostSchema = object({
   }),
 });
 
+export const editPostSchema = object({
+  params: object({
+    id: string({
+      required_error: 'Post id is required.',
+    }),
+  }),
+  body: object({
+    frenchContent: string({
+      required_error: 'Post can not be empty.',
+    }).min(1, 'You must provide a post.'),
+    englishContent: string({
+      required_error: 'Post can not be empty.',
+    }).min(1, 'You must provide a post.'),
+    categoryIds: string().array().nonempty('You must chose a category.'),
+    frenchTitle: string({
+      required_error: 'Title can not be empty',
+    }).min(1, 'You must provide a title'),
+    englishTitle: string({
+      required_error: 'Title can not be empty',
+    }).min(1, 'You must provide a title'),
+  }),
+});
+
 export type AddPostInput = TypeOf<typeof addPostSchema>['body'];
 export type AddCategoryInput = TypeOf<typeof addCategorySchema>['body'];
 
@@ -57,3 +80,5 @@ export type PublishPostInput = TypeOf<typeof publishPostSchema>['params'];
 export type DisablePostInput = TypeOf<typeof disablePostSchema>['params'];
 
 export type GetPostInput = TypeOf<typeof getPostSchema>['params'];
+
+export type EditPostInput = TypeOf<typeof editPostSchema>;

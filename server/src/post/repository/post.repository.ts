@@ -3,6 +3,7 @@ import prisma from '../../../prisma/client';
 import { Category, Post } from '@prisma/client';
 import { File } from '../../types/file';
 import { PostStatusEnumType } from '@prisma/client';
+import { IPostUpdateDto } from '../dto/post.dto';
 
 export class PostRepository {
   static async create({
@@ -108,6 +109,44 @@ export class PostRepository {
       },
       data: {
         status,
+      },
+    });
+  }
+
+  static async findByPostId(id: string): Promise<Post | null> {
+    return await prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  static async updatePost(postUpdate: IPostUpdateDto) {
+    const {
+      id,
+      frenchContent,
+      englishContent,
+      frenchTitle,
+      englishTitle,
+      image,
+      categoryIds,
+    } = postUpdate;
+    return await prisma.post.update({
+      where: {
+        id,
+      },
+      data: {
+        frenchContent,
+        englishContent,
+        frenchTitle,
+        englishTitle,
+        categories: {
+          deleteMany: {},
+          create: categoryIds.map((categoryId) => ({
+            category: { connect: { id: categoryId } },
+          })),
+        },
+        image: image || undefined,
       },
     });
   }

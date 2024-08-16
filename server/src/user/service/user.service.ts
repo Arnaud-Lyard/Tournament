@@ -140,7 +140,6 @@ export async function updateUser({
     }
     await UserRepository.updateUser(userUpdate);
   } catch (err: any) {
-    console.error(err);
     throw new AppError(400, 'Erreur lors de la mise à jour du profil.');
   }
 }
