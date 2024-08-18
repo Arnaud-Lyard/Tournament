@@ -32,8 +32,8 @@ export default function Navbar() {
   const dictionary = useDictionary();
   const http = new HttpService();
   const [navigation, setNavigation] = useState([
-    { name: 'home', title: 'Home', href: '/home', current: true },
-    { name: 'Team', title: 'Team title', href: '#', current: false },
+    { name: 'home', title: 'Home', href: '/', current: false },
+    { name: 'post', title: 'Articles', href: '/post', current: false },
     { name: 'Projects', title: 'Project title', href: '#', current: false },
     { name: 'Calendar', title: 'Calendar title', href: '#', current: false },
     { name: 'Reports', title: 'Reports title', href: '#', current: false },
@@ -41,13 +41,23 @@ export default function Navbar() {
 
   function handleNavChange(path: string) {
     const lastPartPath = path.substring(path.lastIndexOf('/') + 1);
-    setNavigation(
-      navigation.map((nav) =>
-        nav.name === lastPartPath
-          ? { ...nav, current: true }
-          : { ...nav, current: false }
-      )
-    );
+    if (path === '/fr' || path === '/en') {
+      setNavigation(
+        navigation.map((nav) =>
+          nav.name === 'home'
+            ? { ...nav, current: true }
+            : { ...nav, current: false }
+        )
+      );
+    } else {
+      setNavigation(
+        navigation.map((nav) =>
+          nav.name === lastPartPath
+            ? { ...nav, current: true }
+            : { ...nav, current: false }
+        )
+      );
+    }
   }
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -111,12 +121,14 @@ export default function Navbar() {
               <div className="flex h-16 items-center justify-between px-4 sm:px-0">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <Image
-                      width={32}
-                      height={32}
-                      src={relaxingHippoquest}
-                      alt="Your Company"
-                    />
+                    <Link href="/">
+                      <Image
+                        width={32}
+                        height={32}
+                        src={relaxingHippoquest}
+                        alt="Your Company"
+                      />
+                    </Link>
                   </div>
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
