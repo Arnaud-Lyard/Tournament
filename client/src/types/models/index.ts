@@ -19,6 +19,7 @@ export interface IPost {
   englishContent: string;
   author: string;
   status: IStatusEnumType;
+  image: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -36,5 +37,6 @@ export interface IPostCategoryUser extends IPost {
   categories: { category: ICategory }[];
   user: {
     username: IUser['username'];
+    avatar: IUser['avatar'];
   };
 }

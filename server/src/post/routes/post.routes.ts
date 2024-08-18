@@ -12,6 +12,7 @@ import {
   getPostHandler,
   getPostsHandler,
   getPublishPostHandler,
+  getPublishPostsHandler,
 } from '../controller/post.controller';
 import {
   addCategorySchema,
@@ -35,6 +36,8 @@ router.post(
 
 router.get('/categories', readLanguage, authenticateUser, getCategoriesHandler);
 
+router.get('/publish', readLanguage, getPublishPostsHandler);
+
 router.get('/:id', readLanguage, getPostHandler);
 
 router.post(
@@ -54,4 +57,5 @@ router.post(
 );
 
 router.put('/:id', readLanguage, authenticateUser, uploadFile, editPostHandler);
+
 export default router;

@@ -117,3 +117,7 @@ export async function editPost({
     throw new AppError(400, 'Error while updating post.');
   }
 }
+
+export async function getPublishPosts() {
+  return await PostRepository.getPublishPosts();
+}
