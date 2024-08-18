@@ -14,6 +14,7 @@ import {
   editPost,
   getAllPosts,
   getPost,
+  getPublishPosts,
 } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
 import { addCategory } from '../service/post.service';
@@ -213,6 +214,25 @@ export const editPostHandler = async (
     res.status(200).json({
       status: 'success',
       message,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getPublishPostsHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const posts = await getPublishPosts();
+
+    res.status(200).json({
+      status: 'success',
+      datas: {
+        posts,
+      },
     });
   } catch (err: any) {
     next(err);

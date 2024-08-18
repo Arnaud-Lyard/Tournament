@@ -150,4 +150,25 @@ export class PostRepository {
       },
     });
   }
+
+  static async getPublishPosts(): Promise<Post[] | null> {
+    return await prisma.post.findMany({
+      include: {
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
+      },
+      where: {
+        status: PostStatusEnumType.published,
+      },
+    });
+  }
 }
