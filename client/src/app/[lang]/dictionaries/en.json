@@ -78,7 +78,9 @@
     "title": "Add a post",
     "formLabelOne": "French title:",
     "formLabelOneB": "English title:",
-    "formLabelTwo": "Categories:"
+    "formLabelTwo": "Categories:",
+    "formLabelThree": "French description:",
+    "formLabelThreeB": "English description:"
   },
   "buttons": {
     "submit": "Save",

@@ -12,6 +12,8 @@ export class PostRepository {
     englishContent,
     frenchTitle,
     englishTitle,
+    frenchDescription,
+    englishDescription,
     categoryIds,
     image,
   }: {
@@ -20,6 +22,8 @@ export class PostRepository {
     englishContent: string;
     frenchTitle: string;
     englishTitle: string;
+    frenchDescription: string;
+    englishDescription: string;
     categoryIds: string[];
     image: string;
   }): Promise<Post> {
@@ -27,6 +31,8 @@ export class PostRepository {
       data: {
         frenchTitle,
         englishTitle,
+        frenchDescription,
+        englishDescription,
         frenchContent,
         englishContent,
         image,
@@ -128,6 +134,8 @@ export class PostRepository {
       englishContent,
       frenchTitle,
       englishTitle,
+      frenchDescription,
+      englishDescription,
       image,
       categoryIds,
     } = postUpdate;
@@ -140,6 +148,8 @@ export class PostRepository {
         englishContent,
         frenchTitle,
         englishTitle,
+        frenchDescription,
+        englishDescription,
         categories: {
           deleteMany: {},
           create: categoryIds.map((categoryId) => ({

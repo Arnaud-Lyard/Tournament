@@ -35,6 +35,8 @@ export const addPostHandler = async (
       categoryIds: req.body.categoryIds,
       frenchTitle: req.body.frenchTitle,
       englishTitle: req.body.englishTitle,
+      frenchDescription: req.body.frenchDescription,
+      englishDescription: req.body.englishDescription,
       image: req.file,
     });
 
@@ -207,6 +209,8 @@ export const editPostHandler = async (
       categoryIds: req.body.categoryIds,
       frenchTitle: req.body.frenchTitle,
       englishTitle: req.body.englishTitle,
+      frenchDescription: req.body.frenchDescription,
+      englishDescription: req.body.englishDescription,
       image: req.file,
     });
 

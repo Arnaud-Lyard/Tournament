@@ -79,15 +79,9 @@ export default function Post({ params }: { params: { lang: string } }) {
                   {params.lang === 'fr' ? post.frenchTitle : post.englishTitle}
                 </h2>
                 <div className="max-w-xl pt-5 leading-relaxed text-gray-400">
-                  <div
-                    className="text-wrap"
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        params.lang === 'fr'
-                          ? `${post.frenchContent.substring(0, 250)}...`
-                          : `${post.englishContent.substring(0, 250)}...`,
-                    }}
-                  ></div>
+                  {params.lang === 'fr'
+                    ? post.frenchDescription
+                    : post.englishDescription}
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-gray-600">
                   <div className="flex items-center justify-center overflow-hidden rounded-full">

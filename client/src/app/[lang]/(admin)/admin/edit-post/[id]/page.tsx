@@ -54,6 +54,8 @@ export default function EditPost({ params }: { params: { id: string } }) {
   const [frenchTitle, setFrenchTitle] = useState<string>('');
   const [englishTitle, setEnglishTitle] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
+  const [frenchDescription, setFrenchDescription] = useState<string>('');
+  const [englishDescription, setEnglishDescription] = useState<string>('');
   const [activeTab, setActiveTab] = useState(
     tabs.find((tab) => tab.current)!.name
   );
@@ -66,6 +68,8 @@ export default function EditPost({ params }: { params: { id: string } }) {
       if (response.status === 'success') {
         setFrenchTitle(response.data.post.frenchTitle);
         setEnglishTitle(response.data.post.englishTitle);
+        setFrenchDescription(response.data.post.frenchDescription);
+        setEnglishDescription(response.data.post.englishDescription);
         setFrenchPostDatas(response.data.post.frenchContent);
         setEnglishPostDatas(response.data.post.englishContent);
         setSelectedCategories(
@@ -123,6 +127,8 @@ export default function EditPost({ params }: { params: { id: string } }) {
     const formData = new FormData();
     formData.append('frenchTitle', frenchTitle);
     formData.append('englishTitle', englishTitle);
+    formData.append('frenchDescription', frenchDescription);
+    formData.append('englishDescription', englishDescription);
     selectedCategoriesIds.forEach((categoryId) => {
       formData.append('categoryIds[]', categoryId);
     });
@@ -206,6 +212,50 @@ export default function EditPost({ params }: { params: { id: string } }) {
                 value={englishTitle}
                 onChange={(e) => {
                   setEnglishTitle(e.target.value);
+                }}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="frenchdescription"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              {dictionary.addPost.formLabelThree}
+            </label>
+            <div className="mt-2">
+              <input
+                id="frenchdescription"
+                name="frenchdescription"
+                type="text"
+                value={frenchDescription}
+                onChange={(e) => {
+                  setFrenchDescription(e.target.value);
+                }}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="englishDescription"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              {dictionary.addPost.formLabelThreeB}
+            </label>
+            <div className="mt-2">
+              <input
+                id="englishDescription"
+                name="englishDescription"
+                type="text"
+                value={englishDescription}
+                onChange={(e) => {
+                  setEnglishDescription(e.target.value);
                 }}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"

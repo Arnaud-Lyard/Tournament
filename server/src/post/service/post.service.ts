@@ -12,6 +12,8 @@ export async function addPost({
   englishContent,
   frenchTitle,
   englishTitle,
+  frenchDescription,
+  englishDescription,
   categoryIds,
   image,
 }: {
@@ -20,6 +22,8 @@ export async function addPost({
   englishContent: string;
   frenchTitle: string;
   englishTitle: string;
+  frenchDescription: string;
+  englishDescription: string;
   categoryIds: string[];
   image: File | undefined;
 }) {
@@ -27,6 +31,8 @@ export async function addPost({
     user,
     frenchContent,
     englishContent,
+    frenchDescription,
+    englishDescription,
     frenchTitle,
     englishTitle,
     categoryIds,
@@ -76,6 +82,8 @@ export async function editPost({
   englishContent,
   frenchTitle,
   englishTitle,
+  frenchDescription,
+  englishDescription,
   categoryIds,
   image,
 }: {
@@ -85,6 +93,8 @@ export async function editPost({
   englishContent: string;
   frenchTitle: string;
   englishTitle: string;
+  frenchDescription: string;
+  englishDescription: string;
   categoryIds: string[];
   image: File | undefined;
 }) {
@@ -94,6 +104,8 @@ export async function editPost({
     englishContent,
     frenchTitle,
     englishTitle,
+    frenchDescription,
+    englishDescription,
     categoryIds,
     image: null,
   };

@@ -35,20 +35,22 @@ model User {
 }
 
 model Post {
-  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  frenchTitle    String              @map("french_title") @db.VarChar(255)
-  englishTitle   String              @map("english_title") @db.VarChar(255)
-  frenchContent  String              @map("french_content") @db.Text
-  englishContent String              @map("english_content") @db.Text
-  image          String              @db.VarChar(255)
-  status         PostStatusEnumType  @default(draft)
-  user           User                @relation(fields: [authorId], references: [id])
-  authorId       String              @map("author_id") @db.Uuid
-  createdAt      DateTime            @default(now()) @map("created_at")
-  updatedAt      DateTime            @updatedAt @map("updated_at")
-  categories     CategoriesOnPosts[]
-  Comment        Comment[]
-  PostsOnUsers   PostsOnUsers[]
+  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  frenchTitle        String              @map("french_title") @db.VarChar(255)
+  englishTitle       String              @map("english_title") @db.VarChar(255)
+  frenchDescription  String              @map("french_description") @db.Text
+  englishDescription String              @map("english_description") @db.Text
+  frenchContent      String              @map("french_content") @db.Text
+  englishContent     String              @map("english_content") @db.Text
+  image              String              @db.VarChar(255)
+  status             PostStatusEnumType  @default(draft)
+  user               User                @relation(fields: [authorId], references: [id])
+  authorId           String              @map("author_id") @db.Uuid
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+  categories         CategoriesOnPosts[]
+  Comment            Comment[]
+  PostsOnUsers       PostsOnUsers[]
 
   @@map(name: "post")
 }

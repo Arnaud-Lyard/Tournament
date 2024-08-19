@@ -15,6 +15,8 @@ export interface IPost {
   id: string;
   frenchTitle: string;
   englishTitle: string;
+  frenchDescription: string;
+  englishDescription: string;
   frenchContent: string;
   englishContent: string;
   author: string;
