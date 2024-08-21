@@ -3,19 +3,6 @@ import { IGetPostsResponse } from '@/types/api';
 
 const http = new HttpService();
 
-export async function GET() {
-  const sitemap: Sitemap = [];
-  const dynamicPages: Sitemap = await pagesForSitemap();
-  sitemap.push(...pagesBase);
-  sitemap.push(...dynamicPages);
-  const sitemapXml = sitemapToXml(sitemap);
-
-  return new Response(sitemapXml, {
-    status: 200,
-    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
-  });
-}
-
 const pagesBase = [
   {
     url: process.env.NEXT_PUBLIC_APP_URL!,
@@ -38,6 +25,19 @@ const pagesBase = [
     priority: 0.7,
   },
 ];
+
+export async function GET() {
+  const sitemap: Sitemap = [];
+  const dynamicPages: Sitemap = await pagesForSitemap();
+  sitemap.push(...pagesBase);
+  sitemap.push(...dynamicPages);
+  const sitemapXml = sitemapToXml(sitemap);
+
+  return new Response(sitemapXml, {
+    status: 200,
+    headers: { 'Content-Type': 'application/xml; charset=utf-8' },
+  });
+}
 
 async function pagesForSitemap() {
   const {
@@ -73,7 +73,7 @@ const mapRowToUrl = (row: SitemapRow) =>
         <priority>${row.priority?.toFixed(1)}</priority>
     </url>`;
 
-export const sitemapToXml = (
+const sitemapToXml = (
   sitemap: SitemapRow[]
 ) => `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
@@ -85,7 +85,7 @@ export const sitemapToXml = (
 </urlset>
 `;
 
-export interface SitemapRow {
+interface SitemapRow {
   url: string;
   lastModified?: string | Date;
   changeFrequency?:
