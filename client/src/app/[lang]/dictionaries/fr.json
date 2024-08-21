@@ -78,7 +78,10 @@
     "title": "Ajouter un article",
     "formLabelOne": "Titre français :",
     "formLabelOneB": "Titre anglais : ",
-    "formLabelTwo": "Catégories : "
+    "formLabelTwo": "Catégories : ",
+    "formLabelThree": "Description français : ",
+    "formLabelThreeB": "Description anglais : ",
+    "formLabelFour": "Slug : "
   },
   "buttons": {
     "submit": "Enregistrer",

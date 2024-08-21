@@ -15,6 +15,15 @@ export const addPostSchema = object({
     englishTitle: string({
       required_error: 'Title can not be empty',
     }).min(1, 'You must provide a title'),
+    frenchDescription: string({
+      required_error: 'Description can not be empty',
+    }).min(1, 'You must provide a description'),
+    englishDescription: string({
+      required_error: 'Description can not be empty',
+    }).min(1, 'You must provide a description'),
+    slug: string({
+      required_error: 'Slug can not be empty',
+    }).min(1, 'You must provide a slug'),
   }),
 });
 
@@ -70,6 +79,15 @@ export const editPostSchema = object({
     englishTitle: string({
       required_error: 'Title can not be empty',
     }).min(1, 'You must provide a title'),
+    frenchDescription: string({
+      required_error: 'Description can not be empty',
+    }).min(1, 'You must provide a description'),
+    englishDescription: string({
+      required_error: 'Description can not be empty',
+    }).min(1, 'You must provide a description'),
+    slug: string({
+      required_error: 'Slug can not be empty',
+    }).min(1, 'You must provide a slug'),
   }),
 });
 

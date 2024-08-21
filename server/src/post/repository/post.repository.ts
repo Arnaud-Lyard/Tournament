@@ -12,6 +12,9 @@ export class PostRepository {
     englishContent,
     frenchTitle,
     englishTitle,
+    frenchDescription,
+    englishDescription,
+    slug,
     categoryIds,
     image,
   }: {
@@ -20,6 +23,9 @@ export class PostRepository {
     englishContent: string;
     frenchTitle: string;
     englishTitle: string;
+    frenchDescription: string;
+    englishDescription: string;
+    slug: string;
     categoryIds: string[];
     image: string;
   }): Promise<Post> {
@@ -27,6 +33,9 @@ export class PostRepository {
       data: {
         frenchTitle,
         englishTitle,
+        frenchDescription,
+        englishDescription,
+        slug,
         frenchContent,
         englishContent,
         image,
@@ -128,6 +137,9 @@ export class PostRepository {
       englishContent,
       frenchTitle,
       englishTitle,
+      frenchDescription,
+      englishDescription,
+      slug,
       image,
       categoryIds,
     } = postUpdate;
@@ -140,6 +152,9 @@ export class PostRepository {
         englishContent,
         frenchTitle,
         englishTitle,
+        frenchDescription,
+        englishDescription,
+        slug,
         categories: {
           deleteMany: {},
           create: categoryIds.map((categoryId) => ({
@@ -168,6 +183,26 @@ export class PostRepository {
       },
       where: {
         status: PostStatusEnumType.published,
+      },
+    });
+  }
+  static async getPostBySlug(slug: string): Promise<Post | null> {
+    return await prisma.post.findFirst({
+      where: {
+        slug,
+      },
+      include: {
+        categories: {
+          select: {
+            category: true,
+          },
+        },
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
       },
     });
   }
