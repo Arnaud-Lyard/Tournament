@@ -54,6 +54,7 @@ export default function AddPost() {
   const [activeTab, setActiveTab] = useState(
     tabs.find((tab) => tab.current)!.name
   );
+  const [slug, setSlug] = useState<string>('');
 
   const handleTabChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setActiveTab(event.target.value);
@@ -103,6 +104,7 @@ export default function AddPost() {
     formData.append('englishTitle', englishTitle);
     formData.append('frenchDescription', frenchDescription);
     formData.append('englishDescription', englishDescription);
+    formData.append('slug', slug);
     selectedCategoriesIds.forEach((categoryId) => {
       formData.append('categoryIds[]', categoryId);
     });
@@ -225,6 +227,28 @@ export default function AddPost() {
                 value={englishDescription}
                 onChange={(e) => {
                   setEnglishDescription(e.target.value);
+                }}
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
+
+          <div className="mb-5">
+            <label
+              htmlFor="slug"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              {dictionary.addPost.formLabelFour}
+            </label>
+            <div className="mt-2">
+              <input
+                id="slug"
+                name="slug"
+                type="text"
+                value={slug}
+                onChange={(e) => {
+                  setSlug(e.target.value);
                 }}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"

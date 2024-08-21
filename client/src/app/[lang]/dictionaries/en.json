@@ -80,7 +80,8 @@
     "formLabelOneB": "English title:",
     "formLabelTwo": "Categories:",
     "formLabelThree": "French description:",
-    "formLabelThreeB": "English description:"
+    "formLabelThreeB": "English description:",
+    "formLabelFour": "Slug:"
   },
   "buttons": {
     "submit": "Save",

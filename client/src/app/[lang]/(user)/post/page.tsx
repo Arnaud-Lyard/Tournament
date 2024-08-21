@@ -48,7 +48,7 @@ export default function Post({ params }: { params: { lang: string } }) {
           <article className="mx-auto w-full max-w-screen-lg" key={post.id}>
             <Link
               className="group flex flex-col items-center gap-5 md:flex-row md:gap-10"
-              href={`/post/${post.id}`}
+              href={`/post/${post.slug}`}
             >
               <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-800/40 md:aspect-square md:max-w-[300px]">
                 <Image
@@ -56,8 +56,8 @@ export default function Post({ params }: { params: { lang: string } }) {
                     params.lang === 'fr' ? post.frenchTitle : post.englishTitle
                   }
                   src={post.image}
-                  width={200}
-                  height={200}
+                  width={400}
+                  height={400}
                   priority={true}
                   className="w-full h-full object-contain transition duration-500 ease-in-out sm:group-hover:scale-105"
                 />

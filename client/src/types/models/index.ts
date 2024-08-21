@@ -19,6 +19,7 @@ export interface IPost {
   englishDescription: string;
   frenchContent: string;
   englishContent: string;
+  slug: string;
   author: string;
   status: IStatusEnumType;
   image: string;

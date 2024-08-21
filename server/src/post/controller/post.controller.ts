@@ -14,6 +14,7 @@ import {
   editPost,
   getAllPosts,
   getPost,
+  getPostBySlug,
   getPublishPosts,
 } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
@@ -37,6 +38,7 @@ export const addPostHandler = async (
       englishTitle: req.body.englishTitle,
       frenchDescription: req.body.frenchDescription,
       englishDescription: req.body.englishDescription,
+      slug: req.body.slug,
       image: req.file,
     });
 
@@ -211,6 +213,7 @@ export const editPostHandler = async (
       englishTitle: req.body.englishTitle,
       frenchDescription: req.body.frenchDescription,
       englishDescription: req.body.englishDescription,
+      slug: req.body.slug,
       image: req.file,
     });
 
@@ -236,6 +239,25 @@ export const getPublishPostsHandler = async (
       status: 'success',
       datas: {
         posts,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getPostBySlugHandler = async (
+  req: Request<{ slug: string }>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const post = await getPostBySlug(req.params.slug);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        post,
       },
     });
   } catch (err: any) {

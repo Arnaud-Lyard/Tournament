@@ -19,6 +19,7 @@ import {
   disablePostSchema,
   publishPostSchema,
 } from '../schema/post.schema';
+import { getPostBySlugHandler } from '../controller/post.controller';
 
 const router = express.Router();
 
@@ -37,6 +38,8 @@ router.post(
 router.get('/categories', readLanguage, authenticateUser, getCategoriesHandler);
 
 router.get('/publish', readLanguage, getPublishPostsHandler);
+
+router.get('/slug/:slug', readLanguage, getPostBySlugHandler);
 
 router.get('/:id', readLanguage, getPostHandler);
 

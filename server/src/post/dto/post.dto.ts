@@ -6,6 +6,7 @@ export interface IPostUpdateDto {
   englishTitle: string;
   frenchDescription: string;
   englishDescription: string;
+  slug: string;
   categoryIds: string[];
   image: string | null;
 }

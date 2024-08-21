@@ -80,7 +80,8 @@
     "formLabelOneB": "Titre anglais : ",
     "formLabelTwo": "Catégories : ",
     "formLabelThree": "Description français : ",
-    "formLabelThreeB": "Description anglais : "
+    "formLabelThreeB": "Description anglais : ",
+    "formLabelFour": "Slug : "
   },
   "buttons": {
     "submit": "Enregistrer",

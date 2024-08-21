@@ -7,7 +7,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 
 const http = new HttpService();
 type Props = {
-  params: { id: string; lang: string };
+  params: { slug: string; lang: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
@@ -15,8 +15,8 @@ export async function generateMetadata(
   { params, searchParams }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const id = params.id;
-  const post = await http.service().get<IGetPostResponse>(`posts/${id}`);
+  const slug = params.slug;
+  const post = await http.service().get<IGetPostResponse>(`posts/slug/${slug}`);
 
   const previousImages = (await parent).openGraph?.images || [];
   return {
@@ -48,13 +48,13 @@ export async function generateMetadata(
 export default async function PostDetail({
   params,
 }: {
-  params: { id: string; lang: string };
+  params: { slug: string; lang: string };
 }) {
   const http = new HttpService();
 
   const response = await http
     .service()
-    .get<IGetPostResponse>(`posts/${params.id}`);
+    .get<IGetPostResponse>(`posts/slug/${params.slug}`);
   const title =
     params.lang === 'fr'
       ? response.data.post.frenchTitle

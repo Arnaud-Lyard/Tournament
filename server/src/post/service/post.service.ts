@@ -14,6 +14,7 @@ export async function addPost({
   englishTitle,
   frenchDescription,
   englishDescription,
+  slug,
   categoryIds,
   image,
 }: {
@@ -24,6 +25,7 @@ export async function addPost({
   englishTitle: string;
   frenchDescription: string;
   englishDescription: string;
+  slug: string;
   categoryIds: string[];
   image: File | undefined;
 }) {
@@ -35,6 +37,7 @@ export async function addPost({
     englishDescription,
     frenchTitle,
     englishTitle,
+    slug,
     categoryIds,
     image: image!.filename,
   });
@@ -84,6 +87,7 @@ export async function editPost({
   englishTitle,
   frenchDescription,
   englishDescription,
+  slug,
   categoryIds,
   image,
 }: {
@@ -95,6 +99,7 @@ export async function editPost({
   englishTitle: string;
   frenchDescription: string;
   englishDescription: string;
+  slug: string;
   categoryIds: string[];
   image: File | undefined;
 }) {
@@ -106,6 +111,7 @@ export async function editPost({
     englishTitle,
     frenchDescription,
     englishDescription,
+    slug,
     categoryIds,
     image: null,
   };
@@ -132,4 +138,8 @@ export async function editPost({
 
 export async function getPublishPosts() {
   return await PostRepository.getPublishPosts();
+}
+
+export async function getPostBySlug(slug: string) {
+  return await PostRepository.getPostBySlug(slug);
 }

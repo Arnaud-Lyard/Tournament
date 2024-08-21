@@ -21,6 +21,9 @@ export const addPostSchema = object({
     englishDescription: string({
       required_error: 'Description can not be empty',
     }).min(1, 'You must provide a description'),
+    slug: string({
+      required_error: 'Slug can not be empty',
+    }).min(1, 'You must provide a slug'),
   }),
 });
 
@@ -82,6 +85,9 @@ export const editPostSchema = object({
     englishDescription: string({
       required_error: 'Description can not be empty',
     }).min(1, 'You must provide a description'),
+    slug: string({
+      required_error: 'Slug can not be empty',
+    }).min(1, 'You must provide a slug'),
   }),
 });
 

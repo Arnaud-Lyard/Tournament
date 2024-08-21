@@ -42,6 +42,7 @@ model Post {
   englishDescription String              @map("english_description") @db.Text
   frenchContent      String              @map("french_content") @db.Text
   englishContent     String              @map("english_content") @db.Text
+  slug               String              @db.VarChar(255)
   image              String              @db.VarChar(255)
   status             PostStatusEnumType  @default(draft)
   user               User                @relation(fields: [authorId], references: [id])
