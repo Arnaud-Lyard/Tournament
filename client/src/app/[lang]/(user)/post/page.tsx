@@ -48,7 +48,7 @@ export default function Post({ params }: { params: { lang: string } }) {
           <article className="mx-auto w-full max-w-screen-lg" key={post.id}>
             <Link
               className="group flex flex-col items-center gap-5 md:flex-row md:gap-10"
-              href={`/post/${post.id}`}
+              href={`/post/${post.slug}`}
             >
               <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-800/40 md:aspect-square md:max-w-[300px]">
                 <Image
@@ -56,8 +56,8 @@ export default function Post({ params }: { params: { lang: string } }) {
                     params.lang === 'fr' ? post.frenchTitle : post.englishTitle
                   }
                   src={post.image}
-                  width={200}
-                  height={200}
+                  width={400}
+                  height={400}
                   priority={true}
                   className="w-full h-full object-contain transition duration-500 ease-in-out sm:group-hover:scale-105"
                 />
@@ -79,15 +79,9 @@ export default function Post({ params }: { params: { lang: string } }) {
                   {params.lang === 'fr' ? post.frenchTitle : post.englishTitle}
                 </h2>
                 <div className="max-w-xl pt-5 leading-relaxed text-gray-400">
-                  <div
-                    className="text-wrap"
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        params.lang === 'fr'
-                          ? `${post.frenchContent.substring(0, 250)}...`
-                          : `${post.englishContent.substring(0, 250)}...`,
-                    }}
-                  ></div>
+                  {params.lang === 'fr'
+                    ? post.frenchDescription
+                    : post.englishDescription}
                 </div>
                 <div className="mt-5 flex items-center gap-2 text-gray-600">
                   <div className="flex items-center justify-center overflow-hidden rounded-full">

@@ -15,8 +15,11 @@ export interface IPost {
   id: string;
   frenchTitle: string;
   englishTitle: string;
+  frenchDescription: string;
+  englishDescription: string;
   frenchContent: string;
   englishContent: string;
+  slug: string;
   author: string;
   status: IStatusEnumType;
   image: string;
