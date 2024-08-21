@@ -51,7 +51,10 @@ async function i18nMiddleware(request: NextRequest) {
 }
 
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname === '/sitemap.xml') {
+  if (
+    request.nextUrl.pathname === '/sitemap.xml' ||
+    request.nextUrl.pathname === '/sitemap.xsl'
+  ) {
     return NextResponse.next();
   }
 
