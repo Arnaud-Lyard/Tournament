@@ -6,7 +6,7 @@ const http = new HttpService();
 const pagesBase = [
   {
     url: process.env.NEXT_PUBLIC_APP_URL!,
-    lastModified: new Date(),
+    lastModified: new Date().toISOString(),
     alternateRefs: [
       { href: `${process.env.NEXT_PUBLIC_APP_URL!}/fr`, hreflang: 'fr' },
       { href: `${process.env.NEXT_PUBLIC_APP_URL!}/en`, hreflang: 'en' },
@@ -16,7 +16,7 @@ const pagesBase = [
   },
   {
     url: `${process.env.NEXT_PUBLIC_APP_URL}/post`,
-    lastModified: new Date(),
+    lastModified: new Date().toISOString(),
     alternateRefs: [
       { href: `${process.env.NEXT_PUBLIC_APP_URL}/fr/post`, hreflang: 'fr' },
       { href: `${process.env.NEXT_PUBLIC_APP_URL}/en/post`, hreflang: 'en' },
@@ -45,7 +45,7 @@ async function pagesForSitemap() {
   } = await http.service().get<IGetPostsResponse>(`/posts/publish`);
   return posts.map((post) => ({
     url: `${process.env.NEXT_PUBLIC_APP_URL}/post/${post.slug}`,
-    lastModified: new Date(post.updatedAt),
+    lastModified: new Date(post.updatedAt).toISOString(),
     alternateRefs: [
       {
         href: `${process.env.NEXT_PUBLIC_APP_URL}/fr/post/${post.slug}`,
