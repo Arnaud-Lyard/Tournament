@@ -34,9 +34,6 @@ export default function Navbar() {
   const [navigation, setNavigation] = useState([
     { name: 'home', title: 'Home', href: '/', current: false },
     { name: 'post', title: 'Articles', href: '/post', current: false },
-    { name: 'Projects', title: 'Project title', href: '#', current: false },
-    { name: 'Calendar', title: 'Calendar title', href: '#', current: false },
-    { name: 'Reports', title: 'Reports title', href: '#', current: false },
   ]);
 
   function handleNavChange(path: string) {

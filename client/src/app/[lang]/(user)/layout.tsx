@@ -1,5 +1,27 @@
+import { Metadata } from 'next';
 import '../../globals.css';
 import Navbar from '@/components/navbar';
+
+export function generateMetadata({
+  params,
+}: {
+  params: { lang: string };
+}): Metadata {
+  const title =
+    params.lang === 'fr'
+      ? 'Veille technologique | Prochainweb'
+      : 'Technology Watch | Prochainweb';
+
+  const description =
+    params.lang === 'fr'
+      ? 'Découvrir les évolutions des langages de programmation, les nouveaux frameworks, les outils, les bonnes pratiques et les tendances du web.'
+      : 'Discover the evolutions of programming languages, new frameworks, tools, best practices and web trends.';
+
+  return {
+    title,
+    description,
+  };
+}
 
 export default function UserLayout({
   auth,
