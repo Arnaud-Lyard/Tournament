@@ -22,8 +22,8 @@ export async function generateMetadata(
   return {
     title:
       params.lang === 'fr'
-        ? post.data.post.frenchTitle
-        : post.data.post.englishTitle,
+        ? `${post.data.post.frenchTitle} | Prochainweb`
+        : `${post.data.post.englishTitle} | Prochainweb`,
     description:
       params.lang === 'fr'
         ? post.data.post.frenchDescription
