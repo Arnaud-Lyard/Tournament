@@ -41,7 +41,7 @@
   },
   "verifyEmail": {
     "confirm": "Votre adresse e-mail a été vérifiée",
-    "text": "Vous serez redirigé dans quelques secondes."
+    "text": "Vous avez allez recevoir un nouveau message avec des informations supplémentaires."
   },
   "profile": {
     "titleOne": "Mon profil",

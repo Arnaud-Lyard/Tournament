@@ -56,7 +56,7 @@ export default class Email {
 
       // Send email
       const info = await this.newTransport().sendMail(mailOptions);
-      console.log(nodemailer.getTestMessageUrl(info));
+      // console.log(nodemailer.getTestMessageUrl(info));
     } catch (error) {
       logger.error(`Error during send mail: ${error}`);
     }
@@ -76,5 +76,13 @@ export default class Email {
         ? `Votre réinitialisation de mot de passe (valide pour seulement 10 minutes)`
         : `Your password reset token (valid for only 10 minutes)`;
     await this.send('resetPassword', langage, subject);
+  }
+
+  async sendConfirmMessage(langage: Lang) {
+    const subject =
+      langage === 'fr'
+        ? `Informations suite à votre inscription`
+        : `Information following your registration`;
+    await this.send('confirmation', langage, subject);
   }
 }
