@@ -41,7 +41,7 @@
   },
   "verifyEmail": {
     "confirm": "Your email address has been verified",
-    "text": "You will be redirected in few seconds."
+    "text": "You will receive a new message with additional information."
   },
   "profile": {
     "titleOne": "My profile",
@@ -82,6 +82,12 @@
     "formLabelThree": "French description:",
     "formLabelThreeB": "English description:",
     "formLabelFour": "Slug:"
+  },
+  "unsubscribe": {
+    "title": "Unsubscribe from emails",
+    "description": "You can unsubscribe from our emails by clicking the button below.",
+    "button": "Unsubscribe",
+    "success": "You have been successfully unsubscribed."
   },
   "buttons": {
     "submit": "Save",

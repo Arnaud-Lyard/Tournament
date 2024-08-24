@@ -24,6 +24,7 @@ const envSchema = z.object({
   EMAIL_PORT: z.string(),
 
   LOGTAIL_SOURCE_TOKEN: z.string(),
+  DISCORD_INVITATION_LINK: z.string(),
 });
 
 export function validateEnv() {
@@ -49,6 +50,7 @@ export function validateEnv() {
     EMAIL_PORT: process.env.EMAIL_PORT,
 
     LOGTAIL_SOURCE_TOKEN: process.env.LOGTAIL_SOURCE_TOKEN,
+    DISCORD_INVITATION_LINK: process.env.DISCORD_INVITATION_LINK,
   });
 
   if (!envServer.success) {

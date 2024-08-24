@@ -1,4 +1,4 @@
-import { boolean, object, string, TypeOf, z } from 'zod';
+import { object, string, TypeOf } from 'zod';
 
 export const updateUserSchema = object({
   body: object({
@@ -7,4 +7,13 @@ export const updateUserSchema = object({
   }),
 });
 
+export const unsubscribeUserSchema = object({
+  params: object({
+    id: string({}),
+  }),
+});
+
 export type UpdateUserInput = TypeOf<typeof updateUserSchema>['body'];
+export type UnsubscribeUserInput = TypeOf<
+  typeof unsubscribeUserSchema
+>['params'];

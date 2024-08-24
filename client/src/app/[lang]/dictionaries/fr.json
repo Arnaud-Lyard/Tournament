@@ -41,7 +41,7 @@
   },
   "verifyEmail": {
     "confirm": "Votre adresse e-mail a été vérifiée",
-    "text": "Vous serez redirigé dans quelques secondes."
+    "text": "Vous avez allez recevoir un nouveau message avec des informations supplémentaires."
   },
   "profile": {
     "titleOne": "Mon profil",
@@ -82,6 +82,12 @@
     "formLabelThree": "Description français : ",
     "formLabelThreeB": "Description anglais : ",
     "formLabelFour": "Slug : "
+  },
+  "unsubscribe": {
+    "title": "Se désabonner des e-mails",
+    "description": "Vous pouvez vous désinscrire de nos emails en cliquant sur le bouton ci-dessous.",
+    "button": "Se désabonner",
+    "success": "Vous avez été désabonné avec succès."
   },
   "buttons": {
     "submit": "Enregistrer",

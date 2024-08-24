@@ -147,3 +147,7 @@ export async function updateUser({
 export async function getUserInformations(userId: string) {
   return await UserRepository.getUserInformations(userId);
 }
+
+export async function disabledEmail(userId: string) {
+  return await UserRepository.disabledEmail(userId);
+}
