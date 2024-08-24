@@ -1,8 +1,8 @@
+import '../globals.css';
 import { Metadata } from 'next';
 import Favicon from '~/public/assets/images/favicon.ico';
 import { getDictionary } from './dictionaries';
 import DictionaryProvider from '../../providers/dictionary-provider';
-import '../globals.css';
 
 export function generateMetadata({
   params,

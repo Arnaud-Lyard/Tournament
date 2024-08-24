@@ -16,9 +16,6 @@ export default function VerifyEmail({ params }: { params: { token: string } }) {
       const response = await http
         .service()
         .get<IResponse>(`/auth/verifyemail/${params.token}`);
-      setTimeout(() => {
-        router.push('/home');
-      }, 5000);
     } catch (e: any) {}
   }
 

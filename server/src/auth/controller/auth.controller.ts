@@ -22,6 +22,7 @@ import {
   ResetPasswordInput,
   VerifyEmailInput,
 } from '../schema/auth.schema';
+import { sendConfirmMessage } from '../service/auth.service';
 
 const cookiesOptions: CookieOptions = {
   httpOnly: true,
@@ -201,6 +202,11 @@ export const verifyEmailHandler = async (
       );
     }
     await verifyUser(user.id);
+
+    await sendConfirmMessage({
+      user,
+      langage: req.language,
+    });
 
     res.status(200).json({
       status: 'success',

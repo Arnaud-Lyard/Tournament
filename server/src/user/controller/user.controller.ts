@@ -3,8 +3,12 @@ import { IUser } from '../../types/user';
 import AppError from '../../utils/appError';
 import { getUserInformations } from '../../utils/getUserInformations';
 import { getUserInformationsByToken } from '../../utils/getUserInformationsByToken';
-import { UpdateUserInput } from '../schema/user.schema';
-import { updateUser } from '../service/user.service';
+import { UnsubscribeUserInput, UpdateUserInput } from '../schema/user.schema';
+import {
+  disabledEmail,
+  findUniqueUser,
+  updateUser,
+} from '../service/user.service';
 
 export const getUserHandler = async (
   req: Request,
@@ -92,6 +96,36 @@ export const getProfileHandler = async (
     res.status(200).json({
       status: 'success',
       data: { user },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getUnsubscribeHandler = async (
+  req: Request<UnsubscribeUserInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = await findUniqueUser(req.params.id);
+
+    if (!user) {
+      return next(
+        new AppError(
+          404,
+          req.language === 'fr' ? 'Utilisateur non trouvé' : 'User not found'
+        )
+      );
+    }
+    await disabledEmail(user.id);
+
+    res.status(200).json({
+      status: 'success',
+      message:
+        req.language === 'fr'
+          ? 'Vous avez été désinscrit avec succès'
+          : 'You have been successfully unsubscribed',
     });
   } catch (err: any) {
     next(err);
