@@ -89,3 +89,8 @@ export interface IGetPostResponse {
     post: IPostCategoryUser;
   };
 }
+
+export interface IUnsubscribeResponse {
+  status: string;
+  message: string;
+}

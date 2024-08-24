@@ -83,6 +83,12 @@
     "formLabelThreeB": "English description:",
     "formLabelFour": "Slug:"
   },
+  "unsubscribe": {
+    "title": "Unsubscribe from emails",
+    "description": "You can unsubscribe from our emails by clicking the button below.",
+    "button": "Unsubscribe",
+    "success": "You have been successfully unsubscribed."
+  },
   "buttons": {
     "submit": "Save",
     "cancel": "Cancel",

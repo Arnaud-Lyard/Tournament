@@ -118,9 +118,16 @@ export class UserRepository {
       select: {
         role: true,
         username: true,
-        avatar: true
+        avatar: true,
       },
     });
     return userinfos;
+  }
+
+  static async disabledEmail(userId: string): Promise<User> {
+    return await prisma.user.update({
+      where: { id: userId },
+      data: { mailSubscription: false },
+    });
   }
 }

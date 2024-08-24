@@ -83,6 +83,12 @@
     "formLabelThreeB": "Description anglais : ",
     "formLabelFour": "Slug : "
   },
+  "unsubscribe": {
+    "title": "Se désabonner des e-mails",
+    "description": "Vous pouvez vous désinscrire de nos emails en cliquant sur le bouton ci-dessous.",
+    "button": "Se désabonner",
+    "success": "Vous avez été désabonné avec succès."
+  },
   "buttons": {
     "submit": "Enregistrer",
     "cancel": "Annuler",

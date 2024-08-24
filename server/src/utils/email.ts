@@ -16,9 +16,11 @@ export default class Email {
   #username: string;
   #to: string;
   #from: string;
+  #userId: string;
 
   constructor(private user: Prisma.UserCreateInput, private url: string) {
     this.#username = user.username.split(' ')[0];
+    this.#userId = user.id!;
     this.#to = user.email;
     this.#from = `Prochainweb <arnaud@prochainweb.com>`;
   }
@@ -42,6 +44,9 @@ export default class Email {
           username: this.#username,
           subject,
           url: this.url,
+          unsubscribeUrl: `${process.env.CLIENT_URL}/unsubscribe/${
+            this.#userId
+          }`,
         }
       );
 
