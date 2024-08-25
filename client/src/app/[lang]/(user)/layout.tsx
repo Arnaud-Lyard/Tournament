@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import '../../globals.css';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 export default function UserLayout({
   auth,
@@ -31,6 +32,7 @@ export default function UserLayout({
             </div>
           </div>
         </main>
+        <Footer />
       </div>
     </>
   );
