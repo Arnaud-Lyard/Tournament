@@ -129,9 +129,14 @@
     "listFive": "Droit à l'effacement : vous pouvez demander la suppression de votre compte et de vos données personnelles en nous contactant à l'adresse suivante : arnaud@prochainweb.com.",
     "listSix": "Droit d'opposition : vous pouvez vous opposer à l'utilisation de vos données personnelles dans certains cas.",
     "titleFive": "5. Utilisation des Cookies",
-    "textEight": "Le site Prochainweb utilise des cookies pour la connexion des utilisateurs. Ces cookies sont nécessaires au bon fonctionnement du site et ne sont pas utilisés à des fins publicitaires. Toutefois, nous mettrons prochainement en place un système permettant de recueillir le consentement explicite des utilisateurs pour l'utilisation de cookies.",
+    "textEight": "Le site Prochainweb utilise des cookies pour la connexion des utilisateurs. Ces cookies sont nécessaires au bon fonctionnement du site et ne sont pas utilisés à des fins publicitaires.",
     "titleSix": "6. Modifications de la Politique de Confidentialité",
     "textNine": "Prochainweb se réserve le droit de modifier la présente politique de confidentialité à tout moment. Les utilisateurs seront informés de tout changement important via l'adresse e-mail fournie lors de l'inscription."
+  },
+  "cookies": {
+    "partOne": "Ce site utilise des ",
+    "partTwo": "pour vous offrir la meilleure expérience sur notre site.",
+    "button": "Accepter"
   },
   "buttons": {
     "submit": "Enregistrer",
