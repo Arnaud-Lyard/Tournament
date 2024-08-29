@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState, FormEvent } from 'react';
 import { HttpService } from '@/services';
 import { IError, IErrorDtoInfos, IResponse } from '@/types/api';
-import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
+import logo from '~/public/assets/images/prochainweb.svg';
 import Link from 'next/link';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
 import { getDictionary } from '../../dictionaries';
@@ -45,8 +45,8 @@ export default function Login({
             width={40}
             height={40}
             className="mx-auto h-10 w-auto"
-            src={relaxingHippoquest}
-            alt="Your Company"
+            src={logo}
+            alt="Prochainweb"
           />
           <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             {dictionary.forgotPassword.title}

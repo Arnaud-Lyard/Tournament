@@ -21,7 +21,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HttpService } from '@/services';
 import { IResponse } from '@/types/api';
-import relaxingHippoquest from '~/public/assets/images/relaxing-hippoquests.jpeg';
+import logo from '~/public/assets/images/prochainweb.svg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
 
@@ -122,8 +122,8 @@ export default function Navbar() {
                       <Image
                         width={32}
                         height={32}
-                        src={relaxingHippoquest}
-                        alt="Your Company"
+                        src={logo}
+                        alt="Prochainweb"
                       />
                     </Link>
                   </div>
@@ -333,8 +333,8 @@ export default function Navbar() {
                             width={32}
                             height={32}
                             className="h-8 w-8 rounded-full"
-                            src={relaxingHippoquest}
-                            alt=""
+                            src={logo}
+                            alt="Prochainweb"
                           />
                         </div>
                         <div className="ml-3">
