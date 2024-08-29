@@ -129,9 +129,14 @@
     "listFive": "Right to erasure: you can request the deletion of your account and personal data by contacting us at the following address: arnaud@prochainweb.com.",
     "listSix": "Right to object: you can object to the use of your personal data in certain cases.",
     "titleFive": "5. Use of Cookies",
-    "textEight": "The Prochainweb website uses cookies for user login. These cookies are necessary for the proper functioning of the site and are not used for advertising purposes. However, we will soon implement a system to collect explicit user consent for the use of cookies.",
+    "textEight": "The Prochainweb website uses cookies for user login. These cookies are necessary for the proper functioning of the site and are not used for advertising purposes.",
     "titleSix": "6. Changes to the Privacy Policy",
     "textNine": "Prochainweb reserves the right to modify this privacy policy at any time. Users will be informed of any significant changes via the email address provided during registration."
+  },
+  "cookies": {
+    "partOne": "This site uses ",
+    "partTwo": "to offer you the best experience on our site.",
+    "button": "Accept"
   },
   "buttons": {
     "submit": "Save",
