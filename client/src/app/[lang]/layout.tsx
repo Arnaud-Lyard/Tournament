@@ -29,8 +29,8 @@ export function generateMetadata({
     images: [
       {
         url: `${process.env.NEXT_PUBLIC_API_URL}/uploads/cover.png`,
-        width: 400,
-        height: 400,
+        width: 1200,
+        height: 630,
         alt: 'Prochainweb',
       },
     ],
