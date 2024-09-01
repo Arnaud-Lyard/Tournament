@@ -28,7 +28,7 @@ export function generateMetadata({
     type: 'website',
     images: [
       {
-        url: `${process.env.NEXT_PUBLIC_API_URL}/prochainweb.svg`,
+        url: `${process.env.NEXT_PUBLIC_API_URL}/uploads/prochainweb.svg`,
         width: 400,
         height: 400,
         alt: 'Prochainweb',
