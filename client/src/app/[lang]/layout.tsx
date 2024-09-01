@@ -33,13 +33,13 @@ export function generateMetadata({
         height: 630,
         alt: 'Prochainweb',
       },
+      {
+        url: `${process.env.NEXT_PUBLIC_API_URL}/uploads/prochainweb.svg`,
+        width: 400,
+        height: 400,
+        alt: 'Prochainweb logo',
+      },
     ],
-    logo: {
-      url: `${process.env.NEXT_PUBLIC_API_URL}/uploads/prochainweb.svg`,
-      width: 400,
-      height: 400,
-      alt: 'Prochainweb logo',
-    },
   };
 
   return {
