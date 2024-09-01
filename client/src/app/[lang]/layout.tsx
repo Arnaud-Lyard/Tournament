@@ -20,10 +20,27 @@ export function generateMetadata({
       ? 'Découvrir les évolutions des langages de programmation, les nouveaux frameworks, les outils, les bonnes pratiques et les tendances du web.'
       : 'Discover the evolutions of programming languages, new frameworks, tools, best practices and web trends.';
 
+  const openGraph = {
+    title,
+    description,
+    url: process.env.NEXT_PUBLIC_APP_URL,
+    siteName: 'Prochainweb',
+    type: 'website',
+    images: [
+      {
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/prochainweb.svg`,
+        width: 400,
+        height: 400,
+        alt: 'Prochainweb',
+      },
+    ],
+  };
+
   return {
     icons,
     title,
     description,
+    openGraph,
   };
 }
 
