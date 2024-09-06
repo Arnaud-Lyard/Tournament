@@ -61,6 +61,13 @@ export default async function RootLayout({
 
   return (
     <html lang={params.lang}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.ckeditor.com/ckeditor5/43.0.0/ckeditor5.css"
+        />
+      </head>
+
       <body>
         <DictionaryProvider dictionary={dictionary}>
           {children}
