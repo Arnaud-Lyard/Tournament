@@ -114,10 +114,7 @@ export default async function PostDetail({
         </div>
 
         <div className="mt-5">
-          <div
-            dangerouslySetInnerHTML={{ __html: postDatas }}
-            className="ck-content"
-          ></div>
+          <div dangerouslySetInnerHTML={{ __html: postDatas }}></div>
         </div>
       </div>
     </div>
