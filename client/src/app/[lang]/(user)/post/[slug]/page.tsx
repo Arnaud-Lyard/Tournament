@@ -18,7 +18,6 @@ export async function generateMetadata(
   const slug = params.slug;
   const post = await http.service().get<IGetPostResponse>(`posts/slug/${slug}`);
 
-  const previousImages = (await parent).openGraph?.images || [];
   return {
     title:
       params.lang === 'fr'
@@ -32,14 +31,13 @@ export async function generateMetadata(
       images: [
         {
           url: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${post.data.post.image}`,
-          width: 200,
-          height: 200,
+          width: 400,
+          height: 400,
           alt:
             params.lang === 'fr'
               ? post.data.post.frenchTitle
               : post.data.post.englishTitle,
         },
-        ...previousImages,
       ],
     },
   };
@@ -118,7 +116,7 @@ export default async function PostDetail({
         <div className="mt-5">
           <div
             dangerouslySetInnerHTML={{ __html: postDatas }}
-            className="text-gray-700"
+            className="ck-content"
           ></div>
         </div>
       </div>
