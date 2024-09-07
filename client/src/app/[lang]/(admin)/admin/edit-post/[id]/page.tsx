@@ -73,6 +73,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
         setEnglishDescription(response.data.post.englishDescription);
         setFrenchPostDatas(response.data.post.frenchContent);
         setEnglishPostDatas(response.data.post.englishContent);
+        setSlug(response.data.post.slug);
         setSelectedCategories(
           response.data.post.categories.map((category) => {
             return category.category;
