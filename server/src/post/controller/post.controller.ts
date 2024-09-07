@@ -20,6 +20,10 @@ import {
 import { AddCategoryInput } from '../schema/post.schema';
 import { addCategory } from '../service/post.service';
 import { getAllCategories } from '../service/post.service';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import AppError from '../../utils/appError';
 
 export const addPostHandler = async (
   req: Request<{}, {}, AddPostInput>,
@@ -259,6 +263,56 @@ export const getPostBySlugHandler = async (
       data: {
         post,
       },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const addImageHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const uploadDirectory = path.join(__dirname, '../../../public/uploads');
+
+    if (!fs.existsSync(uploadDirectory)) {
+      fs.mkdirSync(uploadDirectory, { recursive: true });
+    }
+
+    const storage = multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, uploadDirectory);
+      },
+      filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+      },
+    });
+
+    const upload = multer({
+      storage: storage,
+      limits: { fileSize: 5 * 1024 * 1024 },
+    }).single('upload');
+    upload(req, res, (err: any) => {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return next(
+            new AppError(400, 'File size is too large. Maximum size is 5MB.')
+          );
+        } else {
+          return next(
+            new AppError(500, 'An unknown error occurred during file upload.')
+          );
+        }
+      } else if (err) {
+        return next(
+          new AppError(500, 'An unknown error occurred during file upload.')
+        );
+      }
+      res.status(200).json({
+        url: process.env.SERVER_URL + '/uploads/' + req.file!.filename,
+      });
     });
   } catch (err: any) {
     next(err);

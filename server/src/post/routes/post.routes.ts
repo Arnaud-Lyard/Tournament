@@ -13,6 +13,7 @@ import {
   getPostsHandler,
   getPublishPostHandler,
   getPublishPostsHandler,
+  addImageHandler,
 } from '../controller/post.controller';
 import {
   addCategorySchema,
@@ -34,6 +35,8 @@ router.post(
   authenticateUser,
   addCategoryHandler
 );
+
+router.post('/image', authenticateUser, addImageHandler);
 
 router.get('/categories', readLanguage, authenticateUser, getCategoriesHandler);
 
