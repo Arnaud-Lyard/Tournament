@@ -27,6 +27,8 @@ import {
   ImageInsert,
   TodoList,
   EventInfo,
+  Indent,
+  IndentBlock,
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
@@ -77,6 +79,36 @@ function CustomEditor({
             'bulletedList',
             'numberedList',
             'todoList',
+            '|',
+            'outdent',
+            'indent',
+          ],
+        },
+        indentBlock: {
+          classes: [
+            'custom-block-indent-a',
+            'custom-block-indent-b',
+            'custom-block-indent-c',
+          ],
+        },
+        codeBlock: {
+          languages: [
+            {
+              language: 'plaintext',
+              label: 'Plain text',
+              class: 'default-code',
+            },
+            { language: 'php', label: 'PHP', class: 'php-code' },
+            {
+              language: 'javascript',
+              label: 'JavaScript',
+              class: 'javascript-code',
+            },
+            {
+              language: 'typescript',
+              label: 'typescript',
+              class: 'typescript-code',
+            },
           ],
         },
         plugins: [
@@ -103,6 +135,8 @@ function CustomEditor({
           List,
           TodoList,
           ImageInsert,
+          Indent,
+          IndentBlock,
         ],
       }}
       data={postDatas}
