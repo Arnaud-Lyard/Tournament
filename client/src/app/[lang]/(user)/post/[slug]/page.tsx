@@ -80,10 +80,10 @@ export default async function PostDetail({
     <div className="px-3 py-16 lg:px-5">
       <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
         <div className="text-center">
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-5">
             {title}
           </h1>
-          <h2 className="text-2xl text-gray-700">{description}</h2>
+          <h2 className="text-2xl text-gray-700 mb-2">{description}</h2>
           <div className="flex flex-wrap gap-2 justify-center">
             {categories.map((category) => {
               return (
