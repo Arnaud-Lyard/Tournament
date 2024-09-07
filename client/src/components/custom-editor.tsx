@@ -29,6 +29,8 @@ import {
   EventInfo,
   Indent,
   IndentBlock,
+  Image,
+  SimpleUploadAdapter,
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
@@ -82,6 +84,8 @@ function CustomEditor({
             '|',
             'outdent',
             'indent',
+            '|',
+            'insertImage',
           ],
         },
         indentBlock: {
@@ -111,6 +115,10 @@ function CustomEditor({
             },
           ],
         },
+        simpleUpload: {
+          uploadUrl: process.env.NEXT_PUBLIC_API_URL + '/posts/image',
+          withCredentials: true,
+        },
         plugins: [
           Bold,
           Essentials,
@@ -137,6 +145,9 @@ function CustomEditor({
           ImageInsert,
           Indent,
           IndentBlock,
+          Image,
+          ImageInsert,
+          SimpleUploadAdapter,
         ],
       }}
       data={postDatas}
