@@ -375,3 +375,13 @@
 .ck-content pre code.default-code {
   color: #fff;
 }
+
+.ck-content > h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.ck-content > h3 {
+  font-size: 1.25em;
+  font-weight: bold;
+}
