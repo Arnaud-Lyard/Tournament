@@ -43,6 +43,7 @@ export async function generateMetadata(
     authors: [
       {
         name: post.data.post.user.username,
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}/post/${params.slug}`,
       },
     ],
   };
@@ -140,7 +141,7 @@ export default async function PostDetail({
             className="ck-content"
           ></div>
         </div>
-        <p className="text-center text-gray-400 mt-5">
+        <p className="text-center text-gray-400 ">
           {params.lang === 'fr'
             ? 'Partage cet article sur les réseaux sociaux avec tes amis'
             : 'Share this article on social networks with your friends'}
