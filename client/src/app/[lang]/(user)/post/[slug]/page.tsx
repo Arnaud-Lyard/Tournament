@@ -39,8 +39,13 @@ export async function generateMetadata(
               : post.data.post.englishTitle,
         },
       ],
-      authors: post.data.post.author,
     },
+    authors: [
+      {
+        name: post.data.post.user.username,
+        url: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}/post/${params.slug}`,
+      },
+    ],
   };
 }
 
