@@ -16,12 +16,14 @@ export default async function Post({ params }: { params: { lang: string } }) {
     ...post,
     createdAt: moment(post.createdAt).format('L'),
     image: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${post.image}`,
-    user: {
-      username: post.user.username,
-      avatar: post.user.avatar
-        ? `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${post.user.avatar}`
-        : `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`,
-    },
+    user: [
+      {
+        username: post.user[0].username,
+        avatar: post.user[0].avatar
+          ? `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${post.user[0].avatar}`
+          : `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`,
+      },
+    ],
   }));
 
   return (
@@ -66,13 +68,13 @@ export default async function Post({ params }: { params: { lang: string } }) {
               <div className="mt-5 flex items-center gap-2 text-gray-600">
                 <div className="flex items-center justify-center overflow-hidden rounded-full">
                   <Image
-                    alt={post.user.username}
-                    src={post.user.avatar as string}
+                    alt={post.user[0].username}
+                    src={post.user[0].avatar as string}
                     width={40}
                     height={40}
                   />
                 </div>
-                <span>{post.user.username}</span>
+                <span>{post.user[0].username}</span>
               </div>
             </div>
           </Link>

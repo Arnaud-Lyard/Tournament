@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { CookieOptions, NextFunction, Request, Response } from 'express';
 import {
+  associateUserToAllPosts,
   checkIfEmailExist,
   createUser,
   findByEmail,
@@ -207,6 +208,8 @@ export const verifyEmailHandler = async (
       user,
       langage: req.language,
     });
+
+    await associateUserToAllPosts(user.id);
 
     res.status(200).json({
       status: 'success',

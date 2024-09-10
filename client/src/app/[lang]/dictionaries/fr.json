@@ -6,7 +6,9 @@
     "logout": "Déconnexion",
     "register": "Inscription",
     "profile": "Mon profil",
-    "blog": "Articles"
+    "blog": "Articles",
+    "notifications": "Voir les notifications",
+    "article": "Articles"
   },
   "forgotPassword": {
     "title": "Mot de passe oublié",

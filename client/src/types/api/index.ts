@@ -10,6 +10,7 @@ export interface IResponse {
       username: string;
       avatar: string;
       email: string;
+      notification: boolean;
     };
   };
 }
@@ -93,4 +94,21 @@ export interface IGetPostResponse {
 export interface IUnsubscribeResponse {
   status: string;
   message: string;
+}
+
+export interface IGetNewPostResponse {
+  status: string;
+  data: {
+    posts: IPostPostsOnUsers[];
+  };
+}
+
+export interface IPostPostsOnUsers extends IPost {
+  PostsOnUsers: PostsOnUser[];
+}
+
+export interface PostsOnUser {
+  userId: string;
+  postId: string;
+  isRead: boolean;
 }

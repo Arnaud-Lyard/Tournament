@@ -5,6 +5,7 @@ import { PostStatusEnumType } from '@prisma/client';
 import { IPostUpdateDto } from '../dto/post.dto';
 import { removeExistingImages } from '../../utils/removeExistingImages';
 import AppError from '../../utils/appError';
+import { UserRepository } from '../../user/repository/user.repository';
 
 export async function addPost({
   user,
@@ -29,18 +30,24 @@ export async function addPost({
   categoryIds: string[];
   image: File | undefined;
 }) {
-  return await PostRepository.create({
-    user,
-    frenchContent,
-    englishContent,
-    frenchDescription,
-    englishDescription,
-    frenchTitle,
-    englishTitle,
-    slug,
-    categoryIds,
-    image: image!.filename,
-  });
+  try {
+    const users = await UserRepository.findAll();
+    return await PostRepository.create({
+      user,
+      frenchContent,
+      englishContent,
+      frenchDescription,
+      englishDescription,
+      frenchTitle,
+      englishTitle,
+      slug,
+      categoryIds,
+      image: image!.filename,
+      users,
+    });
+  } catch (err: any) {
+    throw new AppError(400, 'Error while creating post.');
+  }
 }
 
 export async function addCategory({ name }: { name: string }) {
@@ -142,4 +149,13 @@ export async function getPublishPosts() {
 
 export async function getPostBySlug(slug: string) {
   return await PostRepository.getPostBySlug(slug);
+}
+
+export async function getNewPosts({ user }: { user: IUser }) {
+  return await PostRepository.getNewPosts({ user });
+}
+
+export async function resetNewPosts({ user }: { user: IUser }) {
+  const posts = await PostRepository.findAll();
+  return await PostRepository.resetNewPosts({ posts, user });
 }
