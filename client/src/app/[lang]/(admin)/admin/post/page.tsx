@@ -120,7 +120,7 @@ export default function Post({ params }: { params: { lang: string } }) {
                     <circle r={1} cx={1} cy={1} />
                   </svg>
                   <p className="truncate">
-                    {dictionary.adminpost.author} {post.user.username}
+                    {dictionary.adminpost.author} {post.user[0].username}
                   </p>
                 </div>
               </div>

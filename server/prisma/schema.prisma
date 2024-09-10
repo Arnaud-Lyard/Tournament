@@ -46,10 +46,9 @@ model Post {
   slug               String              @db.VarChar(255)
   image              String              @db.VarChar(255)
   status             PostStatusEnumType  @default(draft)
-  user               User                @relation(fields: [authorId], references: [id])
-  authorId           String              @map("author_id") @db.Uuid
   createdAt          DateTime            @default(now()) @map("created_at")
   updatedAt          DateTime            @updatedAt @map("updated_at")
+  user               User[]
   categories         CategoriesOnPosts[]
   Comment            Comment[]
   PostsOnUsers       PostsOnUsers[]

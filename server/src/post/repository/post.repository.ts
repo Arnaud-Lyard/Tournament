@@ -1,6 +1,6 @@
 import { IUser } from '../../types/user';
 import prisma from '../../../prisma/client';
-import { Category, Post } from '@prisma/client';
+import { Category, Post, User } from '@prisma/client';
 import { File } from '../../types/file';
 import { PostStatusEnumType } from '@prisma/client';
 import { IPostUpdateDto } from '../dto/post.dto';
@@ -17,6 +17,7 @@ export class PostRepository {
     slug,
     categoryIds,
     image,
+    users,
   }: {
     user: IUser;
     frenchContent: string;
@@ -28,6 +29,7 @@ export class PostRepository {
     slug: string;
     categoryIds: string[];
     image: string;
+    users: IUser[];
   }): Promise<Post> {
     return await prisma.post.create({
       data: {
@@ -47,6 +49,11 @@ export class PostRepository {
         categories: {
           create: categoryIds.map((categoryId) => ({
             category: { connect: { id: categoryId } },
+          })),
+        },
+        PostsOnUsers: {
+          create: users.map((user) => ({
+            user: { connect: { id: user.id } },
           })),
         },
       },
@@ -203,6 +210,48 @@ export class PostRepository {
             avatar: true,
           },
         },
+      },
+    });
+  }
+
+  static async findAll(): Promise<Post[]> {
+    return await prisma.post.findMany();
+  }
+
+  static async getNewPosts({ user }: { user: IUser }): Promise<Post[]> {
+    return await prisma.post.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 5,
+      where: {
+        status: PostStatusEnumType.published,
+        PostsOnUsers: {
+          some: {
+            isRead: false,
+            userId: user.id,
+          },
+        },
+      },
+      include: {
+        PostsOnUsers: true,
+      },
+    });
+  }
+
+  static async resetNewPosts({ posts, user }: { posts: Post[]; user: IUser }) {
+    return await prisma.postsOnUsers.updateMany({
+      where: {
+        postId: {
+          in: posts.map((post) => post.id),
+        },
+        userId: user.id,
+        post: {
+          status: PostStatusEnumType.published,
+        },
+      },
+      data: {
+        isRead: true,
       },
     });
   }
