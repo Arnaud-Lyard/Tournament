@@ -14,6 +14,8 @@ import {
   getPublishPostHandler,
   getPublishPostsHandler,
   addImageHandler,
+  getNewPostHandler,
+  getResetNewPostsHandler,
 } from '../controller/post.controller';
 import {
   addCategorySchema,
@@ -43,6 +45,10 @@ router.get('/categories', readLanguage, authenticateUser, getCategoriesHandler);
 router.get('/publish', readLanguage, getPublishPostsHandler);
 
 router.get('/slug/:slug', readLanguage, getPostBySlugHandler);
+
+router.get('/new', readLanguage, authenticateUser, getNewPostHandler);
+
+router.get('/reset', readLanguage, authenticateUser, getResetNewPostsHandler);
 
 router.get('/:id', readLanguage, getPostHandler);
 

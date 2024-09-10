@@ -20,7 +20,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { HttpService } from '@/services';
-import { IResponse } from '@/types/api';
+import { IGetNewPostResponse, IPostPostsOnUsers, IResponse } from '@/types/api';
 import logo from '~/public/assets/images/prochainweb.svg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
@@ -28,7 +28,7 @@ import { useDictionary } from '@/providers/dictionary-provider';
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
-export default function Navbar() {
+export default function Navbar({ params }: { params: { lang: string } }) {
   const dictionary = useDictionary();
   const http = new HttpService();
   const [navigation, setNavigation] = useState([
@@ -70,6 +70,8 @@ export default function Navbar() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<string>('');
+  const [notification, setNotification] = useState<boolean>(false);
+  const [newPosts, setNewPosts] = useState<IPostPostsOnUsers[]>([]);
 
   async function handleUserLoggedIn() {
     try {
@@ -88,6 +90,11 @@ export default function Navbar() {
         setName(response.data.informations.username);
         setEmail(response.data.informations.email);
         setRole(response.data.informations.role);
+
+        if (response.data.informations.notification === true) {
+          setNotification(true);
+          handleNewPost();
+        }
       } else {
         setIsLoggedIn(false);
       }
@@ -106,6 +113,23 @@ export default function Navbar() {
       if (response.status === 'success') {
         location.reload();
       }
+    } catch (e: any) {}
+  }
+
+  async function handleNewPost() {
+    try {
+      const response = await http
+        .service()
+        .get<IGetNewPostResponse>(`/posts/new`);
+      if (response.status === 'success') {
+        setNewPosts(response.data.posts);
+      }
+    } catch (e: any) {}
+  }
+
+  async function handleResetNewPost() {
+    try {
+      const response = await http.service().get<IResponse>(`/posts/reset`);
     } catch (e: any) {}
   }
 
@@ -175,19 +199,57 @@ export default function Navbar() {
                           </>
                         ) : (
                           <>
-                            <button
-                              type="button"
-                              className="relative rounded-full bg-gray-800 ml-3 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                            >
-                              <span className="absolute -inset-1.5" />
-                              <span className="sr-only">
-                                View notifications
-                              </span>
-                              <BellIcon
-                                className="h-6 w-6"
-                                aria-hidden="true"
-                              />
-                            </button>
+                            {notification ? (
+                              <Menu
+                                as="div"
+                                className="relative inline-block text-left"
+                              >
+                                <div>
+                                  <MenuButton
+                                    className="relative rounded-full bg-gray-800 ml-3 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                    onClick={() => handleResetNewPost()}
+                                  >
+                                    <span className="sr-only">
+                                      {dictionary.navigation.notifications}
+                                    </span>
+                                    <BellIcon
+                                      className="h-6 w-6"
+                                      aria-hidden="true"
+                                    />
+                                    {newPosts.length ? (
+                                      <span className="absolute top-0 right-0 inline-flex items-center justify-center h-2 w-2 rounded-full bg-red-500" />
+                                    ) : (
+                                      ''
+                                    )}
+                                  </MenuButton>
+                                </div>
+                                {newPosts.length ? (
+                                  <MenuItems className="absolute right-0 z-10 mt-2 w-64 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    {newPosts.map((post) => (
+                                      <MenuItem key={post.id}>
+                                        {({ active }) => (
+                                          <Link
+                                            href={`/post/${post.slug}`}
+                                            className={classNames(
+                                              active ? 'bg-gray-100' : '',
+                                              'block px-4 py-2 text-sm text-gray-700'
+                                            )}
+                                          >
+                                            {params.lang === 'fr'
+                                              ? post.frenchTitle
+                                              : post.englishTitle}
+                                          </Link>
+                                        )}
+                                      </MenuItem>
+                                    ))}
+                                  </MenuItems>
+                                ) : (
+                                  ''
+                                )}
+                              </Menu>
+                            ) : (
+                              ''
+                            )}
 
                             {/* Profile dropdown */}
                             <Menu as="div" className="relative ml-3">
@@ -303,7 +365,7 @@ export default function Navbar() {
                   )}
                   aria-current={item.current ? 'page' : undefined}
                 >
-                  {item.name}
+                  {item.title}
                 </DisclosureButton>
               ))}
             </div>
@@ -333,7 +395,7 @@ export default function Navbar() {
                             width={32}
                             height={32}
                             className="h-8 w-8 rounded-full"
-                            src={logo}
+                            src={avatar}
                             alt="Prochainweb"
                           />
                         </div>
@@ -359,6 +421,14 @@ export default function Navbar() {
                           className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                         >
                           {dictionary.navigation.profile}
+                        </DisclosureButton>
+                        <DisclosureButton
+                          key="article"
+                          as="a"
+                          href="/admin/post"
+                          className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                        >
+                          {dictionary.navigation.article}
                         </DisclosureButton>
                         <DisclosureButton
                           key="logout"

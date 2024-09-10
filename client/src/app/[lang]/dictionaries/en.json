@@ -6,7 +6,9 @@
     "logout": "Logout",
     "register": "Register",
     "profile": "My profile",
-    "blog": "Blog"
+    "blog": "Blog",
+    "notifications": "View notifications",
+    "article": "Blog"
   },
   "forgotPassword": {
     "title": "Forgot Password",

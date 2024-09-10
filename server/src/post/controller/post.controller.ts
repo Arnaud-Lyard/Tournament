@@ -13,9 +13,11 @@ import {
   checkIfPostExist,
   editPost,
   getAllPosts,
+  getNewPosts,
   getPost,
   getPostBySlug,
   getPublishPosts,
+  resetNewPosts,
 } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
 import { addCategory } from '../service/post.service';
@@ -318,3 +320,41 @@ export const addImageHandler = async (
     next(err);
   }
 };
+
+export const getNewPostHandler = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = (await getUserInformations(req, next)) as IUser;
+    const posts = await getNewPosts({ user });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        posts,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export async function getResetNewPostsHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const user = (await getUserInformations(req, next)) as IUser;
+    await resetNewPosts({ user });
+
+    res.status(200).json({
+      status: 'success',
+      message: 'New posts reset',
+    });
+  } catch (err: any) {
+    next(err);
+  }
+}

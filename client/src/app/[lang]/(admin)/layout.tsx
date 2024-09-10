@@ -3,14 +3,16 @@ import Navbar from '@/components/navbar';
 
 export default function UserLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: { lang: string };
 }) {
   return (
     <>
       <div className="min-h-full">
         <div className="bg-gray-800 pb-32">
-          <Navbar />
+          <Navbar params={{ lang: params.lang }} />
           <header className="py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="text-3xl font-bold tracking-tight text-white">

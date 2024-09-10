@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User, Post } from '@prisma/client';
 import prisma from '../../../prisma/client';
 import { IUserInformations, IUser } from '../../types/user';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
@@ -119,6 +119,7 @@ export class UserRepository {
         role: true,
         username: true,
         avatar: true,
+        notification: true,
       },
     });
     return userinfos;
@@ -128,6 +129,29 @@ export class UserRepository {
     return await prisma.user.update({
       where: { id: userId },
       data: { mailSubscription: false },
+    });
+  }
+
+  static async findAll(): Promise<User[]> {
+    return await prisma.user.findMany();
+  }
+
+  static async associateUserToAllPosts({
+    userId,
+    posts,
+  }: {
+    userId: string;
+    posts: Post[];
+  }) {
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        PostsOnUsers: {
+          create: posts.map((post) => ({
+            post: { connect: { id: post.id } },
+          })),
+        },
+      },
     });
   }
 }

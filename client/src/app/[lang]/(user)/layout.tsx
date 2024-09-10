@@ -19,7 +19,7 @@ export default function UserLayout({
     <>
       <div className="min-h-full">
         <div className="bg-gray-800 pb-32">
-          <Navbar />
+          <Navbar params={{ lang: params.lang }} />
           <header className="relative py-10">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 md:block hidden">
               <div className="relative">

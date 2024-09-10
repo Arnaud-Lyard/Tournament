@@ -6,6 +6,7 @@ import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { File } from '../../types/file';
 import { removeExistingImages } from '../../utils/removeExistingImages';
+import { PostRepository } from '../../post/repository/post.repository';
 export const createUser = async (user: UserDto) => {
   return await UserRepository.createUser(user);
 };
@@ -150,4 +151,13 @@ export async function getUserInformations(userId: string) {
 
 export async function disabledEmail(userId: string) {
   return await UserRepository.disabledEmail(userId);
+}
+
+export async function associateUserToAllPosts(userId: string) {
+  try {
+    const posts = await PostRepository.findAll();
+    await UserRepository.associateUserToAllPosts({ userId, posts });
+  } catch (err: any) {
+    throw new AppError(400, 'Erreur lors de l association des posts.');
+  }
 }
