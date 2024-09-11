@@ -99,7 +99,7 @@ export interface IUnsubscribeResponse {
 export interface IGetNewPostResponse {
   status: string;
   data: {
-    posts: IPostPostsOnUsers[];
+    posts: IPost[];
   };
 }
 

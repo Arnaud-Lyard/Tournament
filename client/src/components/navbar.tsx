@@ -24,6 +24,7 @@ import { IGetNewPostResponse, IPostPostsOnUsers, IResponse } from '@/types/api';
 import logo from '~/public/assets/images/prochainweb.svg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { IPost } from '@/types/models';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -71,7 +72,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<string>('');
   const [notification, setNotification] = useState<boolean>(false);
-  const [newPosts, setNewPosts] = useState<IPostPostsOnUsers[]>([]);
+  const [newPosts, setNewPosts] = useState<IPost[]>([]);
 
   async function handleUserLoggedIn() {
     try {
