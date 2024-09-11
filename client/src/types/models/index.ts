@@ -20,7 +20,7 @@ export interface IPost {
   frenchContent: string;
   englishContent: string;
   slug: string;
-  author: string;
+  authorId: string;
   status: IStatusEnumType;
   image: string;
   createdAt: string;
@@ -38,10 +38,8 @@ export interface ICategory {
 
 export interface IPostCategoryUser extends IPost {
   categories: { category: ICategory }[];
-  user: [
-    {
-      username: IUser['username'];
-      avatar: IUser['avatar'];
-    }
-  ];
+  user: {
+    username: IUser['username'];
+    avatar: IUser['avatar'];
+  };
 }

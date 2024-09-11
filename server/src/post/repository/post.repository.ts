@@ -233,9 +233,6 @@ export class PostRepository {
           },
         },
       },
-      include: {
-        PostsOnUsers: true,
-      },
     });
   }
 

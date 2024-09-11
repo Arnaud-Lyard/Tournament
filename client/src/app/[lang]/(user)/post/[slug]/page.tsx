@@ -42,7 +42,7 @@ export async function generateMetadata(
     },
     authors: [
       {
-        name: post.data.post.user[0].username,
+        name: post.data.post.user.username,
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}/post/${params.slug}`,
       },
     ],

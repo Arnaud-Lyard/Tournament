@@ -38,6 +38,7 @@ CREATE TABLE "post" (
     "status" "PostStatusEnumType" NOT NULL DEFAULT 'draft',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "author_id" UUID NOT NULL,
 
     CONSTRAINT "post_pkey" PRIMARY KEY ("id")
 );
@@ -82,12 +83,6 @@ CREATE TABLE "comment" (
     CONSTRAINT "comment_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "_PostToUser" (
-    "A" UUID NOT NULL,
-    "B" UUID NOT NULL
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
@@ -100,11 +95,8 @@ CREATE INDEX "user_email_verification_code_password_reset_token_idx" ON "user"("
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_verification_code_password_reset_token_key" ON "user"("email", "verification_code", "password_reset_token");
 
--- CreateIndex
-CREATE UNIQUE INDEX "_PostToUser_AB_unique" ON "_PostToUser"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_PostToUser_B_index" ON "_PostToUser"("B");
+-- AddForeignKey
+ALTER TABLE "post" ADD CONSTRAINT "post_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "posts_on_users" ADD CONSTRAINT "posts_on_users_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -126,9 +118,3 @@ ALTER TABLE "comment" ADD CONSTRAINT "comment_post_id_fkey" FOREIGN KEY ("post_i
 
 -- AddForeignKey
 ALTER TABLE "comment" ADD CONSTRAINT "comment_parent_id_fkey" FOREIGN KEY ("parent_id") REFERENCES "comment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PostToUser" ADD CONSTRAINT "_PostToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "post"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_PostToUser" ADD CONSTRAINT "_PostToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
