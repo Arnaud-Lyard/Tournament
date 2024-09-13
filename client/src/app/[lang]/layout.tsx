@@ -12,8 +12,8 @@ export function generateMetadata({
   const icons = [{ rel: 'icon', url: Favicon.src }];
   const title =
     params.lang === 'fr'
-      ? 'Veille technologique | Prochainweb'
-      : 'Technology Watch | Prochainweb';
+      ? 'Prochainweb | Veille technologique'
+      : 'Prochainweb | Technology Watch';
 
   const description =
     params.lang === 'fr'
