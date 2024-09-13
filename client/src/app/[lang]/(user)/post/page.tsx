@@ -2,8 +2,40 @@ import { HttpService } from '@/services';
 import { IGetPostsResponse } from '@/types/api';
 import { IPostCategoryUser } from '@/types/models';
 import moment from 'moment';
+import { Metadata, ResolvingMetadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+
+type Props = {
+  params: { slug: string; lang: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Metadata {
+  return {
+    title:
+      params.lang === 'fr'
+        ? `Liste des articles | Prochainweb`
+        : `Articles list | Prochainweb`,
+    description:
+      params.lang === 'fr'
+        ? 'Enrichir ses connaissances en découvrant les articles de Prochainweb.'
+        : 'Enrich your knowledge by discovering Prochainweb articles.',
+    openGraph: {
+      images: [
+        {
+          url: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/blog-banner.jpeg`,
+          width: 1200,
+          height: 630,
+          alt: params.lang === 'fr' ? 'Liste des articles' : 'Articles list',
+        },
+      ],
+    },
+  };
+}
 
 export default async function Post({ params }: { params: { lang: string } }) {
   const http = new HttpService();

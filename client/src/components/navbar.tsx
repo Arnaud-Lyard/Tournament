@@ -73,6 +73,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
   const [role, setRole] = useState<string>('');
   const [notification, setNotification] = useState<boolean>(false);
   const [newPosts, setNewPosts] = useState<IPost[]>([]);
+  const [isNewPostVisible, setIsNewPostVisible] = useState<boolean>(false);
 
   async function handleUserLoggedIn() {
     try {
@@ -128,7 +129,10 @@ export default function Navbar({ params }: { params: { lang: string } }) {
     } catch (e: any) {}
   }
 
-  async function handleResetNewPost() {
+  async function handleResetNewPost(version: 'desktop' | 'mobile') {
+    if (version === 'mobile') {
+      setIsNewPostVisible(true);
+    }
     try {
       const response = await http.service().get<IResponse>(`/posts/reset`);
     } catch (e: any) {}
@@ -185,17 +189,16 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                         {!isLoggedIn ? (
                           <>
                             {/* Authentication buttons */}
-                            <Link href="/authentication" scroll={false}>
-                              <button
-                                type="button"
-                                className="relative inline-flex items-center gap-x-1.5 rounded-md bg-cyan-500 ml-3 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
-                              >
-                                <UserIcon
-                                  className="-ml-0.5 h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                                {dictionary.navigation.authentication}
-                              </button>
+                            <Link
+                              href="/authentication"
+                              className="relative inline-flex items-center gap-x-1.5 rounded-md bg-cyan-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-cyan-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-500"
+                              scroll={false}
+                            >
+                              <UserIcon
+                                className="-ml-0.5 h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              {dictionary.navigation.authentication}
                             </Link>
                           </>
                         ) : (
@@ -208,7 +211,9 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                                 <div>
                                   <MenuButton
                                     className="relative rounded-full bg-gray-800 ml-3 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                                    onClick={() => handleResetNewPost()}
+                                    onClick={() =>
+                                      handleResetNewPost('desktop')
+                                    }
                                   >
                                     <span className="sr-only">
                                       {dictionary.navigation.notifications}
@@ -405,16 +410,43 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                             {name}
                           </div>
                         </div>
-                        <button
-                          type="button"
-                          className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                        >
-                          <span className="absolute -inset-1.5" />
-                          <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-6 w-6" aria-hidden="true" />
-                        </button>
+                        {notification ? (
+                          <button
+                            type="button"
+                            className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                            onClick={() => handleResetNewPost('mobile')}
+                          >
+                            <span className="absolute -inset-1.5" />
+                            <span className="sr-only">
+                              {dictionary.navigation.notifications}
+                            </span>
+                            <BellIcon className="h-6 w-6" aria-hidden="true" />
+                            {newPosts.length ? (
+                              <span className="absolute top-0 right-0 inline-flex items-center justify-center h-2 w-2 rounded-full bg-red-500" />
+                            ) : (
+                              ''
+                            )}
+                          </button>
+                        ) : (
+                          ''
+                        )}
                       </div>
+
                       <div className="mt-3 space-y-1 px-2">
+                        {newPosts.length && isNewPostVisible
+                          ? newPosts.map((post) => (
+                              <DisclosureButton
+                                key={post.id}
+                                as="a"
+                                href={`/post/${post.slug}`}
+                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                              >
+                                {params.lang === 'fr'
+                                  ? post.frenchTitle
+                                  : post.englishTitle}
+                              </DisclosureButton>
+                            ))
+                          : ''}
                         <DisclosureButton
                           key="profile"
                           as="a"
