@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Metadata, ResolvingMetadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import Search from '../../../../components/search';
 
 type Props = {
   params: { slug: string; lang: string };
@@ -59,13 +60,14 @@ export default async function Post({ params }: { params: { lang: string } }) {
 
   return (
     <div className="grid grid-cols-1 gap-10 py-10 sm:grid-cols-1 sm:gap-5 sm:py-10 md:gap-10">
+      <Search params={{ lang: params.lang }} />
       {posts.map((post) => (
         <article className="mx-auto w-full max-w-screen-lg" key={post.id}>
           <Link
             className="group flex flex-col items-center gap-5 md:flex-row md:gap-10"
             href={`/post/${post.slug}`}
           >
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-gray-800/40 md:aspect-square md:max-w-[300px]">
+            <div className="relative w-full overflow-hidden rounded-lg border border-gray-800/40 md:aspect-square md:max-w-[300px]">
               <Image
                 alt={
                   params.lang === 'fr' ? post.frenchTitle : post.englishTitle

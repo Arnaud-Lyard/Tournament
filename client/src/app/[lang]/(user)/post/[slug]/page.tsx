@@ -4,6 +4,7 @@ import moment from 'moment';
 import 'moment/locale/fr';
 import Image from 'next/image';
 import type { Metadata, ResolvingMetadata } from 'next';
+import Link from 'next/link';
 
 const http = new HttpService();
 type Props = {
@@ -101,6 +102,24 @@ export default async function PostDetail({
   return (
     <div className="px-3 py-16 lg:px-5">
       <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
+        <Link href="/post" className="flex hover:text-cyan-800">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
+            />
+          </svg>
+          <span className="ml-1">Tous les articles</span>
+        </Link>
+
         <div className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-5">
             {title}
@@ -141,7 +160,7 @@ export default async function PostDetail({
             className="ck-content"
           ></div>
         </div>
-        <p className="text-center text-gray-400 ">
+        <p className="text-center text-gray-400 mt-5">
           {params.lang === 'fr'
             ? 'Partage cet article sur les réseaux sociaux avec tes amis'
             : 'Share this article on social networks with your friends'}
