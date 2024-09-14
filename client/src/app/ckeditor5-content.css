@@ -379,9 +379,11 @@
 .ck-content > h2 {
   font-size: 1.5em;
   font-weight: bold;
+  padding: 0.5em;
 }
 
 .ck-content > h3 {
   font-size: 1.25em;
   font-weight: bold;
+  padding: 0.5em;
 }
