@@ -11,6 +11,7 @@ import { ICommentUser } from '@/types/models';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
+import { useUser } from '@/contexts/userContext';
 
 export default function Comment({
   params,
@@ -20,10 +21,10 @@ export default function Comment({
   const [comment, setComment] = useState('');
   const [submittedComment, setSubmittedComment] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [comments, setComments] = useState<ICommentUser[]>([]);
   const [responseVisible, setResponseVisible] = useState('');
   const [response, setResponse] = useState('');
+  const { isLoggedIn } = useUser();
 
   const http = new HttpService();
   const { errors, message, checkErrors, resetMessages, setMessage } =
@@ -52,27 +53,11 @@ export default function Comment({
     resetMessages();
   };
 
-  async function handleUserLoggedIn() {
-    try {
-      const response = await http.service().get<IResponse>(`/users/me`);
-
-      if (response.data.isConnect === true) {
-        setIsLoggedIn(true);
-      }
-    } catch (e: any) {
-      setIsLoggedIn(false);
-    }
-  }
-  useEffect(() => {
-    handleUserLoggedIn();
-  }, []);
-
   async function handleComment() {
     try {
       const response = await http
         .service()
         .get<IGetCommentResponse>(`/posts/comment/${params.postId}`);
-      console.log(response.data.comments);
       setComments(response.data.comments);
     } catch (e: any) {}
   }

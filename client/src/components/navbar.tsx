@@ -29,6 +29,7 @@ import logo from '~/public/assets/images/prochainweb.svg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { IComment, ICommentPost, IPost } from '@/types/models';
+import { useUser } from '@/contexts/userContext';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -62,59 +63,18 @@ export default function Navbar({ params }: { params: { lang: string } }) {
     }
   }
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setIsloading] = useState(true);
   const pathname = usePathname();
   const searchParams = useSearchParams();
   useEffect(() => {
     handleNavChange(pathname);
-    handleUserLoggedIn();
   }, [pathname, searchParams]);
-  const defaultLogo = 'user.png';
-  const [avatar, setAvatar] = useState<string>('');
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [role, setRole] = useState<string>('');
-  const [notification, setNotification] = useState<boolean>(false);
   const [newPosts, setNewPosts] = useState<IPost[]>([]);
   const [isNewPostVisible, setIsNewPostVisible] = useState<boolean>(false);
   const [newComment, setNewComment] = useState<ICommentPost[]>([]);
   const [isNewCommentVisible, setIsNewCommentVisible] =
     useState<boolean>(false);
-
-  async function handleUserLoggedIn() {
-    try {
-      const response = await http.service().get<IResponse>(`/users/me`);
-
-      if (response.data.isConnect === true) {
-        setIsLoggedIn(true);
-        if (!response.data.informations.avatar) {
-          setAvatar(`${process.env.NEXT_PUBLIC_UPLOADS_URL}/${defaultLogo}`);
-        } else {
-          setAvatar(
-            `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.informations.avatar}`
-          );
-        }
-
-        setName(response.data.informations.username);
-        setEmail(response.data.informations.email);
-        setRole(response.data.informations.role);
-
-        if (response.data.informations.notification === true) {
-          setNotification(true);
-          handleNewNotification();
-        }
-      } else {
-        setIsLoggedIn(false);
-      }
-      setIsloading(false);
-    } catch (e: any) {
-      setIsLoggedIn(false);
-    }
-  }
-  useEffect(() => {
-    handleUserLoggedIn();
-  }, []);
+  const { isLoggedIn, name, notification, email, role, loading, avatar } =
+    useUser();
 
   async function handleUserLogout() {
     try {
@@ -136,6 +96,11 @@ export default function Navbar({ params }: { params: { lang: string } }) {
       }
     } catch (e: any) {}
   }
+  useEffect(() => {
+    if (isLoggedIn) {
+      handleNewNotification();
+    }
+  }, [isLoggedIn]);
 
   async function handleResetNotification(version: 'desktop' | 'mobile') {
     if (version === 'mobile') {
@@ -295,9 +260,9 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                                   <Image
                                     width={32}
                                     height={32}
-                                    src={avatar}
+                                    src={`${process.env.NEXT_PUBLIC_UPLOADS_URL}/${avatar}`}
                                     className="h-8 w-8 rounded-full"
-                                    alt=""
+                                    alt="User avatar"
                                   />
                                 </MenuButton>
                               </div>
@@ -428,8 +393,8 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                             width={32}
                             height={32}
                             className="h-8 w-8 rounded-full"
-                            src={avatar}
-                            alt="Prochainweb"
+                            src={`${process.env.NEXT_PUBLIC_UPLOADS_URL}/${avatar}`}
+                            alt="User avatar"
                           />
                         </div>
                         <div className="ml-3">

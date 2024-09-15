@@ -56,7 +56,6 @@ export default function Profile({
         .push<IResponse, any>(`users/update`, formData, undefined, true);
       if (response.status === 'success') {
         setMessage(response.message);
-        location.reload();
       }
     } catch (e: any) {
       checkErrors(e.response.data);

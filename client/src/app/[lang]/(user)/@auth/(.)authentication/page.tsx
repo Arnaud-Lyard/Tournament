@@ -1,5 +1,6 @@
 'use client';
 import Modal from '@/components/modal';
+import { useUser } from '@/contexts/userContext';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
 import { useDictionary } from '@/providers/dictionary-provider';
 import { HttpService } from '@/services';
@@ -19,6 +20,7 @@ export default function Authentication({
   const router = useRouter();
   const dictionary = useDictionary();
   const [authForm, setAuthForm] = useState<IAuthForm>('login');
+  const { setIsLoggedIn, fetchUserDetails } = useUser();
   type IAuthForm = 'login' | 'register' | 'forgot-password';
   const loginRef = useRef<HTMLFormElement>(null);
   const registerRef = useRef<HTMLFormElement>(null);
@@ -35,7 +37,9 @@ export default function Authentication({
         .service()
         .push<IResponse, any>(`/auth/login`, formJSON);
       if (response.status === 'success') {
+        await fetchUserDetails();
         router.back();
+        setIsLoggedIn(true);
       }
     } catch (e: any) {
       checkErrors(e.response.data);
