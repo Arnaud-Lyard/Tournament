@@ -17,7 +17,7 @@ model User {
   password     String
   role         RoleEnumType? @default(user)
   notification Boolean       @default(false)
-  avatar       String?       @db.VarChar(255)
+  avatar       String?       @default("user.png") @db.VarChar(255)
 
   verificationCode String? @unique @map("verification_code") @db.Text
 
@@ -26,9 +26,9 @@ model User {
 
   passwordResetToken String?        @map("password_reset_token")
   passwordResetAt    DateTime?      @map("password_reset_at")
-  Comment            Comment[]
-  PostsOnUsers       PostsOnUsers[]
-  Post               Post[]
+  comments           Comment[]
+  postsOnUsers       PostsOnUsers[]
+  posts              Post[]
 
   @@unique([email, verificationCode, passwordResetToken])
   @@index([email, verificationCode, passwordResetToken])
@@ -51,8 +51,8 @@ model Post {
   user               User                @relation(fields: [authorId], references: [id])
   authorId           String              @map("author_id") @db.Uuid
   categories         CategoriesOnPosts[]
-  Comment            Comment[]
-  PostsOnUsers       PostsOnUsers[]
+  comments           Comment[]
+  postsOnUsers       PostsOnUsers[]
 
   @@map(name: "post")
 }
@@ -97,6 +97,7 @@ model Comment {
   postId    String    @map("post_id") @db.Uuid
   parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
   parentId  String?   @map("parent_id") @db.Uuid
+  isRead    Boolean   @default(false) @map("is_read")
   replies   Comment[] @relation("CommentReplies")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")

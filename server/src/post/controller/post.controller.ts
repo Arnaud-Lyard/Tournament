@@ -2,21 +2,29 @@ import { NextFunction, Request, Response } from 'express';
 import { getUserInformations } from '../../utils/getUserInformations';
 import { IUser } from '../../types/user';
 import {
+  AddCommentInput,
   AddPostInput,
+  AddResponseInput,
   EditPostInput,
+  GetCommentInput,
   GetPostInput,
   PublishPostInput,
 } from '../schema/post.schema';
 import {
+  addComment,
   addPost,
+  addResponse,
   changePostStatus,
   checkIfPostExist,
   editPost,
   getAllPosts,
+  getComment,
+  getNewComment,
   getNewPosts,
   getPost,
   getPostBySlug,
   getPublishPosts,
+  resetNewComment,
   resetNewPosts,
 } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
@@ -321,7 +329,7 @@ export const addImageHandler = async (
   }
 };
 
-export const getNewPostHandler = async (
+export const getNotificationHandler = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -329,11 +337,13 @@ export const getNewPostHandler = async (
   try {
     const user = (await getUserInformations(req, next)) as IUser;
     const posts = await getNewPosts({ user });
+    const comments = await getNewComment({ user });
 
     res.status(200).json({
       status: 'success',
       data: {
         posts,
+        comments,
       },
     });
   } catch (err: any) {
@@ -341,7 +351,7 @@ export const getNewPostHandler = async (
   }
 };
 
-export async function getResetNewPostsHandler(
+export async function getResetNotificationHandler(
   req: Request,
   res: Response,
   next: NextFunction
@@ -349,12 +359,81 @@ export async function getResetNewPostsHandler(
   try {
     const user = (await getUserInformations(req, next)) as IUser;
     await resetNewPosts({ user });
+    await resetNewComment({ user });
 
     res.status(200).json({
       status: 'success',
-      message: 'New posts reset',
+      message: 'Notifications reset',
     });
   } catch (err: any) {
     next(err);
   }
 }
+
+export const addCommentHandler = async (
+  req: Request<{}, {}, AddCommentInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = (await getUserInformations(req, next)) as IUser;
+    await addComment({
+      user,
+      postId: req.body.postId,
+      comment: req.body.comment,
+    });
+    const message =
+      req.language === 'fr' ? 'Commentaire ajouté' : 'Comment added';
+    res.status(200).json({
+      status: 'success',
+      message,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const getCommentHandler = async (
+  req: Request<GetCommentInput>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const comments = await getComment(req.params.postId);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        comments,
+      },
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};
+
+export const addResponseHandler = async (
+  req: Request<AddResponseInput['params'], {}, AddResponseInput['body']>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const user = (await getUserInformations(req, next)) as IUser;
+
+    await addResponse({
+      user,
+      postId: req.params.postid,
+      comment: req.body.comment,
+      parentId: req.body.parentId,
+    });
+
+    const message =
+      req.language === 'fr' ? 'Réponse ajoutée' : 'Response added';
+    res.status(200).json({
+      status: 'success',
+      message,
+    });
+  } catch (err: any) {
+    next(err);
+  }
+};

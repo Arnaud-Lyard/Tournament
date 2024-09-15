@@ -146,7 +146,7 @@ export class UserRepository {
     return await prisma.user.update({
       where: { id: userId },
       data: {
-        PostsOnUsers: {
+        postsOnUsers: {
           create: posts.map((post) => ({
             post: { connect: { id: post.id } },
           })),

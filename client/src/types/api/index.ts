@@ -1,4 +1,12 @@
-import { ICategory, IPost, IPostCategoryUser, IUser } from '../models';
+import {
+  ICategory,
+  IComment,
+  ICommentPost,
+  ICommentUser,
+  IPost,
+  IPostCategoryUser,
+  IUser,
+} from '../models';
 
 export interface IResponse {
   status: string;
@@ -96,10 +104,11 @@ export interface IUnsubscribeResponse {
   message: string;
 }
 
-export interface IGetNewPostResponse {
+export interface IGetNewNotificationResponse {
   status: string;
   data: {
     posts: IPost[];
+    comments: ICommentPost[];
   };
 }
 
@@ -111,4 +120,20 @@ export interface PostsOnUser {
   userId: string;
   postId: string;
   isRead: boolean;
+}
+
+export interface ICreateCommentResponse {
+  status: string;
+  message: string;
+}
+
+export interface ICreateCommentPayload {
+  [k: string]: FormDataEntryValue;
+}
+
+export interface IGetCommentResponse {
+  status: string;
+  data: {
+    comments: ICommentUser[];
+  };
 }

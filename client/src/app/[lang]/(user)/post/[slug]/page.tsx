@@ -5,6 +5,7 @@ import 'moment/locale/fr';
 import Image from 'next/image';
 import type { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
+import Comment from '@/components/comment';
 
 const http = new HttpService();
 type Props = {
@@ -60,6 +61,8 @@ export default async function PostDetail({
   const response = await http
     .service()
     .get<IGetPostResponse>(`posts/slug/${params.slug}`);
+
+  const postId = response.data.post.id;
   const title =
     params.lang === 'fr'
       ? response.data.post.frenchTitle
@@ -101,27 +104,35 @@ export default async function PostDetail({
 
   return (
     <div className="px-3 py-16 lg:px-5">
-      <div className="mx-auto max-w-3xl text-base leading-7 text-gray-700">
-        <Link href="/post" className="flex hover:text-cyan-800">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className="size-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
-            />
-          </svg>
-          <span className="ml-1">Tous les articles</span>
-        </Link>
-
+      <div className="mx-auto max-w-3xl text-base leading-7 text-gray-500">
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-5">
+          <Link
+            href="/post"
+            className="hover:text-cyan-800 flex items-center justify-center"
+          >
+            <div className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061A1.125 1.125 0 0 1 21 8.689v8.122ZM11.25 16.811c0 .864-.933 1.406-1.683.977l-7.108-4.061a1.125 1.125 0 0 1 0-1.954l7.108-4.061a1.125 1.125 0 0 1 1.683.977v8.122Z"
+                />
+              </svg>
+              <span className="ml-1">
+                {params.lang === 'fr'
+                  ? 'Retour aux articles'
+                  : 'Back to articles'}
+              </span>
+            </div>
+          </Link>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-5 mt-5">
             {title}
           </h1>
           <h2 className="text-2xl text-gray-700 mb-2">{description}</h2>
@@ -178,6 +189,7 @@ export default async function PostDetail({
             </a>
           ))}
         </div>
+        <Comment params={{ postId, lang: params.lang }} />
       </div>
     </div>
   );

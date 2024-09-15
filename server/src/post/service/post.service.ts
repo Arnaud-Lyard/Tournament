@@ -159,3 +159,50 @@ export async function resetNewPosts({ user }: { user: IUser }) {
   const posts = await PostRepository.findAll();
   return await PostRepository.resetNewPosts({ posts, user });
 }
+
+export async function addComment({
+  user,
+  postId,
+  comment,
+}: {
+  user: IUser;
+  postId: string;
+  comment: string;
+}) {
+  return await PostRepository.addComment({
+    user,
+    postId,
+    comment,
+  });
+}
+
+export async function getComment(postId: string) {
+  return await PostRepository.getComment(postId);
+}
+
+export async function addResponse({
+  user,
+  postId,
+  comment,
+  parentId,
+}: {
+  user: IUser;
+  postId: string;
+  comment: string;
+  parentId: string;
+}) {
+  return await PostRepository.addResponse({
+    user,
+    postId,
+    comment,
+    parentId,
+  });
+}
+
+export async function getNewComment({ user }: { user: IUser }) {
+  return await PostRepository.getNewComment({ user });
+}
+
+export async function resetNewComment({ user }: { user: IUser }) {
+  return await PostRepository.resetNewComment({ user });
+}

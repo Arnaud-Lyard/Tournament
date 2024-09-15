@@ -14,11 +14,16 @@ import {
   getPublishPostHandler,
   getPublishPostsHandler,
   addImageHandler,
-  getNewPostHandler,
-  getResetNewPostsHandler,
+  getNotificationHandler,
+  getResetNotificationHandler,
+  addCommentHandler,
+  getCommentHandler,
+  addResponseHandler,
 } from '../controller/post.controller';
 import {
   addCategorySchema,
+  addCommentSchema,
+  addResponseSchema,
   disablePostSchema,
   publishPostSchema,
 } from '../schema/post.schema';
@@ -38,6 +43,24 @@ router.post(
   addCategoryHandler
 );
 
+router.post(
+  '/comment',
+  readLanguage,
+  validate(addCommentSchema),
+  authenticateUser,
+  addCommentHandler
+);
+
+router.post(
+  '/response/:postid',
+  readLanguage,
+  validate(addResponseSchema),
+  authenticateUser,
+  addResponseHandler
+);
+
+router.get('/comment/:postid', readLanguage, getCommentHandler);
+
 router.post('/image', authenticateUser, addImageHandler);
 
 router.get('/categories', readLanguage, authenticateUser, getCategoriesHandler);
@@ -46,9 +69,14 @@ router.get('/publish', readLanguage, getPublishPostsHandler);
 
 router.get('/slug/:slug', readLanguage, getPostBySlugHandler);
 
-router.get('/new', readLanguage, authenticateUser, getNewPostHandler);
+router.get('/new', readLanguage, authenticateUser, getNotificationHandler);
 
-router.get('/reset', readLanguage, authenticateUser, getResetNewPostsHandler);
+router.get(
+  '/reset',
+  readLanguage,
+  authenticateUser,
+  getResetNotificationHandler
+);
 
 router.get('/:id', readLanguage, getPostHandler);
 
