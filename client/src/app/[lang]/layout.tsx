@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Favicon from '~/public/assets/images/favicon.ico';
 import { getDictionary } from './dictionaries';
 import DictionaryProvider from '../../providers/dictionary-provider';
+import { UserProvider } from '@/contexts/userContext';
 
 export function generateMetadata({
   params,
@@ -62,9 +63,11 @@ export default async function RootLayout({
   return (
     <html lang={params.lang}>
       <body>
-        <DictionaryProvider dictionary={dictionary}>
-          {children}
-        </DictionaryProvider>
+        <UserProvider>
+          <DictionaryProvider dictionary={dictionary}>
+            {children}
+          </DictionaryProvider>
+        </UserProvider>
       </body>
     </html>
   );
