@@ -4,6 +4,7 @@ async function main() {
   /* Reset the database */
   await prisma.categoriesOnPosts.deleteMany();
   await prisma.postsOnUsers.deleteMany();
+  await prisma.comment.deleteMany();
   await prisma.post.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();

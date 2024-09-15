@@ -36,10 +36,37 @@ export interface ICategory {
   updatedAt: Date;
 }
 
+export interface IComment {
+  id: string;
+  content: string;
+  postId: string;
+  userId: string;
+  parentId: string | null;
+  isRead: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface IPostCategoryUser extends IPost {
   categories: { category: ICategory }[];
   user: {
     username: IUser['username'];
     avatar: IUser['avatar'];
+  };
+}
+
+export interface ICommentUser extends IComment {
+  user: {
+    username: IUser['username'];
+    avatar: IUser['avatar'];
+  };
+}
+
+export interface ICommentPost extends IComment {
+  post: {
+    slug: IPost['slug'];
+  };
+  user: {
+    username: IUser['username'];
   };
 }

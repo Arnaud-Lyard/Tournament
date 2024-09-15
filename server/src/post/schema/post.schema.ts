@@ -91,6 +91,41 @@ export const editPostSchema = object({
   }),
 });
 
+export const addCommentSchema = object({
+  body: object({
+    postId: string({
+      required_error: 'Unexpected error occured.',
+    }),
+    comment: string({
+      required_error: 'Comment can not be empty.',
+    }).min(1, 'You must provide a comment.'),
+  }),
+});
+
+export const getCommentSchema = object({
+  params: object({
+    postId: string({
+      required_error: 'Unexpected error occured.',
+    }),
+  }),
+});
+
+export const addResponseSchema = object({
+  params: object({
+    postid: string({
+      required_error: 'Unexpected error occured.',
+    }),
+  }),
+  body: object({
+    parentId: string({
+      required_error: 'Unexpected error occured.',
+    }),
+    comment: string({
+      required_error: 'Response can not be empty.',
+    }).min(1, 'You must provide a response.'),
+  }),
+});
+
 export type AddPostInput = TypeOf<typeof addPostSchema>['body'];
 export type AddCategoryInput = TypeOf<typeof addCategorySchema>['body'];
 
@@ -100,3 +135,9 @@ export type DisablePostInput = TypeOf<typeof disablePostSchema>['params'];
 export type GetPostInput = TypeOf<typeof getPostSchema>['params'];
 
 export type EditPostInput = TypeOf<typeof editPostSchema>;
+
+export type AddCommentInput = TypeOf<typeof addCommentSchema>['body'];
+
+export type GetCommentInput = TypeOf<typeof getCommentSchema>['params'];
+
+export type AddResponseInput = TypeOf<typeof addResponseSchema>;

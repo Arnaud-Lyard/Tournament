@@ -20,11 +20,15 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { HttpService } from '@/services';
-import { IGetNewPostResponse, IPostPostsOnUsers, IResponse } from '@/types/api';
+import {
+  IGetNewNotificationResponse,
+  IPostPostsOnUsers,
+  IResponse,
+} from '@/types/api';
 import logo from '~/public/assets/images/prochainweb.svg';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useDictionary } from '@/providers/dictionary-provider';
-import { IPost } from '@/types/models';
+import { IComment, ICommentPost, IPost } from '@/types/models';
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -74,6 +78,9 @@ export default function Navbar({ params }: { params: { lang: string } }) {
   const [notification, setNotification] = useState<boolean>(false);
   const [newPosts, setNewPosts] = useState<IPost[]>([]);
   const [isNewPostVisible, setIsNewPostVisible] = useState<boolean>(false);
+  const [newComment, setNewComment] = useState<ICommentPost[]>([]);
+  const [isNewCommentVisible, setIsNewCommentVisible] =
+    useState<boolean>(false);
 
   async function handleUserLoggedIn() {
     try {
@@ -95,7 +102,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
 
         if (response.data.informations.notification === true) {
           setNotification(true);
-          handleNewPost();
+          handleNewNotification();
         }
       } else {
         setIsLoggedIn(false);
@@ -118,20 +125,22 @@ export default function Navbar({ params }: { params: { lang: string } }) {
     } catch (e: any) {}
   }
 
-  async function handleNewPost() {
+  async function handleNewNotification() {
     try {
       const response = await http
         .service()
-        .get<IGetNewPostResponse>(`/posts/new`);
+        .get<IGetNewNotificationResponse>(`/posts/new`);
       if (response.status === 'success') {
         setNewPosts(response.data.posts);
+        setNewComment(response.data.comments);
       }
     } catch (e: any) {}
   }
 
-  async function handleResetNewPost(version: 'desktop' | 'mobile') {
+  async function handleResetNotification(version: 'desktop' | 'mobile') {
     if (version === 'mobile') {
       setIsNewPostVisible(true);
+      setIsNewCommentVisible(true);
     }
     try {
       const response = await http.service().get<IResponse>(`/posts/reset`);
@@ -212,7 +221,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                                   <MenuButton
                                     className="relative rounded-full bg-gray-800 ml-3 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                     onClick={() =>
-                                      handleResetNewPost('desktop')
+                                      handleResetNotification('desktop')
                                     }
                                   >
                                     <span className="sr-only">
@@ -222,14 +231,14 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                                       className="h-6 w-6"
                                       aria-hidden="true"
                                     />
-                                    {newPosts.length ? (
+                                    {newPosts.length || newComment.length ? (
                                       <span className="absolute top-0 right-0 inline-flex items-center justify-center h-2 w-2 rounded-full bg-red-500" />
                                     ) : (
                                       ''
                                     )}
                                   </MenuButton>
                                 </div>
-                                {newPosts.length ? (
+                                {newPosts.length || newComment.length ? (
                                   <MenuItems className="absolute right-0 z-10 mt-2 w-64 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     {newPosts.map((post) => (
                                       <MenuItem key={post.id}>
@@ -244,6 +253,24 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                                             {params.lang === 'fr'
                                               ? post.frenchTitle
                                               : post.englishTitle}
+                                          </Link>
+                                        )}
+                                      </MenuItem>
+                                    ))}
+                                    {newComment.map((comment) => (
+                                      <MenuItem key={comment.id}>
+                                        {({ active }) => (
+                                          <Link
+                                            href={`/post/${comment.post.slug}`}
+                                            className={classNames(
+                                              active ? 'bg-gray-100' : '',
+                                              'block px-4 py-2 text-sm text-gray-700'
+                                            )}
+                                          >
+                                            {comment.user.username}
+                                            {params.lang === 'fr'
+                                              ? ' a réagi à votre commentaire'
+                                              : ' reacted to your comment'}
                                           </Link>
                                         )}
                                       </MenuItem>
@@ -414,14 +441,14 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                           <button
                             type="button"
                             className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                            onClick={() => handleResetNewPost('mobile')}
+                            onClick={() => handleResetNotification('mobile')}
                           >
                             <span className="absolute -inset-1.5" />
                             <span className="sr-only">
                               {dictionary.navigation.notifications}
                             </span>
                             <BellIcon className="h-6 w-6" aria-hidden="true" />
-                            {newPosts.length ? (
+                            {newPosts.length || newComment.length ? (
                               <span className="absolute top-0 right-0 inline-flex items-center justify-center h-2 w-2 rounded-full bg-red-500" />
                             ) : (
                               ''
@@ -444,6 +471,21 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                                 {params.lang === 'fr'
                                   ? post.frenchTitle
                                   : post.englishTitle}
+                              </DisclosureButton>
+                            ))
+                          : ''}
+                        {newComment.length && isNewCommentVisible
+                          ? newComment.map((comment) => (
+                              <DisclosureButton
+                                key={comment.id}
+                                as="a"
+                                href={`/post/${comment.post.slug}`}
+                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                              >
+                                {comment.user.username}
+                                {params.lang === 'fr'
+                                  ? ' a réagi à votre commentaire'
+                                  : ' reacted to your comment'}
                               </DisclosureButton>
                             ))
                           : ''}

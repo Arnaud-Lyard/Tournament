@@ -14,7 +14,7 @@ CREATE TABLE "user" (
     "password" TEXT NOT NULL,
     "role" "RoleEnumType" DEFAULT 'user',
     "notification" BOOLEAN NOT NULL DEFAULT false,
-    "avatar" VARCHAR(255),
+    "avatar" VARCHAR(255) DEFAULT 'user.png',
     "verification_code" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -77,6 +77,7 @@ CREATE TABLE "comment" (
     "user_id" UUID NOT NULL,
     "post_id" UUID NOT NULL,
     "parent_id" UUID,
+    "is_read" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 

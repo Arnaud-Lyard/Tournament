@@ -51,7 +51,7 @@ export class PostRepository {
             category: { connect: { id: categoryId } },
           })),
         },
-        PostsOnUsers: {
+        postsOnUsers: {
           create: users.map((user) => ({
             user: { connect: { id: user.id } },
           })),
@@ -226,7 +226,7 @@ export class PostRepository {
       take: 1,
       where: {
         status: PostStatusEnumType.published,
-        PostsOnUsers: {
+        postsOnUsers: {
           some: {
             isRead: false,
             userId: user.id,
@@ -246,6 +246,129 @@ export class PostRepository {
         post: {
           status: PostStatusEnumType.published,
         },
+      },
+      data: {
+        isRead: true,
+      },
+    });
+  }
+
+  static async addComment({
+    user,
+    postId,
+    comment,
+  }: {
+    user: IUser;
+    postId: string;
+    comment: string;
+  }) {
+    return await prisma.comment.create({
+      data: {
+        content: comment,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+        post: {
+          connect: {
+            id: postId,
+          },
+        },
+      },
+    });
+  }
+
+  static async getComment(postId: string) {
+    return await prisma.comment.findMany({
+      where: {
+        postId,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+  }
+
+  static async addResponse({
+    user,
+    postId,
+    comment,
+    parentId,
+  }: {
+    user: IUser;
+    postId: string;
+    comment: string;
+    parentId: string;
+  }) {
+    return await prisma.comment.create({
+      data: {
+        content: comment,
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+        post: {
+          connect: {
+            id: postId,
+          },
+        },
+        parent: {
+          connect: {
+            id: parentId,
+          },
+        },
+      },
+    });
+  }
+
+  static async getNewComment({ user }: { user: IUser }) {
+    return await prisma.comment.findMany({
+      take: 1,
+      where: {
+        post: {
+          user: {
+            id: user.id,
+          },
+        },
+        parentId: {
+          not: null,
+        },
+        isRead: false,
+      },
+      include: {
+        post: {
+          select: {
+            slug: true,
+          },
+        },
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+  }
+
+  static async resetNewComment({ user }: { user: IUser }) {
+    return await prisma.comment.updateMany({
+      where: {
+        post: {
+          user: {
+            id: user.id,
+          },
+        },
+        parentId: {
+          not: null,
+        },
+        isRead: false,
       },
       data: {
         isRead: true,
