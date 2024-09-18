@@ -19,7 +19,7 @@ const navigation = {
     },
     {
       name: 'GitHub',
-      href: 'https://github.com/Arnaud-Lyard/prochainweb',
+      href: 'https://github.com/Arnaud-Lyard',
       icon: (props: any) => (
         <svg fill="currentColor" viewBox="0 0 23 23" {...props}>
           <path
@@ -32,7 +32,7 @@ const navigation = {
     },
     {
       name: 'Discord',
-      href: 'https://discord.gg/ncXJaEYV',
+      href: 'https://discord.gg/QWzp5Q43Ju',
       icon: (props: any) => (
         <svg fill="currentColor" viewBox="0 0 71 71" {...props}>
           <path
