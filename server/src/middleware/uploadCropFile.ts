@@ -49,7 +49,7 @@ export const uploadCropFile = (
     }
 
     if (!req.file) {
-      return next(new AppError(400, 'Aucun fichier n’a été fourni.'));
+      return next();
     }
 
     const filename = `${Date.now()}-${req.file.originalname}`;
