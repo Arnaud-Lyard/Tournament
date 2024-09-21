@@ -28,10 +28,17 @@ import {
   publishPostSchema,
 } from '../schema/post.schema';
 import { getPostBySlugHandler } from '../controller/post.controller';
+import { uploadCropFile } from '../../middleware/uploadCropFile';
 
 const router = express.Router();
 
-router.post('/', readLanguage, authenticateUser, uploadFile, addPostHandler);
+router.post(
+  '/',
+  readLanguage,
+  authenticateUser,
+  uploadCropFile,
+  addPostHandler
+);
 
 router.get('/', readLanguage, getPostsHandler);
 
@@ -96,6 +103,12 @@ router.post(
   getDisablePostHandler
 );
 
-router.put('/:id', readLanguage, authenticateUser, uploadFile, editPostHandler);
+router.put(
+  '/:id',
+  readLanguage,
+  authenticateUser,
+  uploadCropFile,
+  editPostHandler
+);
 
 export default router;
