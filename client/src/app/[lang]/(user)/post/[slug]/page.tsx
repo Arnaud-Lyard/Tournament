@@ -32,7 +32,7 @@ export async function generateMetadata(
     openGraph: {
       images: [
         {
-          url: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${post.data.post.image}`,
+          url: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/resized_1200x630_${post.data.post.image}`,
           width: 400,
           height: 400,
           alt:
@@ -78,7 +78,7 @@ export default async function PostDetail({
   const categories = response.data.post.categories.map((category) => {
     return category.category;
   });
-  const image = `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${response.data.post.image}`;
+  const image = `${process.env.NEXT_PUBLIC_UPLOADS_URL}/resized_1200x630_${response.data.post.image}`;
   const publishedAt = moment(response.data.post.createdAt)
     .locale(params.lang)
     .format('L');
@@ -152,8 +152,8 @@ export default async function PostDetail({
           <Image
             src={image}
             alt={title}
-            width={200}
-            height={200}
+            width={1200}
+            height={630}
             priority={true}
             className="object-contain mx-auto mt-4 mb-4"
           />
