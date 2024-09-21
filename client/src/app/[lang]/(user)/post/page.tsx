@@ -49,7 +49,7 @@ export default async function Post({ params }: { params: { lang: string } }) {
   const posts: IPostCategoryUser[] = response.datas.posts.map((post) => ({
     ...post,
     createdAt: moment(post.createdAt).format('L'),
-    image: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/${post.image}`,
+    image: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/resized_400x400_${post.image}`,
     user: {
       username: post.user.username,
       avatar: post.user.avatar
