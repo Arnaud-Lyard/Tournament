@@ -107,7 +107,7 @@ export default async function PostDetail({
       <div className="mx-auto max-w-3xl text-base leading-7 text-gray-500">
         <div className="text-center">
           <Link
-            href="/post"
+            href="/articles"
             className="hover:text-cyan-800 flex items-center justify-center"
           >
             <div className="flex items-center">

@@ -126,7 +126,7 @@ export default function Post({ params }: { params: { lang: string } }) {
               </div>
               <div className="flex flex-none items-center gap-x-4">
                 <Link
-                  href={`/post/${post.slug}`}
+                  href={`/articles/${post.slug}`}
                   className="hidden rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
                 >
                   {dictionary.adminpost.view}

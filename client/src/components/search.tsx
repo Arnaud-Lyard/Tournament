@@ -119,7 +119,7 @@ export default function CommandMenu({ params }: { params: { lang: string } }) {
               <Command.Item key={`word-${post.id}`} value={post.title}>
                 <Link
                   className=" hover:text-gray-900 cursor-pointer text-gray-600"
-                  href={`/post/${post.slug}`}
+                  href={`/articles/${post.slug}`}
                 >
                   {post.title}
                 </Link>
