@@ -39,7 +39,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
   const http = new HttpService();
   const [navigation, setNavigation] = useState([
     { name: 'home', title: 'Home', href: '/', current: false },
-    { name: 'post', title: 'Articles', href: '/post', current: false },
+    { name: 'post', title: 'Articles', href: '/articles', current: false },
   ]);
 
   function handleNavChange(path: string) {

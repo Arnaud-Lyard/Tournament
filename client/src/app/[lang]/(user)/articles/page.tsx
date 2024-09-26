@@ -65,7 +65,7 @@ export default async function Post({ params }: { params: { lang: string } }) {
         <article className="mx-auto w-full max-w-screen-lg" key={post.id}>
           <Link
             className="group flex flex-col items-center gap-5 md:flex-row md:gap-10"
-            href={`/post/${post.slug}`}
+            href={`/articles/${post.slug}`}
           >
             <div className="relative w-full overflow-hidden rounded-lg border border-gray-800/40 md:aspect-square md:max-w-[300px]">
               <Image

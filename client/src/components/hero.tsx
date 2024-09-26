@@ -60,7 +60,7 @@ export function Hero({ params }: { params: { lang: string } }) {
                 : 'One place to follow the latest technology trends.'}
             </p>
             <div className="mt-8 flex gap-4">
-              <Button href="/post" color="cyan">
+              <Button href="/articles" color="cyan">
                 {params.lang === 'fr' ? 'Voir les articles' : 'View articles'}
               </Button>
               {/* <Button href="#pricing" variant="outline" color="cyan">
