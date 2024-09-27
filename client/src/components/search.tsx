@@ -116,9 +116,13 @@ export default function CommandMenu({ params }: { params: { lang: string } }) {
               </Command.Loading>
             )}
             {posts.map((post) => (
-              <Command.Item key={`word-${post.id}`} value={post.title}>
+              <Command.Item
+                key={`word-${post.id}`}
+                value={post.title}
+                className="hover:bg-gray-100 cursor-pointer"
+              >
                 <Link
-                  className=" hover:text-gray-900 cursor-pointer text-gray-600"
+                  className="block px-4 py-2 text-gray-600"
                   href={`/articles/${post.slug}`}
                 >
                   {post.title}
