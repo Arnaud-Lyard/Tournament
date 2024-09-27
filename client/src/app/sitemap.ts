@@ -6,14 +6,14 @@ async function dynamicPagesForSitemap() {
     datas: { posts },
   } = await http.service().get<IGetPostsResponse>(`/posts/publish`);
   return posts.map((post) => ({
-    url: `${process.env.NEXT_PUBLIC_APP_URL}/post/${post.slug}`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/articles/${post.slug}`,
     lastModified: post.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.7,
     alternates: {
       languages: {
-        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/post/${post.slug}`,
-        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/post/${post.slug}`,
+        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/articles/${post.slug}`,
+        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/articles/${post.slug}`,
       },
     },
   }));
@@ -31,12 +31,12 @@ const pagesBase = [
     },
   },
   {
-    url: `${process.env.NEXT_PUBLIC_APP_URL}/post`,
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/articles`,
     lastModified: new Date().toISOString(),
     alternates: {
       languages: {
-        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/post`,
-        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/post`,
+        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/articles`,
+        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/articles`,
       },
     },
     changeFrequency: 'weekly' as const,
