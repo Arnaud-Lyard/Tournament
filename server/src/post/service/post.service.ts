@@ -3,9 +3,9 @@ import { PostRepository } from '../repository/post.repository';
 import { File } from '../../types/file';
 import { PostStatusEnumType } from '@prisma/client';
 import { IPostUpdateDto } from '../dto/post.dto';
-import { removeExistingImages } from '../../utils/removeExistingImages';
 import AppError from '../../utils/appError';
 import { UserRepository } from '../../user/repository/user.repository';
+import ImageManager from '../../utils/imageManager';
 
 export async function addPost({
   user,
@@ -132,10 +132,8 @@ export async function editPost({
 
     if (image && postHasImage!.image) {
       postUpdate.image = image.filename;
-      await removeExistingImages({
-        filename: postHasImage!.image,
-        environment: process.env.NODE_ENV,
-      });
+      const imageManager = new ImageManager(process.env.NODE_ENV);
+      await imageManager.removeResizedImages(postHasImage!.image);
     }
     await PostRepository.updatePost(postUpdate);
   } catch (err: any) {

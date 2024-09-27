@@ -5,8 +5,8 @@ import { signJwt } from '../../utils/jwt';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { File } from '../../types/file';
-import { removeExistingImages } from '../../utils/removeExistingImages';
 import { PostRepository } from '../../post/repository/post.repository';
+import ImageManager from '../../utils/imageManager';
 export const createUser = async (user: UserDto) => {
   return await UserRepository.createUser(user);
 };
@@ -134,10 +134,10 @@ export async function updateUser({
 
     if (avatar && userHasImage!.avatar) {
       userUpdate.avatar = avatar.filename;
-      await removeExistingImages({
-        filename: userHasImage!.avatar,
-        environment: process.env.NODE_ENV,
-      });
+      if (userHasImage!.avatar !== 'user.png') {
+        const imageManager = new ImageManager(process.env.NODE_ENV);
+        await imageManager.removeImage(userHasImage!.avatar);
+      }
     }
     await UserRepository.updateUser(userUpdate);
   } catch (err: any) {
