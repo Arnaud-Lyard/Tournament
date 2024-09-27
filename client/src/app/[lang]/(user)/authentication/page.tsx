@@ -38,7 +38,7 @@ export default function Authentication({
         .push<IResponse, any>(`/auth/login`, formJSON);
       if (response.status === 'success') {
         await fetchUserDetails();
-        router.back();
+        router.push('/');
         setIsLoggedIn(true);
       }
     } catch (e: any) {
@@ -84,10 +84,10 @@ export default function Authentication({
   };
 
   function onDismiss() {
-    router.back();
+    router.push('/');
   }
   return (
-    <Modal params={{ redirectHomePage: false }}>
+    <Modal params={{ redirectHomePage: true }}>
       {authForm === 'login' ? (
         <div className="text-center">
           <DialogTitle
