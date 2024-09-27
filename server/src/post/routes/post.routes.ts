@@ -29,13 +29,14 @@ import {
 } from '../schema/post.schema';
 import { getPostBySlugHandler } from '../controller/post.controller';
 import { uploadCropFile } from '../../middleware/uploadCropFile';
+import { authenticateAdmin } from '../../middleware/authenticateAdmin';
 
 const router = express.Router();
 
 router.post(
   '/',
   readLanguage,
-  authenticateUser,
+  authenticateAdmin,
   uploadCropFile,
   addPostHandler
 );
@@ -46,7 +47,7 @@ router.post(
   '/categories',
   readLanguage,
   validate(addCategorySchema),
-  authenticateUser,
+  authenticateAdmin,
   addCategoryHandler
 );
 
@@ -91,7 +92,7 @@ router.post(
   '/publish/:id',
   readLanguage,
   validate(publishPostSchema),
-  authenticateUser,
+  authenticateAdmin,
   getPublishPostHandler
 );
 
@@ -99,14 +100,14 @@ router.post(
   '/disable/:id',
   readLanguage,
   validate(disablePostSchema),
-  authenticateUser,
+  authenticateAdmin,
   getDisablePostHandler
 );
 
 router.put(
   '/:id',
   readLanguage,
-  authenticateUser,
+  authenticateAdmin,
   uploadCropFile,
   editPostHandler
 );
