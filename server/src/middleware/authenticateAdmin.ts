@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { findUniqueUser } from "../user/service/user.service";
-import AppError from "../utils/appError";
-import { verifyJwt } from "../utils/jwt";
+import { NextFunction, Request, Response } from 'express';
+import { findUniqueUser } from '../user/service/user.service';
+import AppError from '../utils/appError';
+import { verifyJwt } from '../utils/jwt';
 
 export const authenticateAdmin = async (
   req: Request,
@@ -13,15 +13,15 @@ export const authenticateAdmin = async (
 
     if (
       req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer")
+      req.headers.authorization.startsWith('Bearer')
     ) {
-      access_token = req.headers.authorization.split(" ")[1];
+      access_token = req.headers.authorization.split(' ')[1];
     } else if (req.cookies.access_token) {
       access_token = req.cookies.access_token;
     }
 
     if (!access_token) {
-      return next(new AppError(401, "You are not logged in"));
+      return next(new AppError(401, 'You are not logged in'));
     }
 
     // Validate the access token
@@ -38,7 +38,7 @@ export const authenticateAdmin = async (
       return next(new AppError(401, `Invalid token or session has expired`));
     }
 
-    if (user.role === "user" || user.role !== "admin") {
+    if (user.role !== 'admin') {
       return next(new AppError(401, `You are not authorized to access`));
     }
 
