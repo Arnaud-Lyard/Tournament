@@ -12,18 +12,23 @@ import { useRouter } from 'next/navigation';
 
 export default function Modal({
   children,
+  params: { redirectHomePage },
 }: Readonly<{
   children: React.ReactNode;
+  params: { redirectHomePage: boolean };
 }>) {
   const router = useRouter();
 
-  function onDismiss() {
-    router.back();
+  function onDismiss(redirectHomePage: boolean) {
+    redirectHomePage === true ? router.push('/') : router.back();
   }
   return (
     <div>
       <Transition show={true}>
-        <Dialog className="relative z-10" onClose={onDismiss}>
+        <Dialog
+          className="relative z-10"
+          onClose={() => onDismiss(redirectHomePage)}
+        >
           <TransitionChild
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -50,7 +55,7 @@ export default function Modal({
                     <button
                       type="button"
                       className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
-                      onClick={onDismiss}
+                      onClick={() => onDismiss(redirectHomePage)}
                     >
                       <span className="sr-only">Close</span>
                       <XMarkIcon className="h-6 w-6" aria-hidden="true" />
