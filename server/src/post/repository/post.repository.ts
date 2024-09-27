@@ -77,6 +77,9 @@ export class PostRepository {
 
   static async getAllPosts(): Promise<Post[]> {
     return await prisma.post.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         categories: {
           select: {
@@ -175,6 +178,9 @@ export class PostRepository {
 
   static async getPublishPosts(): Promise<Post[] | null> {
     return await prisma.post.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         categories: {
           select: {
