@@ -31,6 +31,7 @@ import {
   IndentBlock,
   Image,
   SimpleUploadAdapter,
+  RemoveFormat,
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
@@ -86,6 +87,8 @@ function CustomEditor({
             'indent',
             '|',
             'insertImage',
+            '|',
+            'removeFormat',
           ],
         },
         indentBlock: {
@@ -169,6 +172,7 @@ function CustomEditor({
           Image,
           ImageInsert,
           SimpleUploadAdapter,
+          RemoveFormat,
         ],
       }}
       data={postDatas}
