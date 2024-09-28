@@ -65,7 +65,7 @@
   "adminpost": {
     "creationDate": "Written on ",
     "author": "by",
-    "view": "View project",
+    "view": "View article",
     "option": "Open options",
     "action": {
       "one": "Publish",
