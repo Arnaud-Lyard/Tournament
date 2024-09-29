@@ -5,7 +5,7 @@ import { PostStatusEnumType } from '@prisma/client';
 import { IPostUpdateDto } from '../dto/post.dto';
 import AppError from '../../utils/appError';
 import { UserRepository } from '../../user/repository/user.repository';
-import ImageManager from '../../utils/imageManager';
+import { removeResizedImages } from '../../utils/removeImage';
 
 export async function addPost({
   user,
@@ -132,8 +132,10 @@ export async function editPost({
 
     if (image && postHasImage!.image) {
       postUpdate.image = image.filename;
-      const imageManager = new ImageManager(process.env.NODE_ENV);
-      await imageManager.removeResizedImages(postHasImage!.image);
+      await removeResizedImages({
+        filename: postHasImage!.image,
+        environment: process.env.NODE_ENV!,
+      });
     }
     await PostRepository.updatePost(postUpdate);
   } catch (err: any) {

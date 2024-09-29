@@ -6,7 +6,7 @@ import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 import { UserRepository } from '../repository/user.repository';
 import { File } from '../../types/file';
 import { PostRepository } from '../../post/repository/post.repository';
-import ImageManager from '../../utils/imageManager';
+import { removeImage } from '../../utils/removeImage';
 export const createUser = async (user: UserDto) => {
   return await UserRepository.createUser(user);
 };
@@ -135,8 +135,10 @@ export async function updateUser({
     if (avatar && userHasImage!.avatar) {
       userUpdate.avatar = avatar.filename;
       if (userHasImage!.avatar !== 'user.png') {
-        const imageManager = new ImageManager(process.env.NODE_ENV);
-        await imageManager.removeImage(userHasImage!.avatar);
+        await removeImage({
+          filename: userHasImage!.avatar,
+          environment: process.env.NODE_ENV,
+        });
       }
     }
     await UserRepository.updateUser(userUpdate);
