@@ -33,8 +33,8 @@ export async function generateMetadata(
       images: [
         {
           url: `${process.env.NEXT_PUBLIC_UPLOADS_URL}/resized_1200x630_${post.data.post.image}`,
-          width: 400,
-          height: 400,
+          width: 1200,
+          height: 630,
           alt:
             params.lang === 'fr'
               ? post.data.post.frenchTitle
