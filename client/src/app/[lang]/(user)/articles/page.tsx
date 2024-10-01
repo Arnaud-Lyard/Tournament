@@ -35,6 +35,9 @@ export function generateMetadata(
         },
       ],
     },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}/articles`,
+    },
   };
 }
 

@@ -1,5 +1,21 @@
 import { Hero } from '@/components/hero';
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { slug: string; lang: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Metadata {
+  return {
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}`,
+    },
+  };
+}
 
 export default function Home({ params }: { params: { lang: string } }) {
   return (

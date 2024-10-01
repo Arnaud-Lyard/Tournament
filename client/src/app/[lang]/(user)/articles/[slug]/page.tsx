@@ -48,6 +48,9 @@ export async function generateMetadata(
         url: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}/articles/${params.slug}`,
       },
     ],
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_APP_URL}/${params.lang}/articles/${params.slug}`,
+    },
   };
 }
 
