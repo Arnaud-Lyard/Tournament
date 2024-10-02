@@ -58,7 +58,7 @@ export default function Footer() {
         >
           <div className="pb-6">
             <Link
-              href="legal-notices"
+              href="/legal-notices"
               className="text-sm leading-6 text-white hover:text-gray-300"
             >
               {dictionary.footer.navOne}
@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
           <div className="pb-6">
             <Link
-              href="privacy-policy"
+              href="/privacy-policy"
               className="text-sm leading-6 text-white hover:text-gray-300"
             >
               {dictionary.footer.navTwo}
