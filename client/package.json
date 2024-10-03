@@ -11,7 +11,7 @@
   "dependencies": {
     "@ckeditor/ckeditor5-react": "^9.1.0",
     "@formatjs/intl-localematcher": "^0.5.4",
-    "@headlessui/react": "^2.1.7",
+    "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
     "axios": "^1.7.7",
     "ckeditor5": "^43.1.0",
