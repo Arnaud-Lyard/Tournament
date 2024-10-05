@@ -1,3 +1,7 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const dynamicParams = true;
+
 import type { MetadataRoute } from 'next';
 import { HttpService } from '@/services';
 import { IGetPostsResponse } from '@/types/api';
