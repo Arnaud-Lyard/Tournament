@@ -63,6 +63,7 @@ export default async function Post({ params }: { params: { lang: string } }) {
 
   return (
     <div className="grid grid-cols-1 gap-10 py-10 sm:grid-cols-1 sm:gap-5 sm:py-10 md:gap-10">
+      <h1 className="text-4xl font-bold text-center text-balance">Articles</h1>
       <Search params={{ lang: params.lang }} />
       {posts.map((post) => (
         <article className="mx-auto w-full max-w-screen-lg" key={post.id}>
