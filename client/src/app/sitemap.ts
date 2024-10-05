@@ -1,5 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { HttpService } from '@/services';
+import { IGetPostsResponse } from '@/types/api';
+
 const http = new HttpService();
 async function dynamicPagesForSitemap() {
   const {
@@ -49,5 +51,3 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const pages = [...pagesBase, ...dynamicPages];
   return pages;
 }
-
-import { IGetPostsResponse } from '@/types/api';
