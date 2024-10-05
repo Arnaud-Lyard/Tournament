@@ -26,25 +26,10 @@ class HttpService {
   }
 
   // Set up request headers
-  private setupHeaders(
-    hasAttachment = false,
-    isCache = true
-  ): RawAxiosRequestHeaders {
-    const header =
-      hasAttachment === true
-        ? { 'Content-Type': 'multipart/form-data' }
-        : { 'Content-Type': 'application/json' };
-
-    if (isCache) {
-      return header;
-    } else {
-      return {
-        ...header,
-        Pragma: 'no-cache',
-        'Cache-Control': 'no-cache',
-        Expires: '0',
-      };
-    }
+  private setupHeaders(hasAttachment = false): RawAxiosRequestHeaders {
+    return hasAttachment
+      ? { 'Content-Type': 'multipart/form-data' }
+      : { 'Content-Type': 'application/json' };
   }
 
   // Handle HTTP requests
@@ -70,12 +55,11 @@ class HttpService {
   public async get<T>(
     url: string,
     params?: IService.IParams,
-    hasAttachment = false,
-    isCache = true
+    hasAttachment = false
   ): Promise<T> {
     return this.request<T>(EHttpMethod.GET, url, {
       params,
-      headers: this.setupHeaders(hasAttachment, isCache),
+      headers: this.setupHeaders(hasAttachment),
     });
   }
 
