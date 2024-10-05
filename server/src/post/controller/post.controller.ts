@@ -248,7 +248,7 @@ export const getPublishPostsHandler = async (
 ) => {
   try {
     const posts = await getPublishPosts();
-
+    console.log('postsserver', posts);
     res.status(200).json({
       status: 'success',
       datas: {

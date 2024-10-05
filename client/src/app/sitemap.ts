@@ -9,6 +9,7 @@ async function dynamicPagesForSitemap() {
   } = await http
     .service()
     .get<IGetPostsResponse>(`/posts/publish`, undefined, undefined, false);
+  console.log('posts', posts);
   return posts.map((post) => ({
     url: `${process.env.NEXT_PUBLIC_APP_URL}/articles/${post.slug}`,
     lastModified: post.updatedAt,
