@@ -10,26 +10,8 @@ import {
   GetPostInput,
   PublishPostInput,
 } from '../schema/post.schema';
-import {
-  addComment,
-  addPost,
-  addResponse,
-  changePostStatus,
-  checkIfPostExist,
-  editPost,
-  getAllPosts,
-  getComment,
-  getNewComment,
-  getNewPosts,
-  getPost,
-  getPostBySlug,
-  getPublishPosts,
-  resetNewComment,
-  resetNewPosts,
-} from '../service/post.service';
+import { postService } from '../service/post.service';
 import { AddCategoryInput } from '../schema/post.schema';
-import { addCategory } from '../service/post.service';
-import { getAllCategories } from '../service/post.service';
 import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
@@ -43,7 +25,7 @@ export const addPostHandler = async (
   try {
     const user = (await getUserInformations(req, next)) as IUser;
 
-    await addPost({
+    await postService.addPost({
       user,
       frenchContent: req.body.frenchContent,
       englishContent: req.body.englishContent,
@@ -56,10 +38,9 @@ export const addPostHandler = async (
       image: req.file,
     });
 
-    const message = req.language === 'fr' ? "Ajout de l'article" : 'Blog added';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Article ajouté' : 'Post added',
     });
   } catch (err: any) {
     next(err);
@@ -72,15 +53,13 @@ export const addCategoryHandler = async (
   next: NextFunction
 ) => {
   try {
-    await addCategory({
+    await postService.addCategory({
       name: req.body.categoryName,
     });
 
-    const message =
-      req.language === 'fr' ? 'Ajout de la catégorie' : 'Category added';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Catégorie ajoutée' : 'Category added',
     });
   } catch (err: any) {
     next(err);
@@ -93,7 +72,7 @@ export const getCategoriesHandler = async (
   next: NextFunction
 ) => {
   try {
-    const categories = await getAllCategories();
+    const categories = await postService.getAllCategories();
 
     res.status(200).json({
       status: 'success',
@@ -112,7 +91,7 @@ export const getPostsHandler = async (
   next: NextFunction
 ) => {
   try {
-    const posts = await getAllPosts();
+    const posts = await postService.getAllPosts();
 
     res.status(200).json({
       status: 'success',
@@ -131,26 +110,14 @@ export const getPublishPostHandler = async (
   next: NextFunction
 ) => {
   try {
-    const postExist = await checkIfPostExist(req.params.id);
-
-    if (!postExist) {
-      const message =
-        req.language === 'fr' ? 'Article introuvable' : 'Post not found';
-      return res.status(404).json({
-        status: 'fail',
-        message,
-      });
-    }
-
-    await changePostStatus({
-      id: req.params.id,
+    await postService.changePostStatus({
+      req,
       status: 'published',
     });
 
-    const message = req.language === 'fr' ? 'Article publié' : 'Post published';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Article publié' : 'Post published',
     });
   } catch (err: any) {
     next(err);
@@ -163,27 +130,14 @@ export const getDisablePostHandler = async (
   next: NextFunction
 ) => {
   try {
-    const postExist = await checkIfPostExist(req.params.id);
-
-    if (!postExist) {
-      const message =
-        req.language === 'fr' ? 'Article introuvable' : 'Post not found';
-      return res.status(404).json({
-        status: 'fail',
-        message,
-      });
-    }
-
-    await changePostStatus({
-      id: req.params.id,
+    await postService.changePostStatus({
+      req,
       status: 'disabled',
     });
 
-    const message =
-      req.language === 'fr' ? 'Article désactivé' : 'Post disabled';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Article désactivé' : 'Post disabled',
     });
   } catch (err: any) {
     next(err);
@@ -196,7 +150,7 @@ export const getPostHandler = async (
   next: NextFunction
 ) => {
   try {
-    const post = await getPost(req.params.id);
+    const post = await postService.getPost(req);
 
     res.status(200).json({
       status: 'success',
@@ -216,25 +170,14 @@ export const editPostHandler = async (
 ) => {
   try {
     const user = (await getUserInformations(req, next)) as IUser;
-
-    await editPost({
+    await postService.editPost({
       user,
-      id: req.params.id,
-      frenchContent: req.body.frenchContent,
-      englishContent: req.body.englishContent,
-      categoryIds: req.body.categoryIds,
-      frenchTitle: req.body.frenchTitle,
-      englishTitle: req.body.englishTitle,
-      frenchDescription: req.body.frenchDescription,
-      englishDescription: req.body.englishDescription,
-      slug: req.body.slug,
-      image: req.file,
+      req,
     });
 
-    const message = req.language === 'fr' ? 'Article modifié' : 'Post edited';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Article modifié' : 'Post edited',
     });
   } catch (err: any) {
     next(err);
@@ -247,7 +190,7 @@ export const getPublishPostsHandler = async (
   next: NextFunction
 ) => {
   try {
-    const posts = await getPublishPosts();
+    const posts = await postService.getPublishPosts();
 
     res.status(200).json({
       status: 'success',
@@ -266,7 +209,7 @@ export const getPostBySlugHandler = async (
   next: NextFunction
 ) => {
   try {
-    const post = await getPostBySlug(req.params.slug);
+    const post = await postService.getPostBySlug(req);
 
     res.status(200).json({
       status: 'success',
@@ -285,45 +228,7 @@ export const addImageHandler = async (
   next: NextFunction
 ) => {
   try {
-    const uploadDirectory = path.join(__dirname, '../../../public/uploads');
-
-    if (!fs.existsSync(uploadDirectory)) {
-      fs.mkdirSync(uploadDirectory, { recursive: true });
-    }
-
-    const storage = multer.diskStorage({
-      destination: (req, file, cb) => {
-        cb(null, uploadDirectory);
-      },
-      filename: (req, file, cb) => {
-        cb(null, Date.now() + '-' + file.originalname);
-      },
-    });
-
-    const upload = multer({
-      storage: storage,
-      limits: { fileSize: 5 * 1024 * 1024 },
-    }).single('upload');
-    upload(req, res, (err: any) => {
-      if (err instanceof multer.MulterError) {
-        if (err.code === 'LIMIT_FILE_SIZE') {
-          return next(
-            new AppError(400, 'File size is too large. Maximum size is 5MB.')
-          );
-        } else {
-          return next(
-            new AppError(500, 'An unknown error occurred during file upload.')
-          );
-        }
-      } else if (err) {
-        return next(
-          new AppError(500, 'An unknown error occurred during file upload.')
-        );
-      }
-      res.status(200).json({
-        url: process.env.SERVER_URL + '/uploads/' + req.file!.filename,
-      });
-    });
+    await postService.uploadImage(req, res, next);
   } catch (err: any) {
     next(err);
   }
@@ -336,8 +241,8 @@ export const getNotificationHandler = async (
 ) => {
   try {
     const user = (await getUserInformations(req, next)) as IUser;
-    const posts = await getNewPosts({ user });
-    const comments = await getNewComment({ user });
+    const posts = await postService.getNewPosts({ user });
+    const comments = await postService.getNewComment({ user });
 
     res.status(200).json({
       status: 'success',
@@ -358,12 +263,15 @@ export async function getResetNotificationHandler(
 ) {
   try {
     const user = (await getUserInformations(req, next)) as IUser;
-    await resetNewPosts({ user });
-    await resetNewComment({ user });
+    await postService.resetNewPosts({ user });
+    await postService.resetNewComment({ user });
 
     res.status(200).json({
       status: 'success',
-      message: 'Notifications reset',
+      message:
+        req.language === 'fr'
+          ? 'Notifications réinitialisées'
+          : 'Notifications reset',
     });
   } catch (err: any) {
     next(err);
@@ -377,16 +285,14 @@ export const addCommentHandler = async (
 ) => {
   try {
     const user = (await getUserInformations(req, next)) as IUser;
-    await addComment({
+    await postService.addComment({
       user,
-      postId: req.body.postId,
-      comment: req.body.comment,
+      req,
     });
-    const message =
-      req.language === 'fr' ? 'Commentaire ajouté' : 'Comment added';
+
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Commentaire ajouté' : 'Comment added',
     });
   } catch (err: any) {
     next(err);
@@ -399,7 +305,7 @@ export const getCommentHandler = async (
   next: NextFunction
 ) => {
   try {
-    const comments = await getComment(req.params.postId);
+    const comments = await postService.getComment(req);
 
     res.status(200).json({
       status: 'success',
@@ -420,18 +326,14 @@ export const addResponseHandler = async (
   try {
     const user = (await getUserInformations(req, next)) as IUser;
 
-    await addResponse({
+    await postService.addResponse({
       user,
-      postId: req.params.postid,
-      comment: req.body.comment,
-      parentId: req.body.parentId,
+      req,
     });
 
-    const message =
-      req.language === 'fr' ? 'Réponse ajoutée' : 'Response added';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Réponse ajoutée' : 'Response added',
     });
   } catch (err: any) {
     next(err);
