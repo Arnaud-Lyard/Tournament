@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { findUniqueUser } from '../user/service/user.service';
+import { userService } from '../user/service/user.service';
 import AppError from '../utils/appError';
 import { verifyJwt } from '../utils/jwt';
 
@@ -46,7 +46,7 @@ export const authenticateUser = async (
     }
 
     // Check if the user still exist
-    const user = await findUniqueUser(decoded.sub);
+    const user = await userService.findUniqueUser(decoded.sub);
 
     if (!user) {
       return next(

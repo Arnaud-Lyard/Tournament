@@ -1,19 +1,7 @@
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import { CookieOptions, NextFunction, Request, Response } from 'express';
-import {
-  associateUserToAllPosts,
-  checkIfEmailExist,
-  createUser,
-  findByEmail,
-  findUserByPasswordResetToken,
-  findUserByVerificationCode,
-  signTokens,
-  switchVerificationCode,
-  updateResetPasswordToken,
-  updateUserPassword,
-  verifyUser,
-} from '../../user/service/user.service';
+import { userService } from '../../user/service/user.service';
 import AppError from '../../utils/appError';
 import Email from '../../utils/email';
 import {
@@ -46,7 +34,7 @@ export const registerUserHandler = async (
   next: NextFunction
 ) => {
   try {
-    const isEmailExist = await checkIfEmailExist(req.body.email);
+    const isEmailExist = await userService.checkIfEmailExist(req.body.email);
     if (isEmailExist !== null) {
       return res.status(409).json({
         status: 'fail',
@@ -61,7 +49,7 @@ export const registerUserHandler = async (
       .update(verifyCode)
       .digest('hex');
 
-    const user = await createUser({
+    const user = await userService.createUser({
       username: req.body.username,
       email: req.body.email.toLowerCase(),
       password: hashedPassword,
@@ -75,7 +63,10 @@ export const registerUserHandler = async (
         req.language
       );
 
-      await switchVerificationCode({ userId: user.id, verificationCode });
+      await userService.switchVerificationCode({
+        userId: user.id,
+        verificationCode,
+      });
 
       res.status(201).json({
         status: 'success',
@@ -85,7 +76,10 @@ export const registerUserHandler = async (
             : 'An email with a verification code has been sent to your email',
       });
     } catch (error) {
-      await switchVerificationCode({ userId: user.id, verificationCode: null });
+      await userService.switchVerificationCode({
+        userId: user.id,
+        verificationCode: null,
+      });
       return res.status(500).json({
         status: 'error',
         message:
@@ -106,7 +100,7 @@ export const loginUserHandler = async (
 ) => {
   try {
     const { email, password } = req.body;
-    const user = await findByEmail(email.toLowerCase());
+    const user = await userService.findByEmail(email.toLowerCase());
 
     if (!user) {
       return next(
@@ -143,7 +137,7 @@ export const loginUserHandler = async (
     }
 
     // Sign Tokens
-    const { access_token } = await signTokens(user);
+    const { access_token } = await userService.signTokens(user);
     res.cookie('access_token', access_token, accessTokenCookieOptions);
     res.cookie('logged_in', true, {
       ...accessTokenCookieOptions,
@@ -191,7 +185,7 @@ export const verifyEmailHandler = async (
       .update(req.params.verificationCode)
       .digest('hex');
 
-    const user = await findUserByVerificationCode(verificationCode);
+    const user = await userService.findUserByVerificationCode(verificationCode);
     if (!user) {
       return next(
         new AppError(
@@ -202,14 +196,14 @@ export const verifyEmailHandler = async (
         )
       );
     }
-    await verifyUser(user.id);
+    await userService.verifyUser(user.id);
 
     await sendConfirmMessage({
       user,
       langage: req.language,
     });
 
-    await associateUserToAllPosts(user.id);
+    await userService.associateUserToAllPosts(user.id);
 
     res.status(200).json({
       status: 'success',
@@ -233,7 +227,7 @@ export const forgotPasswordHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user = await findByEmail(req.body.email.toLowerCase());
+    const user = await userService.findByEmail(req.body.email.toLowerCase());
     const message =
       req.language === 'fr'
         ? 'Nous avons envoyé un email avec un lien pour réinitialiser votre mot de passe. Veuillez vérifier votre email.'
@@ -261,7 +255,7 @@ export const forgotPasswordHandler = async (
       .update(resetToken)
       .digest('hex');
 
-    await updateResetPasswordToken({
+    await userService.updateResetPasswordToken({
       userId: user.id,
       passwordResetToken,
       passwordResetAt: new Date(Date.now() + 10 * 60 * 1000),
@@ -276,7 +270,7 @@ export const forgotPasswordHandler = async (
         message,
       });
     } catch (err: any) {
-      await updateResetPasswordToken({
+      await userService.updateResetPasswordToken({
         userId: user.id,
         passwordResetToken: null,
         passwordResetAt: null,
@@ -319,7 +313,7 @@ export const resetPasswordHandler = async (
       .update(req.params.resetToken)
       .digest('hex');
 
-    const user = await findUserByPasswordResetToken({
+    const user = await userService.findUserByPasswordResetToken({
       passwordResetToken,
     });
 
@@ -335,7 +329,7 @@ export const resetPasswordHandler = async (
 
     const hashedPassword = await bcrypt.hash(req.body.password, 12);
     // Change password data
-    await updateUserPassword({
+    await userService.updateUserPassword({
       userId: user.id,
       hashedPassword,
       passwordResetToken: null,

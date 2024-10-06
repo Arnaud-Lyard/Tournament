@@ -2,13 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { IUser } from '../../types/user';
 import AppError from '../../utils/appError';
 import { getUserInformations } from '../../utils/getUserInformations';
-import { getUserInformationsByToken } from '../../utils/getUserInformationsByToken';
+import { validateToken } from '../../utils/validateToken';
 import { UnsubscribeUserInput, UpdateUserInput } from '../schema/user.schema';
-import {
-  disabledEmail,
-  findUniqueUser,
-  updateUser,
-} from '../service/user.service';
+import { userService } from '../service/user.service';
 
 export const getUserHandler = async (
   req: Request,
@@ -34,22 +30,14 @@ export const getMeHandler = async (
   next: NextFunction
 ) => {
   try {
-    let access_token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith('Bearer')
-    ) {
-      access_token = req.headers.authorization.split(' ')[1];
-    } else if (req.cookies.access_token) {
-      access_token = req.cookies.access_token;
-    }
-    const userInfos = await getUserInformationsByToken(next, access_token);
+    const access_token = validateToken(req);
+    const user = await userService.getUserInformationsByToken(access_token);
 
     res.status(200).json({
       status: 'success',
       data: {
-        isConnect: Boolean(access_token),
-        informations: userInfos,
+        isConnect: Boolean(user),
+        informations: user,
       },
     });
   } catch (err: any) {
@@ -64,21 +52,14 @@ export const updateUserHandler = async (
 ) => {
   try {
     const user = (await getUserInformations(req, next)) as IUser;
-
-    const { username, notification } = req.body;
-
-    await updateUser({
+    await userService.updateUser({
       user,
-      username,
-      notification: notification === 'true' ? true : false,
-      avatar: req.file,
+      req,
     });
 
-    const message =
-      req.language === 'fr' ? 'Profil mis à jour' : 'Profile updated';
     res.status(200).json({
       status: 'success',
-      message,
+      message: req.language === 'fr' ? 'Profil mis à jour' : 'Profile updated',
     });
   } catch (err: any) {
     next(err);
@@ -108,17 +89,7 @@ export const getUnsubscribeHandler = async (
   next: NextFunction
 ) => {
   try {
-    const user = await findUniqueUser(req.params.id);
-
-    if (!user) {
-      return next(
-        new AppError(
-          404,
-          req.language === 'fr' ? 'Utilisateur non trouvé' : 'User not found'
-        )
-      );
-    }
-    await disabledEmail(user.id);
+    await userService.unSubscribeUser(req, next);
 
     res.status(200).json({
       status: 'success',

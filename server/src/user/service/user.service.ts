@@ -1,165 +1,205 @@
-import { Prisma, PrismaClient, User } from '@prisma/client';
-import { IUser } from '../../types/user';
+import { Prisma } from '@prisma/client';
+import { NextFunction, Request } from 'express';
+import { PostRepository } from '../../post/repository/post.repository';
+import { IUser, IUserInformations } from '../../types/user';
 import AppError from '../../utils/appError';
-import { signJwt } from '../../utils/jwt';
+import { signJwt, verifyJwt } from '../../utils/jwt';
+import { removeImage } from '../../utils/removeImage';
 import { IUserUpdateDto, UserDto } from '../dto/user.dto';
 import { UserRepository } from '../repository/user.repository';
-import { File } from '../../types/file';
-import { PostRepository } from '../../post/repository/post.repository';
-import { removeImage } from '../../utils/removeImage';
-export const createUser = async (user: UserDto) => {
-  return await UserRepository.createUser(user);
-};
+import { UnsubscribeUserInput, UpdateUserInput } from '../schema/user.schema';
 
-export async function switchVerificationCode({
-  userId,
-  verificationCode,
-}: {
-  userId: string;
-  verificationCode: string | null;
-}) {
-  return await UserRepository.switchVerificationCode({
+export const userService = {
+  createUser: async (user: UserDto) => {
+    return await UserRepository.createUser(user);
+  },
+
+  switchVerificationCode: async ({
     userId,
     verificationCode,
-  });
-}
+  }: {
+    userId: string;
+    verificationCode: string | null;
+  }) => {
+    return await UserRepository.switchVerificationCode({
+      userId,
+      verificationCode,
+    });
+  },
 
-export async function checkIfEmailExist(email: string): Promise<User | null> {
-  return await UserRepository.findByEmail(email);
-}
+  checkIfEmailExist: async (email: string) => {
+    return await UserRepository.findByEmail(email);
+  },
 
-export const signTokens = async (user: Prisma.UserCreateInput) => {
-  const access_token = signJwt(
-    { sub: user.id },
-    {
-      expiresIn: `${process.env.ACCESS_TOKEN_EXPIRES_IN}m`,
-    }
-  );
+  findUniqueUser: async (userId: string): Promise<IUser | null> => {
+    return await UserRepository.findByUserId(userId);
+  },
 
-  return { access_token };
-};
+  findByEmail: async (email: string) => {
+    return await UserRepository.findByEmail(email);
+  },
 
-export async function findUniqueUser(userId: string): Promise<IUser | null> {
-  return await UserRepository.findByUserId(userId);
-}
+  findUserByVerificationCode: async (verificationCode: string) => {
+    return await UserRepository.findUserByVerificationCode(verificationCode);
+  },
 
-export async function findByEmail(email: string): Promise<User | null> {
-  return await UserRepository.findByEmail(email);
-}
+  verifyUser: async (userId: string) => {
+    return await UserRepository.verifyUser(userId);
+  },
 
-export async function findUserByVerificationCode(
-  verificationCode: string
-): Promise<User | null> {
-  return await UserRepository.findUserByVerificationCode(verificationCode);
-}
-
-export async function verifyUser(userId: string) {
-  return await UserRepository.verifyUser(userId);
-}
-
-export async function updateResetPasswordToken({
-  userId,
-  passwordResetToken,
-  passwordResetAt,
-}: {
-  userId: string;
-  passwordResetToken: string | null;
-  passwordResetAt: Date | null;
-}) {
-  return await UserRepository.updateResetPasswordToken({
+  updateResetPasswordToken: async ({
     userId,
     passwordResetToken,
     passwordResetAt,
-  });
-}
+  }: {
+    userId: string;
+    passwordResetToken: string | null;
+    passwordResetAt: Date | null;
+  }) => {
+    return await UserRepository.updateResetPasswordToken({
+      userId,
+      passwordResetToken,
+      passwordResetAt,
+    });
+  },
 
-export async function findUserByPasswordResetToken({
-  passwordResetToken,
-}: {
-  passwordResetToken: string;
-}) {
-  return await UserRepository.findUserByPasswordResetToken(passwordResetToken);
-}
+  findUserByPasswordResetToken: async ({
+    passwordResetToken,
+  }: {
+    passwordResetToken: string;
+  }) => {
+    return await UserRepository.findUserByPasswordResetToken(
+      passwordResetToken
+    );
+  },
 
-export async function updateUserPassword({
-  userId,
-  hashedPassword,
-  passwordResetToken,
-  passwordResetAt,
-}: {
-  userId: string;
-  hashedPassword: string;
-  passwordResetToken: null;
-  passwordResetAt: null;
-}) {
-  return await UserRepository.updateUserPassword({
+  updateUserPassword: async ({
     userId,
     hashedPassword,
     passwordResetToken,
     passwordResetAt,
-  });
-}
+  }: {
+    userId: string;
+    hashedPassword: string;
+    passwordResetToken: null;
+    passwordResetAt: null;
+  }) => {
+    return await UserRepository.updateUserPassword({
+      userId,
+      hashedPassword,
+      passwordResetToken,
+      passwordResetAt,
+    });
+  },
 
-export async function updateUser({
-  user,
-  username,
-  notification,
-  avatar,
-}: {
-  user: IUser;
-  username: string;
-  notification: boolean;
-  avatar: File | undefined;
-}) {
-  const userUpdate: IUserUpdateDto = {
-    id: user.id,
-    username,
-    notification,
-    avatar: null,
-  };
-  try {
-    const userHasImage = await UserRepository.findByUserId(user.id);
+  updateUser: async ({
+    user,
+    req,
+  }: {
+    user: IUser;
+    req: Request<{}, {}, UpdateUserInput>;
+  }) => {
+    const { username, notification } = req.body;
+    const avatar = req.file;
+    const userUpdate: IUserUpdateDto = {
+      id: user.id,
+      username,
+      notification: notification === 'true' ? true : false,
+      avatar: null,
+    };
+    try {
+      const userHasImage = await UserRepository.findByUserId(user.id);
 
-    if (!avatar && !userHasImage!.avatar) {
-      userUpdate.avatar = user.avatar;
-    }
-
-    if (!avatar && userHasImage!.avatar) {
-      userUpdate.avatar = userHasImage!.avatar;
-    }
-
-    if (avatar && !userHasImage!.avatar) {
-      userUpdate.avatar = avatar.filename;
-    }
-
-    if (avatar && userHasImage!.avatar) {
-      userUpdate.avatar = avatar.filename;
-      if (userHasImage!.avatar !== 'user.png') {
-        await removeImage({
-          filename: userHasImage!.avatar,
-          environment: process.env.NODE_ENV,
-        });
+      if (!avatar && !userHasImage!.avatar) {
+        userUpdate.avatar = user.avatar;
       }
+
+      if (!avatar && userHasImage!.avatar) {
+        userUpdate.avatar = userHasImage!.avatar;
+      }
+
+      if (avatar && !userHasImage!.avatar) {
+        userUpdate.avatar = avatar.filename;
+      }
+
+      if (avatar && userHasImage!.avatar) {
+        userUpdate.avatar = avatar.filename;
+        if (userHasImage!.avatar !== 'user.png') {
+          await removeImage({
+            filename: userHasImage!.avatar,
+            environment: process.env.NODE_ENV,
+          });
+        }
+      }
+      await UserRepository.updateUser(userUpdate);
+    } catch (err: any) {
+      throw new AppError(400, 'Erreur lors de la mise à jour du profil.');
     }
-    await UserRepository.updateUser(userUpdate);
-  } catch (err: any) {
-    throw new AppError(400, 'Erreur lors de la mise à jour du profil.');
-  }
-}
+  },
 
-export async function getUserInformations(userId: string) {
-  return await UserRepository.getUserInformations(userId);
-}
+  getUserInformations: async (userId: string) => {
+    return await UserRepository.getUserInformations(userId);
+  },
 
-export async function disabledEmail(userId: string) {
-  return await UserRepository.disabledEmail(userId);
-}
+  disabledEmail: async (userId: string) => {
+    return await UserRepository.disabledEmail(userId);
+  },
 
-export async function associateUserToAllPosts(userId: string) {
-  try {
-    const posts = await PostRepository.findAll();
-    await UserRepository.associateUserToAllPosts({ userId, posts });
-  } catch (err: any) {
-    throw new AppError(400, 'Erreur lors de l association des posts.');
-  }
-}
+  associateUserToAllPosts: async (userId: string) => {
+    try {
+      const posts = await PostRepository.findAll();
+      await UserRepository.associateUserToAllPosts({ userId, posts });
+    } catch (err: any) {
+      throw new AppError(400, 'Erreur lors de l association des posts.');
+    }
+  },
+
+  getUserInformationsByToken: async (
+    access_token: string | null
+  ): Promise<IUserInformations | null> => {
+    // Avoid error if no access token
+    if (!access_token) return null;
+
+    // Validate the access token
+    const decoded = verifyJwt<{ sub: string }>(access_token);
+    if (!decoded) return null;
+
+    // Check if the user still exist
+    const user = await userService.findUniqueUser(decoded.sub);
+    if (!user) return null;
+
+    const userInfos = await userService.getUserInformations(user.id);
+    return userInfos;
+  },
+
+  signTokens: async (user: Prisma.UserCreateInput) => {
+    const access_token = signJwt(
+      { sub: user.id },
+      {
+        expiresIn: `${process.env.ACCESS_TOKEN_EXPIRES_IN}m`,
+      }
+    );
+
+    return { access_token };
+  },
+
+  unSubscribeUser: async (
+    req: Request<UnsubscribeUserInput>,
+    next: NextFunction
+  ) => {
+    try {
+      const user = await userService.findUniqueUser(req.params.id);
+      if (!user) {
+        return next(
+          new AppError(
+            404,
+            req.language === 'fr' ? 'Utilisateur non trouvé' : 'User not found'
+          )
+        );
+      }
+      await userService.disabledEmail(user.id);
+    } catch (err: any) {
+      next(err);
+    }
+  },
+};
