@@ -1,11 +1,11 @@
-import { authenticateUser } from '../middleware/authenticateUser';
-import { findUniqueUser } from '../user/service/user.service';
-import { verifyJwt } from '../utils/jwt';
-import AppError from '../utils/appError';
+import { authenticateUser } from '../authenticateUser';
+import { userService } from '../../user/service/user.service';
+import { verifyJwt } from '../../utils/jwt';
+import AppError from '../../utils/appError';
 import { Request, Response } from 'express';
 
-jest.mock('../user/service/user.service');
-jest.mock('../utils/jwt');
+jest.mock('../../user/service/user.service');
+jest.mock('../../utils/jwt');
 
 describe('authenticateUser middleware', () => {
   const lang = 'en';
@@ -43,7 +43,7 @@ describe('authenticateUser middleware', () => {
     const fakeAccessToken = 'fakeAccessToken';
     req.headers.authorization = `Bearer ${fakeAccessToken}`;
     (verifyJwt as jest.Mock).mockReturnValue({ sub: fakeUserId });
-    (findUniqueUser as jest.Mock).mockResolvedValue(null);
+    (userService.findUniqueUser as jest.Mock).mockResolvedValue(null);
 
     await authenticateUser(req, res, next);
     expect(next).toHaveBeenCalledWith(
@@ -56,7 +56,9 @@ describe('authenticateUser middleware', () => {
     const fakeAccessToken = 'fakeAccessToken';
     req.headers.authorization = `Bearer ${fakeAccessToken}`;
     (verifyJwt as jest.Mock).mockReturnValue({ sub: fakeUserId });
-    (findUniqueUser as jest.Mock).mockResolvedValue({ userId: fakeUserId });
+    (userService.findUniqueUser as jest.Mock).mockResolvedValue({
+      userId: fakeUserId,
+    });
 
     await authenticateUser(req, res, next);
     expect(next).toHaveBeenCalledWith();
