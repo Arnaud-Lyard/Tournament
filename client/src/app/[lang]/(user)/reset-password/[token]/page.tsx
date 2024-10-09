@@ -7,6 +7,7 @@ import logo from '~/public/assets/images/prochainweb.svg';
 import Link from 'next/link';
 import { useErrorHandling } from '@/hooks/useErrorHandling';
 import { useDictionary } from '@/providers/dictionary-provider';
+import { useRouter } from 'next/navigation';
 
 export default function ResetPassword({
   params,
@@ -17,6 +18,7 @@ export default function ResetPassword({
   const { errors, message, checkErrors, resetMessages, setMessage } =
     useErrorHandling();
   const dictionary = useDictionary();
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,6 +31,9 @@ export default function ResetPassword({
         .modify<IResponse, any>(`auth/resetpassword/${params.token}`, formJSON);
       if (response.status === 'success') {
         setMessage(response.message);
+        setTimeout(() => {
+          router.push('/');
+        }, 5000);
       }
     } catch (e: any) {
       checkErrors(e.response.data);
