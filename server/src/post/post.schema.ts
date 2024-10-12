@@ -1,4 +1,4 @@
-import { array, boolean, object, string, TypeOf, z } from 'zod';
+import { object, string, TypeOf } from 'zod';
 
 export const addPostSchema = object({
   body: object({

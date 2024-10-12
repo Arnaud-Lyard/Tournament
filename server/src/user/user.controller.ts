@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
-import { IUser } from '../../types/user';
-import AppError from '../../utils/appError';
-import { getUserInformations } from '../../utils/getUserInformations';
-import { validateToken } from '../../utils/validateToken';
-import { UnsubscribeUserInput, UpdateUserInput } from '../schema/user.schema';
-import { userService } from '../service/user.service';
+import { IUser } from './user.type';
+import AppError from '../utils/appError';
+import { getUserInformations } from '../utils/getUserInformations';
+import { validateToken } from '../utils/validateToken';
+import { UnsubscribeUserInput, UpdateUserInput } from './user.schema';
+import { userService } from './user.service';
 
 export const getUserHandler = async (
   req: Request,

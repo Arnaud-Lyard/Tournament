@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
-import AppError from '../../utils/appError';
-import Email from '../../utils/email';
+import AppError from '../utils/appError';
+import Email from '../utils/email';
 import { CookieOptions, NextFunction, Request, Response } from 'express';
 import {
   ForgotPasswordInput,
@@ -8,8 +8,8 @@ import {
   RegisterUserInput,
   ResetPasswordInput,
   VerifyEmailInput,
-} from '../schema/auth.schema';
-import { userService } from '../../user/service/user.service';
+} from './auth.schema';
+import { userService } from '../user/user.service';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 

@@ -1,16 +1,65 @@
 import { User, Post } from '@prisma/client';
-import prisma from '../../../prisma/client';
-import { IUserInformations, IUser } from '../../types/user';
-import { IUserUpdateDto, UserDto } from '../dto/user.dto';
+import prisma from '../../prisma/client';
+import { IUserInformations, IUser } from './user.type';
+import { IUpdateDto, ICreateDto } from './user.dto';
 
-export class UserRepository {
-  static async createUser(user: UserDto): Promise<User> {
+export interface IUserRepository {
+  createUser(user: ICreateDto): Promise<User>;
+  switchVerificationCode({
+    userId,
+    verificationCode,
+  }: {
+    userId: string;
+    verificationCode: string | null;
+  }): Promise<User>;
+  findByEmail(email: string): Promise<User | null>;
+  findUserByVerificationCode(verificationCode: string): Promise<User | null>;
+  verifyUser(userId: string): Promise<User>;
+  updateResetPasswordToken({
+    userId,
+    passwordResetToken,
+    passwordResetAt,
+  }: {
+    userId: string;
+    passwordResetToken: string | null;
+    passwordResetAt: Date | null;
+  }): Promise<User>;
+  findUserByPasswordResetToken(
+    passwordResetToken: string
+  ): Promise<User | null>;
+  updateUserPassword({
+    userId,
+    hashedPassword,
+    passwordResetToken,
+    passwordResetAt,
+  }: {
+    userId: string;
+    hashedPassword: string;
+    passwordResetToken: null;
+    passwordResetAt: null;
+  }): Promise<User>;
+  findByUserId(userId: string): Promise<IUser | null>;
+  updateUser(userUpdate: IUpdateDto): Promise<User>;
+  getUserInformations(userId: string): Promise<IUserInformations | null>;
+  disabledEmail(userId: string): Promise<User>;
+  findAll(): Promise<User[]>;
+  associateUserToAllPosts({
+    userId,
+    posts,
+  }: {
+    userId: string;
+    posts: Post[];
+  }): Promise<User>;
+}
+
+export class UserRepository implements IUserRepository {
+  async createUser(user: ICreateDto): Promise<User> {
     return await prisma.user.create({
       data: user,
     });
   }
 
-  static async switchVerificationCode({
+  async switchVerificationCode({
     userId,
     verificationCode,
   }: {
@@ -23,13 +72,13 @@ export class UserRepository {
     });
   }
 
-  static async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string): Promise<User | null> {
     return await prisma.user.findFirst({
       where: { email },
     });
   }
 
-  static async findUserByVerificationCode(
+  async findUserByVerificationCode(
     verificationCode: string
   ): Promise<User | null> {
     return await prisma.user.findFirst({
@@ -37,14 +86,14 @@ export class UserRepository {
     });
   }
 
-  static async verifyUser(userId: string): Promise<User> {
+  async verifyUser(userId: string): Promise<User> {
     return await prisma.user.update({
       where: { id: userId },
       data: { verified: true, verificationCode: null },
     });
   }
 
-  static async updateResetPasswordToken({
+  async updateResetPasswordToken({
     userId,
     passwordResetToken,
     passwordResetAt,
@@ -59,7 +108,7 @@ export class UserRepository {
     });
   }
 
-  static async findUserByPasswordResetToken(
+  async findUserByPasswordResetToken(
     passwordResetToken: string
   ): Promise<User | null> {
     return await prisma.user.findFirst({
@@ -67,7 +116,7 @@ export class UserRepository {
     });
   }
 
-  static async updateUserPassword({
+  async updateUserPassword({
     userId,
     hashedPassword,
     passwordResetToken,
@@ -84,7 +133,7 @@ export class UserRepository {
     });
   }
 
-  static async findByUserId(userId: string): Promise<IUser | null> {
+  async findByUserId(userId: string): Promise<IUser | null> {
     const user = await prisma.user.findFirst({
       where: { id: userId },
       select: {
@@ -101,19 +150,16 @@ export class UserRepository {
     return user;
   }
 
-  static async updateUser(userUpdate: IUserUpdateDto) {
+  async updateUser(userUpdate: IUpdateDto): Promise<User> {
     const { id, username, notification, avatar } = userUpdate;
-    const user = await prisma.user.update({
+    return await prisma.user.update({
       where: { id },
       data: { username, notification, avatar },
     });
-    return user;
   }
 
-  static async getUserInformations(
-    userId: string
-  ): Promise<IUserInformations | null> {
-    const userinfos = await prisma.user.findFirst({
+  async getUserInformations(userId: string): Promise<IUserInformations | null> {
+    return await prisma.user.findFirst({
       where: { id: userId },
       select: {
         role: true,
@@ -122,21 +168,20 @@ export class UserRepository {
         notification: true,
       },
     });
-    return userinfos;
   }
 
-  static async disabledEmail(userId: string): Promise<User> {
+  async disabledEmail(userId: string): Promise<User> {
     return await prisma.user.update({
       where: { id: userId },
       data: { mailSubscription: false },
     });
   }
 
-  static async findAll(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     return await prisma.user.findMany();
   }
 
-  static async associateUserToAllPosts({
+  async associateUserToAllPosts({
     userId,
     posts,
   }: {

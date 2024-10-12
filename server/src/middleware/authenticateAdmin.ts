@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { userService } from '../user/service/user.service';
+import { userService } from '../user/user.service';
 import AppError from '../utils/appError';
 import { verifyJwt } from '../utils/jwt';
 

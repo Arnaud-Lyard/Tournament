@@ -1,16 +1,16 @@
 import express from 'express';
-import { authenticateUser } from '../../middleware/authenticateUser';
+import { authenticateUser } from '../middleware/authenticateUser';
 import {
   getMeHandler,
   getProfileHandler,
   getUnsubscribeHandler,
   getUserHandler,
   updateUserHandler,
-} from '../controller/user.controller';
-import { uploadFile } from '../../middleware/uploadFile';
-import { readLanguage } from '../../middleware/readLanguage';
-import { unsubscribeUserSchema } from '../schema/user.schema';
-import { validate } from '../../middleware/validate';
+} from './user.controller';
+import { uploadFile } from '../middleware/uploadFile';
+import { readLanguage } from '../middleware/readLanguage';
+import { unsubscribeUserSchema } from './user.schema';
+import { validate } from '../middleware/validate';
 
 const router = express.Router();
 

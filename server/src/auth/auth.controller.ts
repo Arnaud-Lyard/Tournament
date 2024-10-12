@@ -5,8 +5,8 @@ import {
   RegisterUserInput,
   ResetPasswordInput,
   VerifyEmailInput,
-} from '../schema/auth.schema';
-import { authService } from '../service/auth.service';
+} from './auth.schema';
+import { authService } from './auth.service';
 
 export const registerUserHandler = async (
   req: Request<{}, {}, RegisterUserInput>,
