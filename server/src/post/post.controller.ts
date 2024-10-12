@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { getUserInformations } from '../../utils/getUserInformations';
-import { IUser } from '../../types/user';
+import { IUser } from '../user/user.type';
+import { getUserInformations } from '../utils/getUserInformations';
 import {
+  AddCategoryInput,
   AddCommentInput,
   AddPostInput,
   AddResponseInput,
@@ -9,13 +10,8 @@ import {
   GetCommentInput,
   GetPostInput,
   PublishPostInput,
-} from '../schema/post.schema';
-import { postService } from '../service/post.service';
-import { AddCategoryInput } from '../schema/post.schema';
-import multer from 'multer';
-import fs from 'fs';
-import path from 'path';
-import AppError from '../../utils/appError';
+} from './post.schema';
+import { postService } from './post.service';
 
 export const addPostHandler = async (
   req: Request<{}, {}, AddPostInput>,

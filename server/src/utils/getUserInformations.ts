@@ -1,6 +1,6 @@
 import { NextFunction, Request } from 'express';
-import { IUser } from '../types/user';
-import { userService } from '../user/service/user.service';
+import { IUser } from '../user/user.type';
+import { userService } from '../user/user.service';
 import AppError from '../utils/appError';
 import { verifyJwt } from '../utils/jwt';
 

@@ -1,6 +1,6 @@
 import express from 'express';
-import { authenticateUser } from '../../middleware/authenticateUser';
-import { validate } from '../../middleware/validate';
+import { authenticateUser } from '../middleware/authenticateUser';
+import { validate } from '../middleware/validate';
 import {
   forgotPasswordHandler,
   loginUserHandler,
@@ -8,15 +8,15 @@ import {
   registerUserHandler,
   resetPasswordHandler,
   verifyEmailHandler,
-} from '../controller/auth.controller';
+} from './auth.controller';
 import {
   forgotPasswordSchema,
   loginUserSchema,
   registerUserSchema,
   resetPasswordSchema,
   verifyEmailSchema,
-} from '../schema/auth.schema';
-import { readLanguage } from '../../middleware/readLanguage';
+} from './auth.schema';
+import { readLanguage } from '../middleware/readLanguage';
 
 const router = express.Router();
 

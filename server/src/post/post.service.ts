@@ -1,16 +1,12 @@
-import { IUser } from '../../types/user';
-import { PostRepository } from '../repository/post.repository';
-import { File } from '../../types/file';
+import { IUser } from '../user/user.type';
+import { PostRepository } from './post.repository';
+import { File } from '../types/file';
 import { PostStatusEnumType } from '@prisma/client';
-import { IPostUpdateDto } from '../dto/post.dto';
-import AppError from '../../utils/appError';
-import { UserRepository } from '../../user/repository/user.repository';
-import { removeResizedImages } from '../../utils/removeImage';
-import {
-  EditPostInput,
-  GetPostInput,
-  PublishPostInput,
-} from '../schema/post.schema';
+import { IPostUpdateDto } from './post.dto';
+import AppError from '../utils/appError';
+import { UserRepository } from '../user/user.repository';
+import { removeResizedImages } from '../utils/removeImage';
+import { EditPostInput, GetPostInput, PublishPostInput } from './post.schema';
 import { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
@@ -18,6 +14,9 @@ import multer from 'multer';
 import { promisify } from 'util';
 
 export const postService = {
+  postRepository: new PostRepository(),
+  userRepository: new UserRepository(),
+
   addPost: async ({
     user,
     frenchContent,
@@ -42,8 +41,8 @@ export const postService = {
     image: File | undefined;
   }) => {
     try {
-      const users = await UserRepository.findAll();
-      return await PostRepository.create({
+      const users = await postService.userRepository.findAll();
+      return await postService.postRepository.create({
         user,
         frenchContent,
         englishContent,
@@ -62,21 +61,21 @@ export const postService = {
   },
 
   addCategory: async ({ name }: { name: string }) => {
-    return await PostRepository.createCategory({
+    return await postService.postRepository.createCategory({
       name,
     });
   },
 
   getAllCategories: async () => {
-    return await PostRepository.getAllCategories();
+    return await postService.postRepository.getAllCategories();
   },
 
   getAllPosts: async () => {
-    return await PostRepository.getAllPosts();
+    return await postService.postRepository.getAllPosts();
   },
 
   checkIfPostExist: async (id: string) => {
-    return await PostRepository.getPostById(id);
+    return await postService.postRepository.getPostById(id);
   },
 
   changePostStatus: async ({
@@ -92,7 +91,7 @@ export const postService = {
       if (!postExist) {
         throw new AppError(404, 'Post not found.');
       }
-      return await PostRepository.changeStatusByPostId({
+      return await postService.postRepository.changeStatusByPostId({
         id: postExist.id,
         status,
       });
@@ -102,7 +101,7 @@ export const postService = {
   },
 
   getPost: async (req: Request<GetPostInput>) => {
-    return await PostRepository.getPostById(req.params.id);
+    return await postService.postRepository.getPostById(req.params.id);
   },
 
   editPost: async ({
@@ -126,7 +125,9 @@ export const postService = {
     };
     const fileAttached = req.file;
     try {
-      const postHasImage = await PostRepository.findByPostId(postUpdate.id);
+      const postHasImage = await postService.postRepository.findByPostId(
+        postUpdate.id
+      );
 
       if (!postHasImage) {
         throw new AppError(404, 'Post not found.');
@@ -143,31 +144,31 @@ export const postService = {
           environment: process.env.NODE_ENV!,
         });
       }
-      await PostRepository.updatePost(postUpdate);
+      await postService.postRepository.updatePost(postUpdate);
     } catch (err: any) {
       throw new AppError(400, 'Error while updating post.');
     }
   },
 
   getPublishPosts: async () => {
-    return await PostRepository.getPublishPosts();
+    return await postService.postRepository.getPublishPosts();
   },
 
   getPostBySlug: async (req: Request<{ slug: string }>) => {
-    return await PostRepository.getPostBySlug(req.params.slug);
+    return await postService.postRepository.getPostBySlug(req.params.slug);
   },
 
   getNewPosts: async ({ user }: { user: IUser }) => {
-    return await PostRepository.getNewPosts({ user });
+    return await postService.postRepository.getNewPosts({ user });
   },
 
   resetNewPosts: async ({ user }: { user: IUser }) => {
-    const posts = await PostRepository.findAll();
-    return await PostRepository.resetNewPosts({ posts, user });
+    const posts = await postService.postRepository.findAll();
+    return await postService.postRepository.resetNewPosts({ posts, user });
   },
 
   addComment: async ({ user, req }: { user: IUser; req: Request }) => {
-    return await PostRepository.addComment({
+    return await postService.postRepository.addComment({
       user,
       postId: req.body.postId,
       comment: req.body.comment,
@@ -175,11 +176,11 @@ export const postService = {
   },
 
   getComment: async (req: Request) => {
-    return await PostRepository.getComment(req.params.postId);
+    return await postService.postRepository.getComment(req.params.postId);
   },
 
   addResponse: async ({ user, req }: { user: IUser; req: Request }) => {
-    return await PostRepository.addResponse({
+    return await postService.postRepository.addResponse({
       user,
       postId: req.params.postid,
       comment: req.body.comment,
@@ -188,11 +189,11 @@ export const postService = {
   },
 
   getNewComment: async ({ user }: { user: IUser }) => {
-    return await PostRepository.getNewComment({ user });
+    return await postService.postRepository.getNewComment({ user });
   },
 
   resetNewComment: async ({ user }: { user: IUser }) => {
-    return await PostRepository.resetNewComment({ user });
+    return await postService.postRepository.resetNewComment({ user });
   },
 
   uploadImage: async (req: Request, res: Response, next: NextFunction) => {

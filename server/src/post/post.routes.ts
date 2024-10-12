@@ -1,8 +1,8 @@
 import express from 'express';
-import { authenticateUser } from '../../middleware/authenticateUser';
-import { readLanguage } from '../../middleware/readLanguage';
-import { uploadFile } from '../../middleware/uploadFile';
-import { validate } from '../../middleware/validate';
+import { authenticateUser } from '../middleware/authenticateUser';
+import { readLanguage } from '../middleware/readLanguage';
+import { uploadFile } from '../middleware/uploadFile';
+import { validate } from '../middleware/validate';
 import {
   addCategoryHandler,
   addPostHandler,
@@ -19,17 +19,17 @@ import {
   addCommentHandler,
   getCommentHandler,
   addResponseHandler,
-} from '../controller/post.controller';
+} from './post.controller';
 import {
   addCategorySchema,
   addCommentSchema,
   addResponseSchema,
   disablePostSchema,
   publishPostSchema,
-} from '../schema/post.schema';
-import { getPostBySlugHandler } from '../controller/post.controller';
-import { uploadCropFile } from '../../middleware/uploadCropFile';
-import { authenticateAdmin } from '../../middleware/authenticateAdmin';
+} from './post.schema';
+import { getPostBySlugHandler } from './post.controller';
+import { uploadCropFile } from '../middleware/uploadCropFile';
+import { authenticateAdmin } from '../middleware/authenticateAdmin';
 
 const router = express.Router();
 

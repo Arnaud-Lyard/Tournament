@@ -1,17 +1,20 @@
 import { Prisma } from '@prisma/client';
 import { NextFunction, Request } from 'express';
-import { PostRepository } from '../../post/repository/post.repository';
-import { IUser, IUserInformations } from '../../types/user';
-import AppError from '../../utils/appError';
-import { signJwt, verifyJwt } from '../../utils/jwt';
-import { removeImage } from '../../utils/removeImage';
-import { IUserUpdateDto, UserDto } from '../dto/user.dto';
-import { UserRepository } from '../repository/user.repository';
-import { UnsubscribeUserInput, UpdateUserInput } from '../schema/user.schema';
+import { PostRepository } from '../post/post.repository';
+import { IUser, IUserInformations } from './user.type';
+import AppError from '../utils/appError';
+import { signJwt, verifyJwt } from '../utils/jwt';
+import { removeImage } from '../utils/removeImage';
+import { ICreateDto, IUpdateDto } from './user.dto';
+import { UserRepository } from './user.repository';
+import { UnsubscribeUserInput, UpdateUserInput } from './user.schema';
 
 export const userService = {
-  createUser: async (user: UserDto) => {
-    return await UserRepository.createUser(user);
+  userRepository: new UserRepository(),
+  postRepository: new PostRepository(),
+
+  createUser: async (user: ICreateDto) => {
+    return await userService.userRepository.createUser(user);
   },
 
   switchVerificationCode: async ({
@@ -21,30 +24,32 @@ export const userService = {
     userId: string;
     verificationCode: string | null;
   }) => {
-    return await UserRepository.switchVerificationCode({
+    return await userService.userRepository.switchVerificationCode({
       userId,
       verificationCode,
     });
   },
 
   checkIfEmailExist: async (email: string) => {
-    return await UserRepository.findByEmail(email);
+    return await userService.userRepository.findByEmail(email);
   },
 
   findUniqueUser: async (userId: string): Promise<IUser | null> => {
-    return await UserRepository.findByUserId(userId);
+    return await userService.userRepository.findByUserId(userId);
   },
 
   findByEmail: async (email: string) => {
-    return await UserRepository.findByEmail(email);
+    return await userService.userRepository.findByEmail(email);
   },
 
   findUserByVerificationCode: async (verificationCode: string) => {
-    return await UserRepository.findUserByVerificationCode(verificationCode);
+    return await userService.userRepository.findUserByVerificationCode(
+      verificationCode
+    );
   },
 
   verifyUser: async (userId: string) => {
-    return await UserRepository.verifyUser(userId);
+    return await userService.userRepository.verifyUser(userId);
   },
 
   updateResetPasswordToken: async ({
@@ -56,7 +61,7 @@ export const userService = {
     passwordResetToken: string | null;
     passwordResetAt: Date | null;
   }) => {
-    return await UserRepository.updateResetPasswordToken({
+    return await userService.userRepository.updateResetPasswordToken({
       userId,
       passwordResetToken,
       passwordResetAt,
@@ -68,7 +73,7 @@ export const userService = {
   }: {
     passwordResetToken: string;
   }) => {
-    return await UserRepository.findUserByPasswordResetToken(
+    return await userService.userRepository.findUserByPasswordResetToken(
       passwordResetToken
     );
   },
@@ -84,7 +89,7 @@ export const userService = {
     passwordResetToken: null;
     passwordResetAt: null;
   }) => {
-    return await UserRepository.updateUserPassword({
+    return await userService.userRepository.updateUserPassword({
       userId,
       hashedPassword,
       passwordResetToken,
@@ -101,14 +106,16 @@ export const userService = {
   }) => {
     const { username, notification } = req.body;
     const avatar = req.file;
-    const userUpdate: IUserUpdateDto = {
+    const userUpdate: IUpdateDto = {
       id: user.id,
       username,
       notification: notification === 'true' ? true : false,
       avatar: null,
     };
     try {
-      const userHasImage = await UserRepository.findByUserId(user.id);
+      const userHasImage = await userService.userRepository.findByUserId(
+        user.id
+      );
 
       if (!avatar && !userHasImage!.avatar) {
         userUpdate.avatar = user.avatar;
@@ -131,24 +138,27 @@ export const userService = {
           });
         }
       }
-      await UserRepository.updateUser(userUpdate);
+      await userService.userRepository.updateUser(userUpdate);
     } catch (err: any) {
       throw new AppError(400, 'Erreur lors de la mise à jour du profil.');
     }
   },
 
   getUserInformations: async (userId: string) => {
-    return await UserRepository.getUserInformations(userId);
+    return await userService.userRepository.getUserInformations(userId);
   },
 
   disabledEmail: async (userId: string) => {
-    return await UserRepository.disabledEmail(userId);
+    return await userService.userRepository.disabledEmail(userId);
   },
 
   associateUserToAllPosts: async (userId: string) => {
     try {
-      const posts = await PostRepository.findAll();
-      await UserRepository.associateUserToAllPosts({ userId, posts });
+      const posts = await userService.postRepository.findAll();
+      await userService.userRepository.associateUserToAllPosts({
+        userId,
+        posts,
+      });
     } catch (err: any) {
       throw new AppError(400, 'Erreur lors de l association des posts.');
     }

@@ -1,12 +1,95 @@
-import { IUser } from '../../types/user';
-import prisma from '../../../prisma/client';
-import { Category, Post, User } from '@prisma/client';
-import { File } from '../../types/file';
-import { PostStatusEnumType } from '@prisma/client';
-import { IPostUpdateDto } from '../dto/post.dto';
+import { Category, Comment, Post, PostStatusEnumType } from '@prisma/client';
+import prisma from '../../prisma/client';
+import { IUser } from '../user/user.type';
+import { IPostUpdateDto } from './post.dto';
 
-export class PostRepository {
-  static async create({
+export interface IPostRepository {
+  create({
+    user,
+    frenchContent,
+    englishContent,
+    frenchTitle,
+    englishTitle,
+    frenchDescription,
+    englishDescription,
+    slug,
+    categoryIds,
+    image,
+    users,
+  }: {
+    user: IUser;
+    frenchContent: string;
+    englishContent: string;
+    frenchTitle: string;
+    englishTitle: string;
+    frenchDescription: string;
+    englishDescription: string;
+    slug: string;
+    categoryIds: string[];
+    image: string;
+    users: IUser[];
+  }): Promise<Post>;
+
+  createCategory({ name }: { name: string }): Promise<Category>;
+
+  getAllCategories(): Promise<Category[]>;
+
+  getAllPosts(): Promise<Post[]>;
+
+  getPostById(id: string): Promise<Post | null>;
+
+  changeStatusByPostId({
+    id,
+    status,
+  }: {
+    id: string;
+    status: PostStatusEnumType;
+  }): Promise<Post>;
+
+  findByPostId(id: string): Promise<Post | null>;
+
+  updatePost(postUpdate: IPostUpdateDto): Promise<Post>;
+
+  getPublishPosts(): Promise<Post[] | null>;
+
+  getPostBySlug(slug: string): Promise<Post | null>;
+
+  findAll(): Promise<Post[]>;
+
+  getNewPosts({ user }: { user: IUser }): Promise<Post[]>;
+
+  resetNewPosts({ posts, user }: { posts: Post[]; user: IUser }): Promise<void>;
+
+  addComment({
+    user,
+    postId,
+    comment,
+  }: {
+    user: IUser;
+    postId: string;
+    comment: string;
+  }): Promise<Comment>;
+
+  getComment(postId: string): Promise<Comment[]>;
+
+  addResponse({
+    user,
+    postId,
+    comment,
+    parentId,
+  }: {
+    user: IUser;
+    postId: string;
+    comment: string;
+    parentId: string;
+  }): Promise<Comment>;
+
+  getNewComment({ user }: { user: IUser }): Promise<Comment[]>;
+
+  resetNewComment({ user }: { user: IUser }): Promise<void>;
+}
+export class PostRepository implements IPostRepository {
+  async create({
     user,
     frenchContent,
     englishContent,
@@ -63,7 +146,7 @@ export class PostRepository {
     });
   }
 
-  static async createCategory({ name }: { name: string }): Promise<Category> {
+  async createCategory({ name }: { name: string }): Promise<Category> {
     return await prisma.category.create({
       data: {
         name,
@@ -71,11 +154,11 @@ export class PostRepository {
     });
   }
 
-  static async getAllCategories(): Promise<Category[]> {
+  async getAllCategories(): Promise<Category[]> {
     return await prisma.category.findMany();
   }
 
-  static async getAllPosts(): Promise<Post[]> {
+  async getAllPosts(): Promise<Post[]> {
     return await prisma.post.findMany({
       orderBy: {
         createdAt: 'desc',
@@ -95,7 +178,7 @@ export class PostRepository {
     });
   }
 
-  static async getPostById(id: string): Promise<Post | null> {
+  async getPostById(id: string): Promise<Post | null> {
     return await prisma.post.findUnique({
       where: {
         id,
@@ -115,7 +198,7 @@ export class PostRepository {
     });
   }
 
-  static async changeStatusByPostId({
+  async changeStatusByPostId({
     id,
     status,
   }: {
@@ -132,7 +215,7 @@ export class PostRepository {
     });
   }
 
-  static async findByPostId(id: string): Promise<Post | null> {
+  async findByPostId(id: string): Promise<Post | null> {
     return await prisma.post.findUnique({
       where: {
         id,
@@ -140,7 +223,7 @@ export class PostRepository {
     });
   }
 
-  static async updatePost(postUpdate: IPostUpdateDto) {
+  async updatePost(postUpdate: IPostUpdateDto) {
     const {
       id,
       frenchContent,
@@ -176,7 +259,7 @@ export class PostRepository {
     });
   }
 
-  static async getPublishPosts(): Promise<Post[] | null> {
+  async getPublishPosts(): Promise<Post[] | null> {
     return await prisma.post.findMany({
       orderBy: {
         createdAt: 'desc',
@@ -199,7 +282,7 @@ export class PostRepository {
       },
     });
   }
-  static async getPostBySlug(slug: string): Promise<Post | null> {
+  async getPostBySlug(slug: string): Promise<Post | null> {
     return await prisma.post.findFirst({
       where: {
         slug,
@@ -220,11 +303,11 @@ export class PostRepository {
     });
   }
 
-  static async findAll(): Promise<Post[]> {
+  async findAll(): Promise<Post[]> {
     return await prisma.post.findMany();
   }
 
-  static async getNewPosts({ user }: { user: IUser }): Promise<Post[]> {
+  async getNewPosts({ user }: { user: IUser }): Promise<Post[]> {
     return await prisma.post.findMany({
       orderBy: {
         createdAt: 'desc',
@@ -242,8 +325,14 @@ export class PostRepository {
     });
   }
 
-  static async resetNewPosts({ posts, user }: { posts: Post[]; user: IUser }) {
-    return await prisma.postsOnUsers.updateMany({
+  async resetNewPosts({
+    posts,
+    user,
+  }: {
+    posts: Post[];
+    user: IUser;
+  }): Promise<void> {
+    await prisma.postsOnUsers.updateMany({
       where: {
         postId: {
           in: posts.map((post) => post.id),
@@ -259,7 +348,7 @@ export class PostRepository {
     });
   }
 
-  static async addComment({
+  async addComment({
     user,
     postId,
     comment,
@@ -267,7 +356,7 @@ export class PostRepository {
     user: IUser;
     postId: string;
     comment: string;
-  }) {
+  }): Promise<Comment> {
     return await prisma.comment.create({
       data: {
         content: comment,
@@ -285,7 +374,7 @@ export class PostRepository {
     });
   }
 
-  static async getComment(postId: string) {
+  async getComment(postId: string): Promise<Comment[]> {
     return await prisma.comment.findMany({
       where: {
         postId,
@@ -301,7 +390,7 @@ export class PostRepository {
     });
   }
 
-  static async addResponse({
+  async addResponse({
     user,
     postId,
     comment,
@@ -311,7 +400,7 @@ export class PostRepository {
     postId: string;
     comment: string;
     parentId: string;
-  }) {
+  }): Promise<Comment> {
     return await prisma.comment.create({
       data: {
         content: comment,
@@ -334,7 +423,7 @@ export class PostRepository {
     });
   }
 
-  static async getNewComment({ user }: { user: IUser }) {
+  async getNewComment({ user }: { user: IUser }): Promise<Comment[]> {
     return await prisma.comment.findMany({
       take: 1,
       where: {
@@ -363,8 +452,8 @@ export class PostRepository {
     });
   }
 
-  static async resetNewComment({ user }: { user: IUser }) {
-    return await prisma.comment.updateMany({
+  async resetNewComment({ user }: { user: IUser }): Promise<void> {
+    await prisma.comment.updateMany({
       where: {
         post: {
           user: {

@@ -1,4 +1,4 @@
-import { userService } from '../../user/service/user.service';
+import { userService } from './user.service';
 
 describe('getUserInformationsByToken', () => {
   const access_token_invalid = null;
