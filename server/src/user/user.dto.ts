@@ -1,11 +1,11 @@
-export interface UserDto {
+export interface ICreateDto {
   username: string;
   email: string;
   password: string;
   verificationCode?: string | null;
 }
 
-export interface IUserUpdateDto {
+export interface IUpdateDto {
   id: string;
   username: string;
   notification: boolean;
