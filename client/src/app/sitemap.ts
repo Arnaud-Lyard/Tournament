@@ -35,9 +35,23 @@ const pagesBase = [
         en: `${process.env.NEXT_PUBLIC_APP_URL}/en`,
       },
     },
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
   },
   {
     url: `${process.env.NEXT_PUBLIC_APP_URL}/articles`,
+    lastModified: new Date().toISOString(),
+    alternates: {
+      languages: {
+        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/articles`,
+        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/articles`,
+      },
+    },
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  },
+  {
+    url: `${process.env.NEXT_PUBLIC_APP_URL}/about`,
     lastModified: new Date().toISOString(),
     alternates: {
       languages: {

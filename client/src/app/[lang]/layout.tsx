@@ -13,13 +13,13 @@ export function generateMetadata({
   const icons = [{ rel: 'icon', url: Favicon.src }];
   const title =
     params.lang === 'fr'
-      ? 'Prochainweb | Veille technologique'
-      : 'Prochainweb | Technology Watch';
+      ? 'Prochainweb | Développeur web'
+      : 'Prochainweb | Web developer';
 
   const description =
     params.lang === 'fr'
-      ? 'Découvrir les évolutions des langages de programmation, les nouveaux frameworks, les outils, les bonnes pratiques et les tendances du web.'
-      : 'Discover the evolutions of programming languages, new frameworks, tools, best practices and web trends.';
+      ? 'Prochainweb, développeur web full stack indépendant qui transforme vos idées en applications web modernes.'
+      : 'Prochainweb, independent full stack web developer who transforms your ideas into modern web applications.';
 
   const openGraph = {
     title,

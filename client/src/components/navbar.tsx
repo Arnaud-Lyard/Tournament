@@ -40,6 +40,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
   const [navigation, setNavigation] = useState([
     { name: 'home', title: 'Home', href: '/', current: false },
     { name: 'articles', title: 'Articles', href: '/articles', current: false },
+    { name: 'about', title: 'About', href: '/about', current: false },
   ]);
 
   function handleNavChange(path: string) {
