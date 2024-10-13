@@ -12,16 +12,28 @@ function Testimonial({ params }: { params: { lang: string } }) {
         <StarRating />
       </div>
       <blockquote className="mt-2">
-        <p className="font-display text-xl font-medium text-slate-900">
-          “This method of designing icons is genius. I wish I had known this
-          method a lot sooner.”
+        <p className="font-display text-xl font-medium text-slate-700">
+          {params.lang === 'fr'
+            ? `“Prochainweb a su développer un site pour mon magasin, sur lequel je
+          garde en partie la main pour ajouter ou modifier des éléments. Mon
+          interlocuteur a été patient et à l'écoute pour un résultat vraiment
+          satisfaisant. En plus, ils assurent la maintenance ! J'ai d'autres
+          projets de développement que je confierai à Prochainweb sans hésiter !”`
+            : `Prochainweb was able to develop a site for my store, on which I
+          partially retains control to add or modify elements. My
+          the interlocutor was patient and attentive for a really good result
+          satisfying. Plus, they provide maintenance! I have others
+          development projects that I will entrust to Prochainweb without hesitation!`}
         </p>
       </blockquote>
       <figcaption className="mt-2 text-sm text-slate-500">
         <strong className="font-semibold text-cyan-600 before:content-['—_']">
-          Stacey Solomon
+          Michel
         </strong>
-        , Founder at Retail Park
+        ,{' '}
+        {params.lang === 'fr'
+          ? 'Gérant de Vélos Buis'
+          : 'Manager of Vélos Buis'}
       </figcaption>
     </figure>
   );
@@ -45,19 +57,17 @@ export function Hero({ params }: { params: { lang: string } }) {
         </div>
         <div className="relative px-4 sm:px-6 lg:col-span-7 lg:pb-14 lg:pl-16 lg:pr-0 xl:pl-20">
           <div className="hidden lg:absolute lg:-top-32 lg:bottom-0 lg:left-[-100vw] lg:right-[-100vw] lg:block lg:bg-slate-100" />
-          {/* <Testimonial params={{ lang: params.lang }} /> */}
+          {<Testimonial params={{ lang: params.lang }} />}
         </div>
         <div className="bg-white pt-16 lg:col-span-7 lg:bg-transparent lg:pl-16 lg:pt-0 xl:pl-20">
           <div className="mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0">
             <h1 className="font-display text-3xl font-extrabold text-slate-900 sm:text-5xl">
-              {params.lang === 'fr'
-                ? 'Plateforme de veille technologique'
-                : 'Technology watch platform'}
+              {params.lang === 'fr' ? 'Développeur web' : 'Web developer'}
             </h1>
             <p className="mt-4 text-2xl sm:text-3xl text-slate-600">
               {params.lang === 'fr'
-                ? 'Un seul endroit pour suivre les dernières tendances technologiques.'
-                : 'One place to follow the latest technology trends.'}
+                ? "Je suis Arnaud, développeur basé dans l'Ain à Ambutrix. J'aime partager mes connaissances et mes découvertes dans le domaine du web."
+                : 'I am Arnaud, developer based in Ain in Ambutrix. I like to share my knowledge and my discoveries in the web field.'}
             </p>
             <div className="mt-8 flex gap-4">
               <Button href="/articles" color="cyan">
