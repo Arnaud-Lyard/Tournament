@@ -1,5 +1,7 @@
 import { Hero } from '@/components/hero';
+import { Testimonial } from '@/components/testimonial';
 import type { Metadata, ResolvingMetadata } from 'next';
+import MariePierre from '~/public/assets/images/marie-pierre.png';
 
 type Props = {
   params: { slug: string; lang: string };
@@ -19,10 +21,23 @@ export function generateMetadata(
 
 export default function Home({ params }: { params: { lang: string } }) {
   return (
-    <div className="py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <Hero params={{ lang: params.lang }} />
-      </div>
-    </div>
+    <>
+      <Hero params={{ lang: params.lang }} />
+      <Testimonial
+        id="testimonial-from-Marie-Pierre"
+        author={{
+          name: 'Marie-Pierre',
+          role: 'Propriétaire du gîte des Echudes',
+          image: MariePierre,
+        }}
+      >
+        <p>
+          “ Arnaud Lyard a vraiment pris le temps de définir notre besoin afin
+          de nous proposer une architecture de site personnalisée. Nous lui
+          avons fourni les photos et nous sommes restés en contact tout au long
+          du projet. Nous le recommandons ”
+        </p>
+      </Testimonial>
+    </>
   );
 }

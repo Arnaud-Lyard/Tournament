@@ -18,17 +18,13 @@ export default function UserLayout({
   return (
     <>
       <div className="min-h-full">
-        <div className="bg-gray-800 pb-32">
+        <div className="bg-gray-800">
           <Navbar params={{ lang: params.lang }} />
         </div>
 
-        <main className="-mt-32">
-          <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
-            <div className="rounded-lg bg-gray-50 px-5 py-6 shadow sm:px-6">
-              <div>{auth}</div>
-              <div>{children}</div>
-            </div>
-          </div>
+        <main>
+          <div>{auth}</div>
+          <div>{children}</div>
         </main>
         <Footer />
         <CookieBanner />
