@@ -18,7 +18,7 @@ export default function UserLayout({
   return (
     <>
       <div className="min-h-full">
-        <div className="bg-gray-800">
+        <div className="bg-gray-800 fixed top-0 w-full z-50">
           <Navbar params={{ lang: params.lang }} />
         </div>
 
