@@ -55,8 +55,8 @@ const pagesBase = [
     lastModified: new Date().toISOString(),
     alternates: {
       languages: {
-        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/articles`,
-        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/articles`,
+        fr: `${process.env.NEXT_PUBLIC_APP_URL}/fr/about`,
+        en: `${process.env.NEXT_PUBLIC_APP_URL}/en/about`,
       },
     },
     changeFrequency: 'weekly' as const,
