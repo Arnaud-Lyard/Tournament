@@ -18,13 +18,11 @@
 }
 
 body {
+  height: 100%;
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: white;
+  font-family: Cabinet Grotesk, ui-sans-serif, system-ui, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
 }
 
 @layer utilities {
@@ -35,7 +33,4 @@ body {
 html {
   height: 100%;
   background-color: rgb(243 244 246);
-}
-body {
-  height: 100%;
 }

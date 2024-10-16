@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Button } from '@/components/button';
 import { GridPattern } from '@/components/grid-pattern';
 import { StarRating } from '@/components/star-rating';
-import coverImage from '~/public/assets/images/cover.png';
+import Prochainweb from '~/public/assets/images/Prochainweb.png';
 
 function Testimonial({ params }: { params: { lang: string } }) {
   return (
@@ -52,7 +52,7 @@ export function Hero({ params }: { params: { lang: string } }) {
             />
           </div>
           <div className="relative z-10 mx-auto flex w-64 rounded-xl md:w-80 lg:w-auto">
-            <Image className="w-full" src={coverImage} alt="" priority />
+            <Image className="w-full" src={Prochainweb} alt="" priority />
           </div>
         </div>
         <div className="relative px-4 sm:px-6 lg:col-span-7 lg:pb-14 lg:pl-16 lg:pr-0 xl:pl-20">
