@@ -18,7 +18,7 @@ export default function PrivacyPolicy({
   params: { lang: string };
 }) {
   return (
-    <div>
+    <div className="p-10">
       <h1 className="text-3xl font-bold tracking-tight text-dark mb-5">
         {params.lang === 'fr'
           ? 'Politique de confidentialité'

@@ -27,7 +27,7 @@ export function Testimonial({
           <div className="flex text-slate-900 sm:justify-center">
             <StarRating />
           </div>
-          <blockquote className="mt-10 font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-center">
+          <blockquote className="mt-10 font-display text-4xl font-medium tracking-tight text-slate-700 sm:text-center">
             {children}
           </blockquote>
           <figcaption className="mt-10 flex items-center sm:justify-center">
