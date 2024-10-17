@@ -9,18 +9,18 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-react": "^9.1.0",
+    "@ckeditor/ckeditor5-react": "^9.2.0",
     "@formatjs/intl-localematcher": "^0.5.4",
-    "@headlessui/react": "^2.1.7",
+    "@headlessui/react": "^2.1.8",
     "@heroicons/react": "^2.1.5",
     "axios": "^1.7.7",
     "ckeditor5": "^43.1.0",
     "cmdk": "^1.0.0",
-    "jose": "^5.8.0",
+    "jose": "^5.9.2",
     "js-cookie": "^3.0.5",
     "moment": "^2.30.1",
     "negotiator": "^0.6.3",
-    "next": "14.2.10",
+    "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.5"
