@@ -17,12 +17,12 @@ export default function UserLayout({
 }) {
   return (
     <>
-      <div className="min-h-full">
+      <div className="flex flex-col min-h-screen">
         <div className="bg-gray-800 fixed top-0 w-full z-50">
           <Navbar params={{ lang: params.lang }} />
         </div>
 
-        <main>
+        <main className="flex-grow mt-[65px]">
           <div>{auth}</div>
           <div>{children}</div>
         </main>
