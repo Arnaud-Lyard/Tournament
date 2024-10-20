@@ -378,13 +378,13 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                 <>
                   {!isLoggedIn ? (
                     <div className="mt-3 space-y-1 px-2">
-                      <Link
+                      <DisclosureButton
+                        as="a"
                         href="/authentication"
-                        scroll={false}
                         className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
                       >
                         {dictionary.navigation.authentication}
-                      </Link>
+                      </DisclosureButton>
                     </div>
                   ) : (
                     <>
