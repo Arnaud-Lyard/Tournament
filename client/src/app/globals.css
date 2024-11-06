@@ -32,4 +32,9 @@ body {
 }
 html {
   height: 100%;
+  overflow-y: scroll !important;
+}
+
+html[style*='padding-right: 15px;'] {
+  padding-right: 0 !important;
 }
