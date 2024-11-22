@@ -176,7 +176,7 @@ export const postService = {
   },
 
   getComment: async (req: Request) => {
-    return await postService.postRepository.getComment(req.params.postId);
+    return await postService.postRepository.getComment(req.params.postid);
   },
 
   addResponse: async ({ user, req }: { user: IUser; req: Request }) => {

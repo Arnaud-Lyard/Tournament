@@ -104,7 +104,7 @@ export const addCommentSchema = object({
 
 export const getCommentSchema = object({
   params: object({
-    postId: string({
+    postid: string({
       required_error: 'Unexpected error occured.',
     }),
   }),
