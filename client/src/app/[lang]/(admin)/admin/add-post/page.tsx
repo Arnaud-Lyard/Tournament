@@ -163,7 +163,7 @@ export default function AddPost() {
                   setFrenchTitle(e.target.value);
                 }}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function AddPost() {
                   setEnglishTitle(e.target.value);
                 }}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -207,7 +207,7 @@ export default function AddPost() {
                   setFrenchDescription(e.target.value);
                 }}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -229,7 +229,7 @@ export default function AddPost() {
                   setEnglishDescription(e.target.value);
                 }}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -251,7 +251,7 @@ export default function AddPost() {
                   setSlug(e.target.value);
                 }}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -298,7 +298,7 @@ export default function AddPost() {
             )}
             <div className="relative mt-2">
               <ComboboxInput
-                className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-10 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-gray-300 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-600 sm:text-sm sm:leading-6"
                 onChange={(event) => setQuery(event.target.value)}
                 onBlur={() => setQuery('')}
               />
