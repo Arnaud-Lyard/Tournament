@@ -90,7 +90,7 @@ export default function Profile({
                     name="username"
                     type="text"
                     autoComplete="username"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-cyan-600 sm:max-w-md sm:text-sm sm:leading-6"
+                    className="block w-full rounded-md border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 shadow-sm focus:border-cyan-600 focus:ring-cyan-600"
                     required={true}
                     defaultValue={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -151,7 +151,7 @@ export default function Profile({
                       name="email"
                       id="email"
                       autoComplete="email"
-                      className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 shadow-sm focus:border-cyan-600 focus:ring-cyan-600"
                       disabled={true}
                       value={email}
                     />
