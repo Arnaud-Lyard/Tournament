@@ -83,7 +83,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
       if (response.status === 'success') {
         location.reload();
       }
-    } catch (e: any) {}
+    } catch (e: any) { }
   }
 
   async function handleNewNotification() {
@@ -95,7 +95,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
         setNewPosts(response.data.posts);
         setNewComment(response.data.comments);
       }
-    } catch (e: any) {}
+    } catch (e: any) { }
   }
   useEffect(() => {
     if (isLoggedIn) {
@@ -110,7 +110,7 @@ export default function Navbar({ params }: { params: { lang: string } }) {
     }
     try {
       const response = await http.service().get<IResponse>(`/posts/reset`);
-    } catch (e: any) {}
+    } catch (e: any) { }
   }
 
   return (
@@ -428,32 +428,32 @@ export default function Navbar({ params }: { params: { lang: string } }) {
                       <div className="mt-3 space-y-1 px-2">
                         {newPosts.length && isNewPostVisible
                           ? newPosts.map((post) => (
-                              <DisclosureButton
-                                key={post.id}
-                                as="a"
-                                href={`/post/${post.slug}`}
-                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                              >
-                                {params.lang === 'fr'
-                                  ? post.frenchTitle
-                                  : post.englishTitle}
-                              </DisclosureButton>
-                            ))
+                            <DisclosureButton
+                              key={post.id}
+                              as="a"
+                              href={`/articles/${post.slug}`}
+                              className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                            >
+                              {params.lang === 'fr'
+                                ? post.frenchTitle
+                                : post.englishTitle}
+                            </DisclosureButton>
+                          ))
                           : ''}
                         {newComment.length && isNewCommentVisible
                           ? newComment.map((comment) => (
-                              <DisclosureButton
-                                key={comment.id}
-                                as="a"
-                                href={`/post/${comment.post.slug}`}
-                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
-                              >
-                                {comment.user.username}
-                                {params.lang === 'fr'
-                                  ? ' a réagi à votre commentaire'
-                                  : ' reacted to your comment'}
-                              </DisclosureButton>
-                            ))
+                            <DisclosureButton
+                              key={comment.id}
+                              as="a"
+                              href={`/articles/${comment.post.slug}`}
+                              className="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white"
+                            >
+                              {comment.user.username}
+                              {params.lang === 'fr'
+                                ? ' a réagi à votre commentaire'
+                                : ' reacted to your comment'}
+                            </DisclosureButton>
+                          ))
                           : ''}
                         <DisclosureButton
                           key="profile"
