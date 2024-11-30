@@ -1,4 +1,4 @@
-import { Category, Comment, Post, PostStatusEnumType } from '@prisma/client';
+import { Category, Comment, Post, PostStatusEnumType, User } from '@prisma/client';
 import prisma from '../../prisma/client';
 import { IUser } from '../user/user.type';
 import { IPostUpdateDto } from './post.dto';
@@ -70,7 +70,7 @@ export interface IPostRepository {
     comment: string;
   }): Promise<Comment>;
 
-  getComment(postId: string): Promise<Comment[]>;
+  getComments(postId: string): Promise<Comment[]>;
 
   addResponse({
     user,
@@ -374,7 +374,7 @@ export class PostRepository implements IPostRepository {
     });
   }
 
-  async getComment(postId: string): Promise<Comment[]> {
+  async getComments(postId: string): Promise<Comment[]> {
     return await prisma.comment.findMany({
       where: {
         postId,
@@ -384,6 +384,24 @@ export class PostRepository implements IPostRepository {
           select: {
             username: true,
             avatar: true,
+          },
+        },
+      },
+    });
+  }
+
+  async getComment(commentId: string): Promise<Comment> {
+    return await prisma.comment.findUniqueOrThrow({
+      where: {
+        id: commentId,
+      },
+      include: {
+        user: {
+          select: {
+            username: true,
+            avatar: true,
+            email: true,
+            mailSubscription: true,
           },
         },
       },

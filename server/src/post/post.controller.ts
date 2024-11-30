@@ -32,6 +32,8 @@ export const addPostHandler = async (
       englishDescription: req.body.englishDescription,
       slug: req.body.slug,
       image: req.file,
+      req,
+      next,
     });
 
     res.status(200).json({
@@ -109,6 +111,7 @@ export const getPublishPostHandler = async (
     await postService.changePostStatus({
       req,
       status: 'published',
+      next,
     });
 
     res.status(200).json({
@@ -129,6 +132,7 @@ export const getDisablePostHandler = async (
     await postService.changePostStatus({
       req,
       status: 'disabled',
+      next,
     });
 
     res.status(200).json({
@@ -301,7 +305,7 @@ export const getCommentHandler = async (
   next: NextFunction
 ) => {
   try {
-    const comments = await postService.getComment(req);
+    const comments = await postService.getComments(req);
 
     res.status(200).json({
       status: 'success',
@@ -325,6 +329,7 @@ export const addResponseHandler = async (
     await postService.addResponse({
       user,
       req,
+      next,
     });
 
     res.status(200).json({

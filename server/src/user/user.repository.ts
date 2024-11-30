@@ -50,6 +50,8 @@ export interface IUserRepository {
     userId: string;
     posts: Post[];
   }): Promise<User>;
+  findUser(userId: string): Promise<User>;
+  findUsersWithMailSubscription(): Promise<User[]>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -197,6 +199,18 @@ export class UserRepository implements IUserRepository {
           })),
         },
       },
+    });
+  }
+
+  async findUser(userId: string): Promise<User> {
+    return await prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+    });
+  }
+
+  async findUsersWithMailSubscription(): Promise<User[]> {
+    return await prisma.user.findMany({
+      where: { mailSubscription: true },
     });
   }
 }

@@ -59,7 +59,7 @@ export default function Comment({
         .service()
         .get<IGetCommentResponse>(`/posts/comment/${params.postId}`);
       setComments(response.data.comments);
-    } catch (e: any) {}
+    } catch (e: any) { }
   }
   useEffect(() => {
     handleComment();
@@ -101,7 +101,7 @@ export default function Comment({
 
   return (
     <div className="mt-10">
-      <h3 className="text-xl font-semibold text-gray-900">
+      <h3 id="comment" className="text-xl font-semibold text-gray-900">
         {params.lang === 'fr' ? 'Laissez un commentaire' : 'Leave a comment'}
       </h3>
 
@@ -124,9 +124,8 @@ export default function Comment({
 
         <button
           type="submit"
-          className={`${
-            isLoggedIn ? 'hover:bg-cyan-700' : ''
-          } mt-3 px-4 py-2 bg-cyan-600 text-white rounded-md`}
+          className={`${isLoggedIn ? 'hover:bg-cyan-700' : ''
+            } mt-3 px-4 py-2 bg-cyan-600 text-white rounded-md`}
           disabled={!isLoggedIn}
         >
           {params.lang === 'fr' ? 'Envoyer le commentaire' : 'Submit Comment'}
@@ -240,9 +239,8 @@ export default function Comment({
 
                     <button
                       type="submit"
-                      className={`${
-                        isLoggedIn ? 'hover:bg-cyan-700' : ''
-                      } mt-3 px-4 py-2 bg-cyan-600 text-white rounded-md`}
+                      className={`${isLoggedIn ? 'hover:bg-cyan-700' : ''
+                        } mt-3 px-4 py-2 bg-cyan-600 text-white rounded-md`}
                       disabled={!isLoggedIn}
                     >
                       {params.lang === 'fr'
