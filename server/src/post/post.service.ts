@@ -6,12 +6,13 @@ import { IPostUpdateDto } from './post.dto';
 import AppError from '../utils/appError';
 import { UserRepository } from '../user/user.repository';
 import { removeResizedImages } from '../utils/removeImage';
-import { EditPostInput, GetPostInput, PublishPostInput } from './post.schema';
+import { AddPostInput, AddResponseInput, EditPostInput, GetPostInput, PublishPostInput } from './post.schema';
 import { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import fs from 'fs';
 import multer from 'multer';
 import { promisify } from 'util';
+import Email from '../utils/email';
 
 export const postService = {
   postRepository: new PostRepository(),
@@ -28,6 +29,8 @@ export const postService = {
     slug,
     categoryIds,
     image,
+    req,
+    next,
   }: {
     user: IUser;
     frenchContent: string;
@@ -39,10 +42,12 @@ export const postService = {
     slug: string;
     categoryIds: string[];
     image: File | undefined;
+    req: Request<{}, {}, AddPostInput>,
+    next: NextFunction;
   }) => {
     try {
       const users = await postService.userRepository.findAll();
-      return await postService.postRepository.create({
+      const post = await postService.postRepository.create({
         user,
         frenchContent,
         englishContent,
@@ -55,6 +60,8 @@ export const postService = {
         image: image!.filename,
         users,
       });
+
+      return post;
     } catch (err: any) {
       throw new AppError(400, 'Error while creating post.');
     }
@@ -81,9 +88,11 @@ export const postService = {
   changePostStatus: async ({
     req,
     status,
+    next,
   }: {
     req: Request<PublishPostInput>;
     status: PostStatusEnumType;
+    next: NextFunction;
   }) => {
     try {
       const postExist = await postService.checkIfPostExist(req.params.id);
@@ -91,10 +100,33 @@ export const postService = {
       if (!postExist) {
         throw new AppError(404, 'Post not found.');
       }
-      return await postService.postRepository.changeStatusByPostId({
+
+      const postUpdated = await postService.postRepository.changeStatusByPostId({
         id: postExist.id,
         status,
       });
+
+      if (status === 'published' && postUpdated.status === 'published') {
+        const users = await postService.userRepository.findUsersWithMailSubscription();
+        users.forEach(async (user) => {
+          try {
+            await new Email(
+              user,
+              `${process.env.CLIENT_URL}/articles/${postExist.slug}`,
+            ).sendNewPostMessage(req.language);
+          } catch (error) {
+            return next(
+              new AppError(
+                500,
+                req.language === 'fr'
+                  ? 'Impossible d envoyer le message de nouveau article'
+                  : 'Could not send new article message'
+              )
+            );
+          }
+        });
+      }
+
     } catch (err: any) {
       throw new AppError(400, 'Error while updating post.');
     }
@@ -168,24 +200,48 @@ export const postService = {
   },
 
   addComment: async ({ user, req }: { user: IUser; req: Request }) => {
-    return await postService.postRepository.addComment({
+    const comment = await postService.postRepository.addComment({
       user,
       postId: req.body.postId,
       comment: req.body.comment,
     });
   },
 
-  getComment: async (req: Request) => {
-    return await postService.postRepository.getComment(req.params.postid);
+  getComments: async (req: Request) => {
+    return await postService.postRepository.getComments(req.params.postid);
   },
 
-  addResponse: async ({ user, req }: { user: IUser; req: Request }) => {
-    return await postService.postRepository.addResponse({
+  addResponse: async ({ user, req, next }: { user: IUser; req: Request<AddResponseInput['params'], {}, AddResponseInput['body']>, next: NextFunction }) => {
+
+    const response = await postService.postRepository.addResponse({
       user,
       postId: req.params.postid,
       comment: req.body.comment,
       parentId: req.body.parentId,
     });
+
+    const parentComment = await postService.postRepository.getComment(req.body.parentId);
+    const post = await postService.postRepository.getPostById(req.params.postid);
+    const parentCommentuser = await postService.userRepository.findUser(parentComment.userId);
+    if (parentCommentuser.mailSubscription && user.id !== parentCommentuser.id) {
+      try {
+        await new Email(
+          parentCommentuser,
+          `${process.env.CLIENT_URL}/articles/${post!.slug}`,
+        ).sendNewCommentMessage(req.language);
+      } catch (error) {
+        return next(
+          new AppError(
+            500,
+            req.language === 'fr'
+              ? "Impossible d envoyer le message d'ajout de réponse au commentaire"
+              : 'Could not send new comment message'
+          )
+        );
+      }
+    }
+
+    return response;
   },
 
   getNewComment: async ({ user }: { user: IUser }) => {

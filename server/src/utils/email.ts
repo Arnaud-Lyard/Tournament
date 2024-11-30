@@ -44,9 +44,8 @@ export default class Email {
           username: this.#username,
           subject,
           url: this.url,
-          unsubscribeUrl: `${process.env.CLIENT_URL}/unsubscribe/${
-            this.#userId
-          }`,
+          unsubscribeUrl: `${process.env.CLIENT_URL}/unsubscribe/${this.#userId
+            }`,
         }
       );
 
@@ -89,5 +88,21 @@ export default class Email {
         ? `Informations suite à votre inscription`
         : `Information following your registration`;
     await this.send('confirmation', langage, subject);
+  }
+
+  async sendNewPostMessage(langage: Lang) {
+    const subject =
+      langage === 'fr'
+        ? `Nouveau article sur ProchainWeb`
+        : `New post on ProchainWeb`;
+    await this.send('newPost', langage, subject);
+  }
+
+  async sendNewCommentMessage(langage: Lang) {
+    const subject =
+      langage === 'fr'
+        ? `Nouveau commentaire sur ProchainWeb`
+        : `New comment on ProchainWeb`;
+    await this.send('newComment', langage, subject);
   }
 }
